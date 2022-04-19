@@ -347,7 +347,7 @@ This project is going to be delivered in two phases. As you may have noticed, th
 and they are ordered sequentially. There will be a checkpoint were you will need to deliver a new release/version of your
 application containing the required sections. You can check here the dates with all the expected deliveries.
 
-- `v1.0.0` on May 1 - Sections from 4 to 6
+- `v1.0.0` on May 1 - Sections from 1 to 5
 - `v2.0.0` on May 22 - All sections
 
 The first delivery is the checkpoint of the project. The last delivery is the whole project.
