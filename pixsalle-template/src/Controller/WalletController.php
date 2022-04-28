@@ -25,6 +25,13 @@ class WalletController
 		$this->walletRepository = $walletRepository;
 	}
 
+	public function showWallet(Request $request, Response $response): Response
+	{
+		return $this->twig->render($response, 'wallet.twig', [
+
+		]);
+	}
+
 	/**
 	 * @param Twig $twig
 	 * @param WalletRepository $walletRepository
