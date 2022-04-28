@@ -31,11 +31,19 @@ class MySQLWalletRepository implements WalletRepository
 
 	public function addMoney(User $user, int $amount): void
 	{
-		// TODO: Implement addMoney() method.
+		$query = $this->databaseConnection->prepare('UPDATE money SET quantity = quantity + :amount WHERE userId = :user_id');
+		$query->execute([
+			'amount' => $amount,
+			'user_id' => $user->id()
+		]);
 	}
 
 	public function removeMoney(User $user, int $amount): void
 	{
-		// TODO: Implement removeMoney() method.
+		$query = $this->databaseConnection->prepare('UPDATE money SET quantity = quantity - :amount WHERE userId = :user_id');
+		$query->execute([
+			'amount' => $amount,
+			'user_id' => $user->id()
+		]);
 	}
 }
