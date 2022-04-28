@@ -1,0 +1,17 @@
+{% extends "base.twig" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+    <h1>Welcome back!</h1>
+    <form data-cy="user-data" action="{{ formAction }}" id="profile__form">
+        <label for="userName">Username: </label>
+        <input data-cy="profile__userName" type="text" name="userName"><br>
+        <label for="email">Email: </label>
+        <input data-cy="profile__email" type="text" name="email" disabled><br>
+        <label for="telNum">Telefon number: </label>
+        <input data-cy="profile__telefonNumber" type="tel" name="telefonNumber"><br>
+        <img src="" alt="Profile image">
+        <input data-cy="profile__btn" type="submit" value="Safe Changes">
+    </form>
+{% endblock %}
