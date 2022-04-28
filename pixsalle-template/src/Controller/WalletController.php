@@ -13,6 +13,7 @@ use Slim\Views\Twig;
 class WalletController
 {
 	private Twig $twig;
+	private WalletRepository $walletRepository;
 
 	/**
 	 * @param Twig $twig
@@ -21,20 +22,61 @@ class WalletController
 	public function __construct(Twig $twig, WalletRepository $walletRepository)
 	{
 		$this->twig = $twig;
+		$this->walletRepository = $walletRepository;
 	}
 
+	/**
+	 * @param Twig $twig
+	 * @param WalletRepository $walletRepository
+	 */
 	public function showActualAmmountOfMoney(Request $request, Response $response): Response
 	{
 		$data = $request->getParsedBody();
 		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
 
-		$value;
+		$actualUser = $_SESSION['user'];
+		$value = $this->walletRepository->getBalance($actualUser);
 
 		return $this->twig->render(
 			$response,
 			'wallet.twig',
 			[
 				'walletValue' => $value,
+			]
+		);
+	}
+
+	public function addMoney(Request $request, Response $response): Response
+	{
+		$data = $request->getParsedBody();
+		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
+		$moneyToAdd = $data['moneyToAdd'];
+
+		$actualUser = $_SESSION['user'];
+		$this->walletRepository->addMoney($actualUser, $moneyToAdd);
+
+		return $this->twig->render(
+			$response,
+			'wallet.twig',
+			[
+				'walletValue' => $value,
+			]
+		);
+	}
+
+	public function removeMoney(Request $request, Response $response): Response
+	{
+		$data = $request->getParsedBody();
+		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
+		$moneyToRemove = $data['moneyToRemove'];
+		$actualUser = $_SESSION['user'];
+
+		$this->walletRepository->removeMoney($actualUser, $moneyToRemove);
+
+		return $this->twig->render(
+			$response,
+			'wallet.twig',
+			[
 			]
 		);
 	}
