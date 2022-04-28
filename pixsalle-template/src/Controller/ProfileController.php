@@ -6,12 +6,14 @@ namespace Salle\PixSalle\Controller;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Salle\PixSalle\Service\ValidatorService;
 use Slim\Routing\RouteContext;
 use Slim\Views\Twig;
 
 class ProfileController
 {
     private Twig $twig;
+    private ValidatorService $validator;
 
     /**
      * @param Twig $twig
@@ -19,6 +21,7 @@ class ProfileController
     public function __construct(Twig $twig)
     {
         $this->twig = $twig;
+        $this->validator = new ValidatorService();
     }
 
     /**
@@ -39,8 +42,23 @@ class ProfileController
 
     public function profile(Request $request, Response $response): Response
     {
+        $data = $request->getParsedBody();
+        $routeParser = RouteContext::fromRequest($request)->getRouteParser();
 
-        return 0;
+        $errors = [];
+
+        $errors['phoneNumber'] = $this->validator->validatePhoneNumber($data['phoneNumber']);
+
+        return $this->twig->render(
+            $response,
+            'profile.twig',
+            [
+                'formErrors' => $errors,
+                'formData' => $data,
+                'formAction' => $routeParser->urlFor('profile'),
+                'formMethod' => "POST"
+            ]
+        );
     }
 
 

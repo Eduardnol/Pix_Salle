@@ -5,11 +5,10 @@ namespace Salle\PixSalle\Controller;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Salle\PixSalle\Service\ValidatorService;
 use Salle\PixSalle\Repository\UserRepository;
-use Salle\PixSalle\Model\User;
-use Slim\Views\Twig;
+use Salle\PixSalle\Service\ValidatorService;
 use Slim\Routing\RouteContext;
+use Slim\Views\Twig;
 
 class UserSessionController
 {
@@ -55,7 +54,7 @@ class UserSessionController
                 $errors['password'] = 'Your email and/or password are incorrect.';
             } else {
                 $_SESSION['user_id'] = $user->id;
-                return $response->withHeader('Location','/')->withStatus(302);
+                return $response->withHeader('Location', '/profile')->withStatus(302);
             }
         }
         return $this->twig->render(

@@ -20,13 +20,25 @@ class ValidatorService
     return '';
   }
 
-  public function validatePassword(string $password)
-  {
-    if (empty($password) || strlen($password) < 6) {
-      return 'The password must contain at least 6 characters.';
-    } else if (!preg_match("~[0-9]+~", $password) || !preg_match("/[a-z]/", $password) || !preg_match("/[A-Z]/", $password)) {
-      return 'The password must contain both upper and lower case letters and numbers';
+    public function validatePassword(string $password)
+    {
+        if (empty($password) || strlen($password) < 6) {
+            return 'The password must contain at least 6 characters.';
+        } else if (!preg_match("~[0-9]+~", $password) || !preg_match("/[a-z]/", $password) || !preg_match("/[A-Z]/", $password)) {
+            return 'The password must contain both upper and lower case letters and numbers';
+        }
+        return '';
     }
-    return '';
-  }
+
+    public function validatePhoneNumber(string $phoneNumber)
+    {
+        $phone_format = "/^[6][0-9]$/";
+
+        if (strlen($phoneNumber) != 9) {
+            return 'The phone number must contain 9 numbers.';
+        } elseif (!preg_match($phone_format, $phoneNumber)) {
+            return 'The phone number must start by 6.';
+        }
+        return '';
+    }
 }
