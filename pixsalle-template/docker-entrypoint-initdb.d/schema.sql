@@ -16,3 +16,20 @@ CREATE TABLE `users`
     `updatedAt` DATETIME                                                NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Create a table to store the money quantity
+DROP TABLE IF EXISTS `money`;
+CREATE TABLE `money`
+(
+    `id`        INT      NOT NULL AUTO_INCREMENT,
+    `userId`    INT      NOT NULL,
+    `quantity`  INT      NOT NULL,
+    `createdAt` DATETIME NOT NULL,
+    `updatedAt` DATETIME NOT NULL,
+    PRIMARY KEY (`id`),
+    CONSTRAINT `money_user_id_foreign`
+        FOREIGN KEY (`userId`)
+            REFERENCES `users` (`id`)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
