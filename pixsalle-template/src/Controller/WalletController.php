@@ -81,5 +81,21 @@ class WalletController
 		);
 	}
 
+	public function addNewField(Request $request, Response $response): Response
+	{
+		$data = $request->getParsedBody();
+		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
+		$actualUser = $_SESSION['user'];
+
+		$this->walletRepository->insertNewEntry($actualUser, 30);
+
+		return $this->twig->render(
+			$response,
+			'wallet.twig',
+			[
+			]
+		);
+	}
+
 
 }
