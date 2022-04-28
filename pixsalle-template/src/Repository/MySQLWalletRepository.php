@@ -2,6 +2,7 @@
 
 namespace Salle\PixSalle\Repository;
 
+use PDO;
 use Salle\PixSalle\Model\User;
 
 class MySQLWalletRepository implements WalletRepository
