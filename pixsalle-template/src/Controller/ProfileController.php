@@ -6,6 +6,7 @@ namespace Salle\PixSalle\Controller;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Salle\PixSalle\Repository\UserRepository;
 use Salle\PixSalle\Service\ValidatorService;
 use Slim\Routing\RouteContext;
 use Slim\Views\Twig;
@@ -18,9 +19,10 @@ class ProfileController
     /**
      * @param Twig $twig
      */
-    public function __construct(Twig $twig)
+    public function __construct(Twig $twig, UserRepository $userRepository)
     {
         $this->twig = $twig;
+        $this->userRepository = $userRepository;
         $this->validator = new ValidatorService();
     }
 
@@ -45,20 +47,29 @@ class ProfileController
         $data = $request->getParsedBody();
         $routeParser = RouteContext::fromRequest($request)->getRouteParser();
 
+        //$user = $this->userRepository->getUserByEmail($data['email']);
         $errors = [];
+
+        $actual_user_id = $_SESSION['user_id'];
+        echo $actual_user_id;
+        echo "hola";
 
         $errors['phoneNumber'] = $this->validator->validatePhoneNumber($data['phoneNumber']);
 
-        return $this->twig->render(
-            $response,
-            'profile.twig',
-            [
-                'formErrors' => $errors,
-                'formData' => $data,
-                'formAction' => $routeParser->urlFor('profile'),
-                'formMethod' => "POST"
-            ]
-        );
+        if (count($errors) == 0) {
+            return $this->twig->render(
+                $response,
+                'profile.twig',
+                [
+                    'formErrors' => $errors,
+                    'formData' => $data,
+                    'formAction' => $routeParser->urlFor('profile'),
+                    'userID' => $actual_user_id,
+                    'formMethod' => "POST"
+                ]
+            );
+        }
+        return $response->withHeader('Location', '/profile')->withStatus(302);
     }
 
 

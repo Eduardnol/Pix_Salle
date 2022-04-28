@@ -10,15 +10,15 @@ class ValidatorService
   {
   }
 
-  public function validateEmail(string $email)
-  {
-    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      return 'The email address is not valid';
-    } else if (!strpos($email, "@salle.url.edu")) {
-      return 'Only emails from the domain @salle.url.edu are accepted.';
+    public function validateEmail(string $email)
+    {
+        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return 'The email address is not valid';
+        } else if (!strpos($email, "@salle.url.edu")) {
+            return 'Only emails from the domain @salle.url.edu are accepted.';
+        }
+        return '';
     }
-    return '';
-  }
 
     public function validatePassword(string $password)
     {

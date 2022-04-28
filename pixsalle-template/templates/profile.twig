@@ -4,9 +4,9 @@
 
 {% block content %}
     <h1>Welcome back!</h1>
-    <form data-cy="user-data" action="{{ formAction }}" id="profile__form">
+    <form data-cy="user-data" action="{{ formAction }}" id="profile__form" method="POST">
         <label for="userName">Username: </label>
-        <input data-cy="profile__userName" type="text" name="userName" value="Hola"><br>
+        <input data-cy="profile__userName" type="text" name="userName" value="user"{{ userID }}><br>
         <label for="email">Email: </label>
         <input data-cy="profile__email" type="text" name="email" disabled><br>
         <label for="telNum">Telefon number: </label>
