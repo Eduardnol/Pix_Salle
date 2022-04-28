@@ -32,7 +32,7 @@ class MySQLWalletRepository implements WalletRepository
 
 	public function addMoney(User $user, int $amount): void
 	{
-		$query = $this->databaseConnection->prepare('UPDATE money SET quantity = quantity + :amount WHERE userId = :user_id');
+		$query = $this->databaseConnection->prepare('UPDATE money SET quantity = quantity + :amount, updatedAt = NOW() WHERE userId = :user_id');
 		$query->execute([
 			'amount' => $amount,
 			'user_id' => $user->id()
@@ -41,10 +41,19 @@ class MySQLWalletRepository implements WalletRepository
 
 	public function removeMoney(User $user, int $amount): void
 	{
-		$query = $this->databaseConnection->prepare('UPDATE money SET quantity = quantity - :amount WHERE userId = :user_id');
+		$query = $this->databaseConnection->prepare('UPDATE money SET quantity = quantity - :amount, updatedAt = NOW() WHERE userId = :user_id');
 		$query->execute([
 			'amount' => $amount,
 			'user_id' => $user->id()
+		]);
+	}
+
+	public function insertNewEntry(User $user, int $amount): void
+	{
+		$query = $this->databaseConnection->prepare('INSERT INTO money (userId, quantity, updatedAt, createdAt) VALUES (:user_id, :amount, NOW(), NOW())');
+		$query->execute([
+			'user_id' => $user->id(),
+			'amount' => $amount
 		]);
 	}
 }
