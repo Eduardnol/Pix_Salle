@@ -1,4 +1,4 @@
-# PixSalle
+# PixSalle test
 
 The Student Council of La Salle saw that a lot of students are passionate about photography. They have posted their
 amazing photos on various social media accounts. To help the students develop their skills and inspire them to be
