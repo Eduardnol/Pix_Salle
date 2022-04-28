@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Salle\PixSalle\Repository;
 
-use Salle\PixSalle\Model\User;
-
 interface WalletRepository
 {
-	public function getBalance(User $user): int;
+	public function getBalance(string $user_id);
 
-	public function addMoney(User $user, int $amount): void;
+	public function addMoney(string $user_id, int $amount): void;
 
-	public function removeMoney(User $user, int $amount): void;
+	public function removeMoney(string $user_id, int $amount): void;
+
+	public function insertNewEntry(string $user_id, int $amount): void;
 }

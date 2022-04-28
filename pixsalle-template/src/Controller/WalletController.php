@@ -28,7 +28,7 @@ class WalletController
 	public function showWallet(Request $request, Response $response): Response
 	{
 		return $this->twig->render($response, 'wallet.twig', [
-
+			'wallet' => $this->showActualAmmountOfMoney(),
 		]);
 	}
 
@@ -36,21 +36,16 @@ class WalletController
 	 * @param Twig $twig
 	 * @param WalletRepository $walletRepository
 	 */
-	public function showActualAmmountOfMoney(Request $request, Response $response): Response
+	public function showActualAmmountOfMoney(): int
 	{
-		$data = $request->getParsedBody();
-		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
-
-		$actualUser = $_SESSION['user'];
-		$value = $this->walletRepository->getBalance($actualUser);
-
-		return $this->twig->render(
-			$response,
-			'wallet.twig',
-			[
-				'walletValue' => $value,
-			]
-		);
+		$actualUser = $_SESSION['user_id'];
+		$result = $this->walletRepository->getBalance($actualUser);
+		if ($result == null) {
+			$this->addNewField();
+			return 30;
+		} else {
+			return $result;
+		}
 	}
 
 	public function addMoney(Request $request, Response $response): Response
@@ -59,7 +54,7 @@ class WalletController
 		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
 		$moneyToAdd = $data['moneyToAdd'];
 
-		$actualUser = $_SESSION['user'];
+		$actualUser = $_SESSION['user_id'];
 		$this->walletRepository->addMoney($actualUser, $moneyToAdd);
 
 		return $this->twig->render(
@@ -76,7 +71,7 @@ class WalletController
 		$data = $request->getParsedBody();
 		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
 		$moneyToRemove = $data['moneyToRemove'];
-		$actualUser = $_SESSION['user'];
+		$actualUser = $_SESSION['user_id'];
 
 		$this->walletRepository->removeMoney($actualUser, $moneyToRemove);
 
@@ -88,20 +83,11 @@ class WalletController
 		);
 	}
 
-	public function addNewField(Request $request, Response $response): Response
+	public function addNewField()
 	{
-		$data = $request->getParsedBody();
-		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
-		$actualUser = $_SESSION['user'];
-
+		$actualUser = $_SESSION['user_id'];
 		$this->walletRepository->insertNewEntry($actualUser, 30);
 
-		return $this->twig->render(
-			$response,
-			'wallet.twig',
-			[
-			]
-		);
 	}
 
 

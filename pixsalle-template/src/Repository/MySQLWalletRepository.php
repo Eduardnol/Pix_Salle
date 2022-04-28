@@ -3,7 +3,6 @@
 namespace Salle\PixSalle\Repository;
 
 use PDO;
-use Salle\PixSalle\Model\User;
 
 class MySQLWalletRepository implements WalletRepository
 {
@@ -14,15 +13,12 @@ class MySQLWalletRepository implements WalletRepository
 		$this->databaseConnection = $database;
 	}
 
-	/**
-	 * @param User $user
-	 * @return int
-	 */
-	public function getBalance(User $user): int
+
+	public function getBalance(string $user_id)
 	{
 		$query = $this->databaseConnection->prepare('SELECT quantity FROM money WHERE userId = :user_id');
 		$query->execute([
-			'user_id' => $user->id()
+			'user_id' => $user_id
 		]);
 
 		$result = $query->fetch();
@@ -30,29 +26,29 @@ class MySQLWalletRepository implements WalletRepository
 		return $result['balance'];
 	}
 
-	public function addMoney(User $user, int $amount): void
+	public function addMoney(string $user_id, int $amount): void
 	{
 		$query = $this->databaseConnection->prepare('UPDATE money SET quantity = quantity + :amount, updatedAt = NOW() WHERE userId = :user_id');
 		$query->execute([
 			'amount' => $amount,
-			'user_id' => $user->id()
+			'user_id' => $user_id
 		]);
 	}
 
-	public function removeMoney(User $user, int $amount): void
+	public function removeMoney(string $user_id, int $amount): void
 	{
 		$query = $this->databaseConnection->prepare('UPDATE money SET quantity = quantity - :amount, updatedAt = NOW() WHERE userId = :user_id');
 		$query->execute([
 			'amount' => $amount,
-			'user_id' => $user->id()
+			'user_id' => $user_id
 		]);
 	}
 
-	public function insertNewEntry(User $user, int $amount): void
+	public function insertNewEntry(string $user_id, int $amount): void
 	{
 		$query = $this->databaseConnection->prepare('INSERT INTO money (userId, quantity, updatedAt, createdAt) VALUES (:user_id, :amount, NOW(), NOW())');
 		$query->execute([
-			'user_id' => $user->id(),
+			'user_id' => $user_id,
 			'amount' => $amount
 		]);
 	}
