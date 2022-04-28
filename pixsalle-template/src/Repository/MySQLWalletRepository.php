@@ -13,10 +13,20 @@ class MySQLWalletRepository implements WalletRepository
 		$this->databaseConnection = $database;
 	}
 
-
+	/**
+	 * @param User $user
+	 * @return int
+	 */
 	public function getBalance(User $user): int
 	{
-		// TODO: Implement getBalance() method.
+		$query = $this->databaseConnection->prepare('SELECT quantity FROM money WHERE userId = :user_id');
+		$query->execute([
+			'user_id' => $user->id()
+		]);
+
+		$result = $query->fetch();
+
+		return $result['balance'];
 	}
 
 	public function addMoney(User $user, int $amount): void
