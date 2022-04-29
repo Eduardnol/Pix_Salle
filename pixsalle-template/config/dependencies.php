@@ -3,8 +3,10 @@
 declare(strict_types=1);
 
 use Psr\Container\ContainerInterface;
+use Salle\PixSalle\Controller\ExploreController;
 use Salle\PixSalle\Controller\SignUpController;
 use Salle\PixSalle\Controller\UserSessionController;
+use Salle\PixSalle\Repository\MySQLImageRepository;
 use Salle\PixSalle\Repository\MySQLUserRepository;
 use Salle\PixSalle\Repository\PDOConnectionBuilder;
 use Slim\Views\Twig;
@@ -33,6 +35,10 @@ function addDependencies(ContainerInterface $container): void
         return new MySQLUserRepository($container->get('db'));
     });
 
+    $container->set('image_repository', function (ContainerInterface $container) {
+        return new MySQLImageRepository($container->get('db'));
+    });
+
     $container->set(
         UserSessionController::class,
         function (ContainerInterface $c) {
@@ -44,6 +50,12 @@ function addDependencies(ContainerInterface $container): void
         SignUpController::class,
         function (ContainerInterface $c) {
             return new SignUpController($c->get('view'), $c->get('user_repository'));
+        }
+    );
+    $container->set(
+        ExploreController::class,
+        function (ContainerInterface $c) {
+            return new ExploreController($c->get('view'), $c->get('image_repository'));
         }
     );
 }
