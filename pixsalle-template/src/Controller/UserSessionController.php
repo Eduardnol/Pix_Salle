@@ -5,11 +5,10 @@ namespace Salle\PixSalle\Controller;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Salle\PixSalle\Service\ValidatorService;
 use Salle\PixSalle\Repository\UserRepository;
-use Salle\PixSalle\Model\User;
-use Slim\Views\Twig;
+use Salle\PixSalle\Service\ValidatorService;
 use Slim\Routing\RouteContext;
+use Slim\Views\Twig;
 
 class UserSessionController
 {
@@ -26,8 +25,16 @@ class UserSessionController
         $this->validator = new ValidatorService();
     }
 
-    public function showSignInForm(Request $request, Response $response): Response {
-        return $this->twig->render($response, 'sign-in.twig');
+    public function showSignInForm(Request $request, Response $response): Response
+    {
+        $routeParser = RouteContext::fromRequest($request)->getRouteParser();
+
+        return $this->twig->render(
+            $response, 'sign-in.twig',
+            [
+                'formAction' => $routeParser->urlFor('signIn')
+            ]
+        );
     }
 
     public function signIn(Request $request, Response $response): Response
@@ -67,5 +74,6 @@ class UserSessionController
                 'formAction' => $routeParser->urlFor('signIn')
             ]
         );
+
     }
 }
