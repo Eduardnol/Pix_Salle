@@ -16,3 +16,13 @@ CREATE TABLE `users`
     `updatedAt` DATETIME                                                NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `user_profile`;
+CREATE TABLE `user_profile`
+(
+    `id`       INT          NOT NULL,
+    `userName` VARCHAR(255) NOT NULL,
+    `phone`    VARCHAR(255),
+    `picture`  VARCHAR(255),
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
