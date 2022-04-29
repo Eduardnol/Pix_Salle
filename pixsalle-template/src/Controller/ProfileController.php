@@ -71,8 +71,6 @@ class ProfileController
             );
         }
         return $response->withHeader('Location', '/profile')->withStatus(302);
-
-
     }
 
 

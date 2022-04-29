@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace Salle\PixSalle\Controller;
 
-use Salle\PixSalle\Service\ValidatorService;
-use Salle\PixSalle\Repository\UserRepository;
-use Salle\PixSalle\Model\User;
-
+use DateTime;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-
+use Salle\PixSalle\Model\User;
+use Salle\PixSalle\Model\UserProfile;
+use Salle\PixSalle\Repository\UserRepository;
+use Salle\PixSalle\Service\ValidatorService;
 use Slim\Routing\RouteContext;
 use Slim\Views\Twig;
-
-use DateTime;
 
 final class SignUpController
 {
