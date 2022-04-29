@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Psr\Container\ContainerInterface;
+use Salle\PixSalle\Controller\MembershipController;
 use Salle\PixSalle\Controller\SignUpController;
 use Salle\PixSalle\Controller\UserSessionController;
 use Salle\PixSalle\Controller\WalletController;
@@ -56,6 +57,12 @@ function addDependencies(ContainerInterface $container): void
 		WalletController::class,
 		function (ContainerInterface $c) {
 			return new WalletController($c->get('view'), $c->get('wallet_repository'));
+		}
+	);
+	$container->set(
+		MembershipController::class,
+		function (ContainerInterface $c) {
+			return new MembershipController($c->get('view'), $c->get('wallet_repository'));
 		}
 	);
 }

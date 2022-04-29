@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Salle\PixSalle\Controller\API\BlogAPIController;
+use Salle\PixSalle\Controller\MembershipController;
 use Salle\PixSalle\Controller\SignUpController;
 use Salle\PixSalle\Controller\UserSessionController;
 use Salle\PixSalle\Controller\WalletController;
@@ -17,4 +18,6 @@ function addRoutes(App $app): void
 	$app->post('/sign-up', SignUpController::class . ':signUp');
 	$app->get('/user/wallet', WalletController::class . ':showWallet')->setName('wallet');
 	$app->post('/user/wallet', WalletController::class . ':addMoney');
+	$app->get('/user/membership', MembershipController::class . ':showMembership')->setName('membership');
+	$app->post('/user/membership', MembershipController::class . ':submitMembership');
 }
