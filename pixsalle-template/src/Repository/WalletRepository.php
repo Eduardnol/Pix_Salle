@@ -8,7 +8,7 @@ interface WalletRepository
 {
 	public function getBalance(string $user_id);
 
-	public function addMoney(string $user_id, int $amount): void;
+	public function addMoney(string $user_id, int $amount);
 
 	public function removeMoney(string $user_id, int $amount): void;
 

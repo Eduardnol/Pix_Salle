@@ -23,16 +23,17 @@ class MySQLWalletRepository implements WalletRepository
 
 		$result = $query->fetch();
 
-		return $result['balance'];
+		return $result['quantity'];
 	}
 
-	public function addMoney(string $user_id, int $amount): void
+	public function addMoney(string $user_id, int $amount)
 	{
 		$query = $this->databaseConnection->prepare('UPDATE money SET quantity = quantity + :amount, updatedAt = NOW() WHERE userId = :user_id');
 		$query->execute([
 			'amount' => $amount,
 			'user_id' => $user_id
 		]);
+		return $this->getBalance($user_id);
 	}
 
 	public function removeMoney(string $user_id, int $amount): void

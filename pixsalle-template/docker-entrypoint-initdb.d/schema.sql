@@ -26,7 +26,7 @@ CREATE TABLE `money`
     `quantity`  INT      NOT NULL,
     `createdAt` DATETIME NOT NULL,
     `updatedAt` DATETIME NOT NULL,
-    PRIMARY KEY (`id`),
+    PRIMARY KEY (`id`, `userId`),
     CONSTRAINT `money_user_id_foreign`
         FOREIGN KEY (`userId`)
             REFERENCES `users` (`id`)

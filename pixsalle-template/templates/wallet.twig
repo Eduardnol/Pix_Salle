@@ -6,4 +6,11 @@
     <h1>This is your current ammount</h1>
     <p>{{ wallet }}</p>
 
+
+
+<form action="{{ wallet_add }}" method="post">
+        <label for="amount">Add money</label>
+        <input type="number" name="amount" id="amount"/>
+        <input type="submit" value="Add"/>
+
 {% endblock %}

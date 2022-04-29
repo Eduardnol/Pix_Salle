@@ -27,8 +27,11 @@ class WalletController
 
 	public function showWallet(Request $request, Response $response): Response
 	{
+		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
+
 		return $this->twig->render($response, 'wallet.twig', [
 			'wallet' => $this->showActualAmmountOfMoney(),
+			'wallet_add' => $routeParser->urlFor('wallet'),
 		]);
 	}
 
@@ -36,7 +39,7 @@ class WalletController
 	 * @param Twig $twig
 	 * @param WalletRepository $walletRepository
 	 */
-	public function showActualAmmountOfMoney(): int
+	public function showActualAmmountOfMoney()
 	{
 		$actualUser = $_SESSION['user_id'];
 		$result = $this->walletRepository->getBalance($actualUser);
@@ -52,16 +55,16 @@ class WalletController
 	{
 		$data = $request->getParsedBody();
 		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
-		$moneyToAdd = $data['moneyToAdd'];
+		$moneyToAdd = $data['amount'];
 
 		$actualUser = $_SESSION['user_id'];
-		$this->walletRepository->addMoney($actualUser, $moneyToAdd);
+		$value = $this->walletRepository->addMoney($actualUser, (int)$moneyToAdd);
 
 		return $this->twig->render(
 			$response,
 			'wallet.twig',
 			[
-				'walletValue' => $value,
+				'wallet' => $value,
 			]
 		);
 	}

@@ -15,6 +15,6 @@ function addRoutes(App $app): void
 	$app->post('/sign-in', UserSessionController::class . ':signIn');
 	$app->get('/sign-up', SignUpController::class . ':showSignUpForm')->setName('signUp');
 	$app->post('/sign-up', SignUpController::class . ':signUp');
-	$app->get('/user/wallet', WalletController::class . ':showWallet');
-	$app->post('/user/wallet', WalletController::class . ':showWallet');
+	$app->get('/user/wallet', WalletController::class . ':showWallet')->setName('wallet');
+	$app->post('/user/wallet', WalletController::class . ':addMoney');
 }
