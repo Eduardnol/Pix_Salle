@@ -9,8 +9,10 @@
 
 
 <form action="{{ wallet_add }}" method="post">
-        <label for="amount">Add money</label>
-        <input type="number" name="amount" id="amount"/>
-        <input type="submit" value="Add"/>
+    <label for="amount">Add money</label>
+    <input type="number" name="amount" id="amount"/>
+    <input type="submit" value="Add"/>
+
+    <p>{{ errorAmmount }}</p>
 
 {% endblock %}
