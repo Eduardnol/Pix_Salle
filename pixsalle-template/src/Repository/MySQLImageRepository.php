@@ -2,14 +2,24 @@
 
 namespace Salle\PixSalle\Repository;
 
-class MySQLImageRepository implements ImageRepository
+use PDO;
+
+final class MySQLImageRepository implements ImageRepository
 {
+
+    private PDO $databaseConnection;
+
+    public function __construct(PDO $database)
+    {
+        $this->databaseConnection = $database;
+    }
+
 
     public function getImages()
     {
         $query = <<<'QUERY'
         
-        SELECT * FROM images;   
+        SELECT imagePath FROM images;   
         QUERY;
 
         $statement = $this->databaseConnection->prepare($query);
