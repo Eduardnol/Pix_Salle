@@ -7,6 +7,6 @@ interface MembershipRepository
 
 	public function showCurrentMembership(int $userId);
 
-	public function changeCurrentMembership(int $userId);
+	public function changeCurrentMembership(int $userId, bool $isActive);
 
 }

@@ -7,7 +7,7 @@ use Salle\PixSalle\Repository\MembershipRepository;
 use Salle\PixSalle\Service\ValidatorService;
 use Slim\Views\Twig;
 
-class MembershipController implements MembershipRepository
+class MembershipController
 {
 	private Twig $twig;
 	private ValidatorService $validator;
@@ -23,13 +23,16 @@ class MembershipController implements MembershipRepository
 		$this->validator = new ValidatorService();
 	}
 
-	public function showCurrentMembership(int $userId)
+	public function showActualMembership(int $id)
 	{
-		// TODO: Implement showCurrentMembership() method.
+		return $this->membershipRepository->showCurrentMembership($id);
+
 	}
 
-	public function changeCurrentMembership(int $userId)
+	public function changeCurrentMembership(int $userId, bool $isActive)
 	{
-		// TODO: Implement changeCurrentMembership() method.
+		$this->membershipRepository->changeCurrentMembership($userId, $isActive);
 	}
+
+
 }

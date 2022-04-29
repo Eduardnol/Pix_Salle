@@ -8,11 +8,18 @@ use PDO;
 
 final class MySQLMembership implements MembershipRepository
 {
+	private PDO $databaseConnection;
+
+	public function __construct(PDO $database)
+	{
+		$this->databaseConnection = $database;
+	}
+
 	public function showCurrentMembership(int $userId)
 	{
-		$pdo = $this->getPDO();
-		$sql = 'SELECT * FROM membership WHERE user_id = :user_id';
-		$stmt = $pdo->prepare($sql);
+
+		$sql = 'SELECT * FROM memberships WHERE userId = :user_id';
+		$stmt = $this->databaseConnection->prepare($sql);
 		$stmt->execute(['user_id' => $userId]);
 		$membership = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -23,8 +30,10 @@ final class MySQLMembership implements MembershipRepository
 		return $membership;
 	}
 
-	public function changeCurrentMembership(int $userId)
+	public function changeCurrentMembership(int $userId, bool $isActive)
 	{
-		// TODO: Implement changeCurrentMembership() method.
+		$sql = 'UPDATE memberships SET isActive = :is_active WHERE userId = :user_id';
+		$stmt = $this->databaseConnection->prepare($sql);
+		$stmt->execute(['user_id' => $userId, 'is_active' => $isActive]);
 	}
 }
