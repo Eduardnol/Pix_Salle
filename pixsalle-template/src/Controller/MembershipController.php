@@ -29,12 +29,14 @@ class MembershipController
 	public function showMembership(Request $request, Response $response): Response
 	{
 		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
+		$membership = $this->showActualMembership();
 
 		return $this->twig->render(
 			$response,
 			'membership.twig',
 			[
-				'formAction' => $routeParser->urlFor('membership')
+				'formAction' => $routeParser->urlFor('membership'),
+				'membership' => $membership
 			]
 		);
 	}

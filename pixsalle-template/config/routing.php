@@ -19,5 +19,5 @@ function addRoutes(App $app): void
 	$app->get('/user/wallet', WalletController::class . ':showWallet')->setName('wallet');
 	$app->post('/user/wallet', WalletController::class . ':addMoney');
 	$app->get('/user/membership', MembershipController::class . ':showMembership')->setName('membership');
-	$app->post('/user/membership', MembershipController::class . ':submitMembership');
+	$app->post('/user/membership', MembershipController::class . ':changeCurrentMembership');
 }
