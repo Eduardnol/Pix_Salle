@@ -16,3 +16,13 @@ CREATE TABLE `users`
     `updatedAt` DATETIME                                                NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `images`;
+CREATE TABLE `images`
+(
+    `id`        INT                                                     NOT NULL AUTO_INCREMENT,
+    `userId`    INT                                                     NOT NULL,
+    `imagePath` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
