@@ -15,6 +15,7 @@ class ProfileController
 {
     private Twig $twig;
     private ValidatorService $validator;
+    private UserRepository $userRepository;
 
     /**
      * @param Twig $twig
@@ -51,12 +52,11 @@ class ProfileController
         $errors = [];
 
         $actual_user_id = $_SESSION['user_id'];
-        echo $actual_user_id;
-        echo "hola";
+        $actual_user_email = $_SESSION['user_email'];
 
         $errors['phoneNumber'] = $this->validator->validatePhoneNumber($data['phoneNumber']);
 
-        if (count($errors) == 0) {
+        if (count($errors) != 0) {
             return $this->twig->render(
                 $response,
                 'profile.twig',
@@ -64,12 +64,15 @@ class ProfileController
                     'formErrors' => $errors,
                     'formData' => $data,
                     'formAction' => $routeParser->urlFor('profile'),
-                    'userID' => $actual_user_id,
+                    'userId' => $actual_user_id,
+                    'userEmail' => $actual_user_email,
                     'formMethod' => "POST"
                 ]
             );
         }
         return $response->withHeader('Location', '/profile')->withStatus(302);
+
+
     }
 
 

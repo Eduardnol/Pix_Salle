@@ -16,5 +16,5 @@ function addRoutes(App $app): void
     $app->get('/sign-up', SignUpController::class . ':showSignUpForm')->setName('signUp');
     $app->post('/sign-up', SignUpController::class . ':signUp');
     $app->get('/profile', ProfileController::class . ':showProfileForm')->setName('profile');
-    $app->post('/profile', ProfileController::class . ':formAction');
+    $app->post('/profile', ProfileController::class . ':profile');
 }

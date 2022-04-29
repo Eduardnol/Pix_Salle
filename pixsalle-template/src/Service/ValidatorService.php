@@ -32,7 +32,7 @@ class ValidatorService
 
     public function validatePhoneNumber(string $phoneNumber)
     {
-        $phone_format = "/^[6][0-9]$/";
+        $phone_format = "/^6[0-9]$/";
 
         if (strlen($phoneNumber) != 9) {
             return 'The phone number must contain 9 numbers.';
