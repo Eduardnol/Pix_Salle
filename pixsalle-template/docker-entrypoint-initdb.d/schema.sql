@@ -26,3 +26,34 @@ CREATE TABLE `images`
 
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+# DROP TABLE IF EXISTS `money`;
+CREATE TABLE `money`
+(
+    `id`        INT      NOT NULL AUTO_INCREMENT,
+    `userId`    INT      NOT NULL,
+    `quantity`  INT      NOT NULL,
+    `createdAt` DATETIME NOT NULL,
+    `updatedAt` DATETIME NOT NULL,
+    PRIMARY KEY (`id`, `userId`),
+    FOREIGN KEY (`userId`)
+        REFERENCES `users` (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+# Create a table to store the memberships of each user
+DROP TABLE IF EXISTS `memberships`;
+CREATE TABLE `memberships`
+(
+    `id`        INT      NOT NULL AUTO_INCREMENT,
+    `userId`    INT      NOT NULL,
+    `isActive`  BOOLEAN  NOT NULL,
+    `createdAt` DATETIME NOT NULL,
+    `updatedAt` DATETIME NOT NULL,
+    PRIMARY KEY (`id`, `userId`),
+    FOREIGN KEY (`userId`)
+        REFERENCES `users` (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;

@@ -12,18 +12,19 @@ use Slim\Views\Twig;
 
 class UserSessionController
 {
-    private Twig $twig;
-    private ValidatorService $validator;
-    private UserRepository $userRepository;
+	private Twig $twig;
+	private ValidatorService $validator;
+	private UserRepository $userRepository;
 
-    public function __construct(
-        Twig $twig,
-        UserRepository $userRepository
-    ) {
-        $this->twig = $twig;
-        $this->userRepository = $userRepository;
-        $this->validator = new ValidatorService();
-    }
+	public function __construct(
+		Twig           $twig,
+		UserRepository $userRepository
+	)
+	{
+		$this->twig = $twig;
+		$this->userRepository = $userRepository;
+		$this->validator = new ValidatorService();
+	}
 
     public function showSignInForm(Request $request, Response $response): Response
     {
@@ -38,15 +39,15 @@ class UserSessionController
         );
     }
 
-    public function signIn(Request $request, Response $response): Response
-    {
-        $data = $request->getParsedBody();
-        $routeParser = RouteContext::fromRequest($request)->getRouteParser();
+	public function signIn(Request $request, Response $response): Response
+	{
+		$data = $request->getParsedBody();
+		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
 
-        $errors = [];
+		$errors = [];
 
-        $errors['email'] = $this->validator->validateEmail($data['email']);
-        $errors['password'] = $this->validator->validatePassword($data['password']);
+		$errors['email'] = $this->validator->validateEmail($data['email']);
+		$errors['password'] = $this->validator->validatePassword($data['password']);
 
         if ($errors['email'] == '') {
             unset($errors['email']);
