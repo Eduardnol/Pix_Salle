@@ -45,6 +45,16 @@ class ChangePasswordController
 
         $errors = [];
 
+        $actualUser = $_SESSION['user_id'];
+        $password = $data['oldPassword'];
+        $hash_pass = md5($password);
+
+        if ($this->userRepository->checkOldPassword($actualUser, $hash_pass)) {
+            $errors['oldPassword'] = 'This password is incorrect';
+        } else if ($this->validator->matchingPasswords($data['newPassword'], $data['confirmPassword'])) {
+            $errors['passDoNotMatch'] = 'This password is incorrect';
+        }
+
         return '';
     }
 

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Salle\PixSalle\Controller\API\BlogAPIController;
+use Salle\PixSalle\Controller\ChangePasswordController;
 use Salle\PixSalle\Controller\ProfileController;
 use Salle\PixSalle\Controller\SignUpController;
 use Salle\PixSalle\Controller\UserSessionController;
@@ -18,5 +19,5 @@ function addRoutes(App $app): void
     $app->get('/profile', ProfileController::class . ':showProfileForm')->setName('profile');
     $app->post('/profile', ProfileController::class . ':profile');
     $app->get('/profile/changePassword', ChangePasswordController::class . ':showPasswordForm')->setName('changePassword');
-    $app->post('/profile/changePassword', ChangePasswordController::class . ':profile');
+    $app->post('/profile/changePassword', ChangePasswordController::class . ':changePass');
 }

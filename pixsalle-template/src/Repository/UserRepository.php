@@ -13,4 +13,6 @@ interface UserRepository
     public function addInfoUser(User $user, string $actual): void;
 
     public function getUserByEmail(string $email);
+
+    public function checkOldPassword(string $actual, string $actualPassword);
 }

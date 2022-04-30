@@ -36,6 +36,25 @@ final class MySQLUserRepository implements UserRepository
         $statement->execute();
     }
 
+    public function checkOldPassword(string $actual, string $actualPassword): bool
+    {
+
+        $query = $this->databaseConnection->prepare('SELECT password FROM users WHERE id = :actual_id');
+
+        $query->execute([
+            'actual_id' => $actual
+        ]);
+
+        $result = $query->fetch();
+        $pass = $result['password'];
+
+        if (password_verify($actualPassword, $pass)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function createUser(User $user): void
     {
         $query = <<<'QUERY'

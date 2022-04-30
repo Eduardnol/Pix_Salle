@@ -46,4 +46,15 @@ class ValidatorService
         }
         return '';
     }
+
+    public function matchingPasswords($pass1, $pass2)
+    {
+        $match = false;
+        if (strcmp($pass1, $pass2) == 0) {
+            $match = true;
+        } else {
+            $match = false;
+        }
+        return $match;
+    }
 }
