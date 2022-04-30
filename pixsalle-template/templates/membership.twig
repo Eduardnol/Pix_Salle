@@ -3,11 +3,12 @@
 {% block title %}Membership | PixSalle{% endblock %}
 
 {% block content %}
-    <h1>Welcome to PixSalle</h1>
+    <h1>Membership</h1>
+
+    <p>The actual membership is {{ actualMembership }}</p>
     <form data-cy="sign-in" action="{{ formAction }}" method="POST">
-        <input data-cy="sign-in__email" type="text" name="email" placeholder="Enter your email">
-        <input data-cy="sign-in__password" type="password" name="password" placeholder="Enter your password">
-        <input data-cy="sign-in__btn" type="submit" value="Sign-in">
+        <input name="changeToActive" type="submit" value="Activate">
+        <input name="changeToInactive" type="submit" value="Deactivate">
     </form>
     {% if formErrors['email'] %}
         <p data-cy="sign-in__wrongEmail">{{ formErrors['email'] }}</p>

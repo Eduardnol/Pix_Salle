@@ -7,6 +7,7 @@ use Salle\PixSalle\Controller\MembershipController;
 use Salle\PixSalle\Controller\SignUpController;
 use Salle\PixSalle\Controller\UserSessionController;
 use Salle\PixSalle\Controller\WalletController;
+use Salle\PixSalle\Repository\MySQLMembership;
 use Salle\PixSalle\Repository\MySQLUserRepository;
 use Salle\PixSalle\Repository\MySQLWalletRepository;
 use Salle\PixSalle\Repository\PDOConnectionBuilder;
@@ -38,6 +39,9 @@ function addDependencies(ContainerInterface $container): void
 
 	$container->set('wallet_repository', function (ContainerInterface $container) {
 		return new MySQLWalletRepository($container->get('db'));
+	});
+	$container->set('membership_repository', function (ContainerInterface $container) {
+		return new MySQLMembership($container->get('db'));
 	});
 
 	$container->set(

@@ -15,7 +15,7 @@ final class MySQLMembership implements MembershipRepository
 		$this->databaseConnection = $database;
 	}
 
-	public function showCurrentMembership(int $userId)
+	public function showCurrentMembership(string $userId)
 	{
 
 		$sql = 'SELECT * FROM memberships WHERE userId = :user_id';
@@ -27,13 +27,20 @@ final class MySQLMembership implements MembershipRepository
 			return null;
 		}
 
-		return $membership;
+		return $membership['isActive'];
 	}
 
-	public function changeCurrentMembership(int $userId, bool $isActive)
+	public function changeCurrentMembership(string $userId, bool $isActive)
 	{
 		$sql = 'UPDATE memberships SET isActive = :is_active WHERE userId = :user_id';
 		$stmt = $this->databaseConnection->prepare($sql);
 		$stmt->execute(['user_id' => $userId, 'is_active' => $isActive]);
+	}
+
+	public function insertNewMembership(string $userId)
+	{
+		$sql = 'INSERT INTO memberships (userId, isActive, createdAt, updatedAt) VALUES (:user_id, 0, NOW(), NOW())';
+		$stmt = $this->databaseConnection->prepare($sql);
+		$stmt->execute(['user_id' => $userId]);
 	}
 }

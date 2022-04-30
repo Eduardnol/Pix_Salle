@@ -30,13 +30,17 @@ class MembershipController
 	{
 		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
 		$membership = $this->showActualMembership();
+		if ($membership === null) {
+			$this->newMembership();
+			$membership = $this->showActualMembership();
+		}
 
 		return $this->twig->render(
 			$response,
 			'membership.twig',
 			[
 				'formAction' => $routeParser->urlFor('membership'),
-				'membership' => $membership
+				'actualMembership' => $membership,
 			]
 		);
 	}
@@ -46,7 +50,6 @@ class MembershipController
 	{
 		$id = $_SESSION['user_id'];
 		return $this->membershipRepository->showCurrentMembership($id);
-
 	}
 
 	public function changeCurrentMembership(Request $request, Response $response): Response
@@ -67,6 +70,13 @@ class MembershipController
 				'formAction' => $routeParser->urlFor('signUp')
 			]
 		);
+	}
+
+	private function newMembership()
+	{
+		$id = $_SESSION['user_id'];
+		$this->membershipRepository->insertNewMembership($id);
+
 	}
 
 
