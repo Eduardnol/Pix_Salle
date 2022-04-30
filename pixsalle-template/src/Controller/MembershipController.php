@@ -56,12 +56,11 @@ class MembershipController
 	{
 		$data = $request->getParsedBody();
 		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
-
+		$isActiveBool = 0;
 		if (isset($data['activate'])) {
 			$isActiveBool = 1;
-		} elseif (isset($data['deactivate'])) {
-			$isActiveBool = 0;
-		} else {
+		}
+		if (isset($data['deactivate'])) {
 			$isActiveBool = 0;
 		}
 		$userId = $_SESSION['user_id'];

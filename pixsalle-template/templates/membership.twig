@@ -4,8 +4,14 @@
 
 {% block content %}
     <h1>Membership</h1>
+    The value is {{ actualMembership }}
 
-    <p>The actual membership is {{ actualMembership }}</p>
+    {% if actualMembership %}
+        <p>You are an Active member</p>
+    {% else %}
+        <p>You are a Cool member</p>
+    {% endif %}
+
     <form data-cy="sign-in" action="{{ formAction }}" method="POST">
         <input name="activate" type="submit" value="Activate">
         <input name="deactivate" type="submit" value="Deactivate">
