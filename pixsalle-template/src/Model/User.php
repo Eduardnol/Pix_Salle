@@ -39,7 +39,8 @@ class User
         $this->picture = $picture;
     }
 
-  public function id()
+
+    public function id()
   {
     return $this->id;
   }

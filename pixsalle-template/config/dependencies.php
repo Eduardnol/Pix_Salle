@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Psr\Container\ContainerInterface;
+use Salle\PixSalle\Controller\ChangePasswordController;
 use Salle\PixSalle\Controller\ProfileController;
 use Salle\PixSalle\Controller\SignUpController;
 use Salle\PixSalle\Controller\UserSessionController;
@@ -52,6 +53,13 @@ function addDependencies(ContainerInterface $container): void
         ProfileController::class,
         function (ContainerInterface $c) {
             return new ProfileController($c->get('view'), $c->get('user_repository'));
+        }
+    );
+
+    $container->set(
+        ChangePasswordController::class,
+        function (ContainerInterface $c) {
+            return new ChangePasswordController($c->get('view'), $c->get('user_repository'));
         }
     );
 }

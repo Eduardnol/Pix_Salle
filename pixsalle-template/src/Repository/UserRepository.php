@@ -9,5 +9,8 @@ use Salle\PixSalle\Model\User;
 interface UserRepository
 {
     public function createUser(User $user): void;
+
+    public function addInfoUser(User $user, string $actual): void;
+
     public function getUserByEmail(string $email);
 }

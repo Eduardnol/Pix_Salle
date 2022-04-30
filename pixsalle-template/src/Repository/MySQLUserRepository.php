@@ -18,11 +18,9 @@ final class MySQLUserRepository implements UserRepository
         $this->databaseConnection = $database;
     }
 
-    public function addInfoUser(User $user): void
+    public function addInfoUser(User $user, string $actual): void
     {
-        $query = <<<'QUERY'
-        UPDATE user SET userName = :userName, phone = :phone, picture = :picture WHERE userId = :user_id
-        QUERY;
+        $query = 'UPDATE users SET userName = :userName, phone = :phone, picture = :picture WHERE id = :actual_id';
 
         $statement = $this->databaseConnection->prepare($query);
 
@@ -31,8 +29,9 @@ final class MySQLUserRepository implements UserRepository
         $picture = $user->getPicture();
 
         $statement->bindParam('userName', $userName, PDO::PARAM_STR);
-        $statement->bindParam('phome', $phone, PDO::PARAM_STR);
+        $statement->bindParam('phone', $phone, PDO::PARAM_STR);
         $statement->bindParam('picture', $picture, PDO::PARAM_STR);
+        $statement->bindParam('actual_id', $actual, PDO::PARAM_STR);
 
         $statement->execute();
     }
