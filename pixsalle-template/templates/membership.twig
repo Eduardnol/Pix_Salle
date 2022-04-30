@@ -11,6 +11,7 @@
     {% else %}
         <p>You are a Cool member</p>
     {% endif %}
+    {{ error }}
 
     <form data-cy="sign-in" action="{{ formAction }}" method="POST">
         <input name="activate" type="submit" value="Activate">
