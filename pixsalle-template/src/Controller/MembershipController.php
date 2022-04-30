@@ -68,6 +68,7 @@ class MembershipController
 			$isActiveBool = 1;
 			$id = $_SESSION['user_id'];
 			//Check if the user has enough money to activate the membership
+			/*
 			$user = $this->walletRepository->getBalance($id);
 			$membership = $this->showActualMembership();
 			if ($user - 2 < 0) {
@@ -82,7 +83,7 @@ class MembershipController
 				);
 			} else {
 				$this->walletRepository->removeMoney($id, 2);
-			}
+			}*/
 		}
 		if (isset($data['deactivate'])) {
 			$isActiveBool = 0;
