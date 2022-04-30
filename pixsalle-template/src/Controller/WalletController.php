@@ -25,7 +25,7 @@ class WalletController
 	{
 		$this->twig = $twig;
 		$this->walletRepository = $walletRepository;
-		$this->validator = new ValidatorService();;
+		$this->validator = new ValidatorService();
 	}
 
 

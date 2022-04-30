@@ -14,12 +14,11 @@
 
 <header>
     <nav>
-        <p>logged value is{{ logged }}</p>
         {% if logged %}
-            <a href="wallet">Wallet</a>
-            <a href="profile">Profile</a>
-            <a href="memberships">Memberships</a>
-            <a href="explore">Explore</a>
+            <a href="/user/wallet">Wallet</a>
+            <a href="/profile">Profile</a>
+            <a href="/user/membership">Memberships</a>
+            <a href="/explore">Explore</a>
 
         {% else %}
             <a href="sign-in">
