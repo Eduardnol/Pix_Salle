@@ -34,10 +34,12 @@ class ValidatorService
     {
         $phone_format = "/^6[0-9]$/";
 
-        if (strlen($phoneNumber) != 9) {
-            return 'The phone number must contain 9 numbers.';
-        } elseif (!preg_match($phone_format, $phoneNumber)) {
-            return 'The phone number must start by 6.';
+        if (!empty($phoneNumber)) {
+            if (strlen($phoneNumber) != 9) {
+                return 'The phone number must contain 9 numbers.';
+            } elseif (!preg_match($phone_format, $phoneNumber)) {
+                return 'The phone number must start by 6.';
+            }
         }
         return '';
     }

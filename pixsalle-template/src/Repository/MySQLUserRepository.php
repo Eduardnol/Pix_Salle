@@ -6,7 +6,6 @@ namespace Salle\PixSalle\Repository;
 
 use PDO;
 use Salle\PixSalle\Model\User;
-use Salle\PixSalle\Repository\UserRepository;
 
 final class MySQLUserRepository implements UserRepository
 {
@@ -17,6 +16,25 @@ final class MySQLUserRepository implements UserRepository
     public function __construct(PDO $database)
     {
         $this->databaseConnection = $database;
+    }
+
+    public function addInfoUser(User $user): void
+    {
+        $query = <<<'QUERY'
+        UPDATE user SET userName = :userName, phone = :phone, picture = :picture WHERE userId = :user_id
+        QUERY;
+
+        $statement = $this->databaseConnection->prepare($query);
+
+        $userName = $user->getUserName();
+        $phone = $user->getPhone();
+        $picture = $user->getPicture();
+
+        $statement->bindParam('userName', $userName, PDO::PARAM_STR);
+        $statement->bindParam('phome', $phone, PDO::PARAM_STR);
+        $statement->bindParam('picture', $picture, PDO::PARAM_STR);
+
+        $statement->execute();
     }
 
     public function createUser(User $user): void

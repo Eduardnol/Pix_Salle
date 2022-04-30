@@ -34,11 +34,16 @@ class ProfileController
     {
         $routeParser = RouteContext::fromRequest($request)->getRouteParser();
 
+        $actual_user_id = $_SESSION['user_id'];
+        $actual_user_email = $_SESSION['user_email'];
+
         return $this->twig->render(
             $response,
             'profile.twig',
             [
-                'formAction' => $routeParser->urlFor('profile')
+                'formAction' => $routeParser->urlFor('profile'),
+                'userId' => $actual_user_id,
+                'userEmail' => $actual_user_email
             ]
         );
     }
@@ -51,9 +56,6 @@ class ProfileController
         //$user = $this->userRepository->getUserByEmail($data['email']);
         $errors = [];
 
-        $actual_user_id = $_SESSION['user_id'];
-        $actual_user_email = $_SESSION['user_email'];
-
         $errors['phoneNumber'] = $this->validator->validatePhoneNumber($data['phoneNumber']);
 
         if (count($errors) != 0) {
@@ -64,13 +66,14 @@ class ProfileController
                     'formErrors' => $errors,
                     'formData' => $data,
                     'formAction' => $routeParser->urlFor('profile'),
-                    'userId' => $actual_user_id,
-                    'userEmail' => $actual_user_email,
                     'formMethod' => "POST"
                 ]
             );
+        } else {
+            $this->userRepository->addInfoUser();
+            return $response->withHeader('Location', '/profile')->withStatus(302);
         }
-        return $response->withHeader('Location', '/profile')->withStatus(302);
+
     }
 
 
