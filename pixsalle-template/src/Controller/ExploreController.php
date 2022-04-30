@@ -39,6 +39,7 @@ class ExploreController
                 $response,
                 'explore.twig',
                 [
+                    'logged' => $_SESSION['logged'],
                     'error' => $error
                 ]
             );
@@ -48,6 +49,7 @@ class ExploreController
                 $response,
                 'explore.twig',
                 [
+                    'logged' => $_SESSION['logged'],
                     'images' => $images
                 ]
             );

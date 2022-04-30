@@ -32,6 +32,7 @@ class UserSessionController
         return $this->twig->render(
             $response, 'sign-in.twig',
             [
+                'logged' => $_SESSION['logged'],
                 'formAction' => $routeParser->urlFor('signIn')
             ]
         );
@@ -62,13 +63,16 @@ class UserSessionController
                 $errors['password'] = 'Your email and/or password are incorrect.';
             } else {
                 $_SESSION['user_id'] = $user->id;
-                return $response->withHeader('Location','/')->withStatus(302);
+                $_SESSION['logged'] = true;
+
+                return $response->withHeader('Location', '/explore')->withStatus(302);
             }
         }
         return $this->twig->render(
             $response,
             'sign-in.twig',
             [
+                'logged' => $_SESSION['logged'],
                 'formErrors' => $errors,
                 'formData' => $data,
                 'formAction' => $routeParser->urlFor('signIn')
