@@ -14,6 +14,9 @@ CREATE TABLE `users`
     `password`  VARCHAR(255)                                            NOT NULL,
     `createdAt` DATETIME                                                NOT NULL,
     `updatedAt` DATETIME                                                NOT NULL,
+    `userName`  VARCHAR(255),
+    `phone`     VARCHAR(255),
+    `picture`   VARCHAR(255),
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;

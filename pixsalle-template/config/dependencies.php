@@ -5,6 +5,8 @@ declare(strict_types=1);
 use Psr\Container\ContainerInterface;
 use Salle\PixSalle\Controller\ExploreController;
 use Salle\PixSalle\Controller\MembershipController;
+use Salle\PixSalle\Controller\ChangePasswordController;
+use Salle\PixSalle\Controller\ProfileController;
 use Salle\PixSalle\Controller\SignUpController;
 use Salle\PixSalle\Controller\UserSessionController;
 use Salle\PixSalle\Repository\MySQLImageRepository;
@@ -80,4 +82,18 @@ function addDependencies(ContainerInterface $container): void
 			return new MembershipController($c->get('view'), $c->get('membership_repository'), $c->get('wallet_repository'));
 		}
 	);
+
+    $container->set(
+        ProfileController::class,
+        function (ContainerInterface $c) {
+            return new ProfileController($c->get('view'), $c->get('user_repository'));
+        }
+    );
+
+    $container->set(
+        ChangePasswordController::class,
+        function (ContainerInterface $c) {
+            return new ChangePasswordController($c->get('view'), $c->get('user_repository'));
+        }
+    );
 }
