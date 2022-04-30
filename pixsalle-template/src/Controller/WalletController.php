@@ -67,6 +67,7 @@ class WalletController
 				'wallet' => $this->showActualAmmountOfMoney(),
 				'wallet_add' => $routeParser->urlFor('wallet'),
 				'errorAmmount' => $validator,
+				'logged' => $_SESSION['logged']
 			]);
 		}
 
@@ -79,6 +80,7 @@ class WalletController
 			'wallet.twig',
 			[
 				'wallet' => $value,
+				'logged' => $_SESSION['logged']
 			]
 		);
 	}
@@ -96,6 +98,7 @@ class WalletController
 			$response,
 			'wallet.twig',
 			[
+				'logged' => $_SESSION['logged']
 			]
 		);
 	}

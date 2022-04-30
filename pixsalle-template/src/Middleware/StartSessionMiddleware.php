@@ -13,7 +13,6 @@ final class StartSessionMiddleware
     public function __invoke(Request $request, RequestHandler $next): Response
     {
         session_start();
-        $_SESSION['logged'] = false;
         return $next->handle($request);
     }
 }

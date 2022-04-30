@@ -46,6 +46,7 @@ class MembershipController
 			[
 				'formAction' => $routeParser->urlFor('membership'),
 				'actualMembership' => $membership,
+				'logged' => $_SESSION['logged'],
 			]
 		);
 	}
@@ -79,6 +80,7 @@ class MembershipController
 						'error' => 'You do not have enough money to activate the membership',
 						'actualMembership' => $membership,
 						'formAction' => $routeParser->urlFor('membership')
+			'logged' => $_SESSION['logged'],
 					]
 				);
 			} else {
@@ -97,7 +99,8 @@ class MembershipController
 			'membership.twig',
 			[
 				'actualMembership' => $membership,
-				'formAction' => $routeParser->urlFor('membership')
+				'formAction' => $routeParser->urlFor('membership'),
+				'logged' => $_SESSION['logged']
 			]
 		);
 	}
