@@ -34,9 +34,10 @@ class WalletController
 		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
 
 		return $this->twig->render($response, 'wallet.twig', [
-			'wallet' => $this->showActualAmmountOfMoney(),
-			'wallet_add' => $routeParser->urlFor('wallet'),
-		]);
+            'logged' => $_SESSION['logged'],
+            'wallet' => $this->showActualAmmountOfMoney(),
+            'wallet_add' => $routeParser->urlFor('wallet'),
+        ]);
 	}
 
 	/**
@@ -64,10 +65,11 @@ class WalletController
 
 		if ($validator != '') {
 			return $this->twig->render($response, 'wallet.twig', [
-				'wallet' => $this->showActualAmmountOfMoney(),
-				'wallet_add' => $routeParser->urlFor('wallet'),
-				'errorAmmount' => $validator,
-			]);
+                'logged' => $_SESSION['logged'],
+                'wallet' => $this->showActualAmmountOfMoney(),
+                'wallet_add' => $routeParser->urlFor('wallet'),
+                'errorAmmount' => $validator,
+            ]);
 		}
 
 
@@ -77,9 +79,10 @@ class WalletController
 		return $this->twig->render(
 			$response,
 			'wallet.twig',
-			[
-				'wallet' => $value,
-			]
+            [
+                'logged' => $_SESSION['logged'],
+                'wallet' => $value,
+            ]
 		);
 	}
 
@@ -95,8 +98,9 @@ class WalletController
 		return $this->twig->render(
 			$response,
 			'wallet.twig',
-			[
-			]
+            [
+                'logged' => $_SESSION['logged'],
+            ]
 		);
 	}
 

@@ -44,9 +44,10 @@ class MembershipController
 			$response,
 			'membership.twig',
 			[
-				'formAction' => $routeParser->urlFor('membership'),
-				'actualMembership' => $membership,
-			]
+                'logged' => $_SESSION['logged'],
+                'formAction' => $routeParser->urlFor('membership'),
+                'actualMembership' => $membership,
+            ]
 		);
 	}
 
@@ -68,22 +69,23 @@ class MembershipController
 			$isActiveBool = 1;
 			$id = $_SESSION['user_id'];
 			//Check if the user has enough money to activate the membership
-			/*
-			$user = $this->walletRepository->getBalance($id);
-			$membership = $this->showActualMembership();
-			if ($user - 2 < 0) {
-				return $this->twig->render(
-					$response,
-					'membership.twig',
-					[
-						'error' => 'You do not have enough money to activate the membership',
-						'actualMembership' => $membership,
-						'formAction' => $routeParser->urlFor('membership')
-					]
-				);
-			} else {
-				$this->walletRepository->removeMoney($id, 2);
-			}*/
+            /*
+            $user = $this->walletRepository->getBalance($id);
+            $membership = $this->showActualMembership();
+            if ($user - 2 < 0) {
+                return $this->twig->render(
+                    $response,
+                    'membership.twig',
+                    [
+            'logged' => $_SESSION['logged'],
+                        'error' => 'You do not have enough money to activate the membership',
+                        'actualMembership' => $membership,
+                        'formAction' => $routeParser->urlFor('membership')
+                    ]
+                );
+            } else {
+                $this->walletRepository->removeMoney($id, 2);
+            }*/
 		}
 		if (isset($data['deactivate'])) {
 			$isActiveBool = 0;
@@ -95,10 +97,11 @@ class MembershipController
 		return $this->twig->render(
 			$response,
 			'membership.twig',
-			[
-				'actualMembership' => $membership,
-				'formAction' => $routeParser->urlFor('membership')
-			]
+            [
+                'logged' => $_SESSION['logged'],
+                'actualMembership' => $membership,
+                'formAction' => $routeParser->urlFor('membership')
+            ]
 		);
 	}
 
