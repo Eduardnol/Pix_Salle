@@ -56,18 +56,24 @@ class MembershipController
 	{
 		$data = $request->getParsedBody();
 		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
-		$isActive = $data['isActive'];
-		$userId = $_SESSION['user_id'];
-		$this->membershipRepository->changeCurrentMembership($userId, $isActive);
 
+		if (isset($data['activate'])) {
+			$isActiveBool = 1;
+		} elseif (isset($data['deactivate'])) {
+			$isActiveBool = 0;
+		} else {
+			$isActiveBool = 0;
+		}
+		$userId = $_SESSION['user_id'];
+		$this->membershipRepository->changeCurrentMembership($userId, $isActiveBool);
+		$membership = $this->showActualMembership();
 		//TODO: change the twig page
 		return $this->twig->render(
 			$response,
 			'membership.twig',
 			[
-				'formErrors' => $errors,
-				'formData' => $data,
-				'formAction' => $routeParser->urlFor('signUp')
+				'actualMembership' => $membership,
+				'formAction' => $routeParser->urlFor('membership')
 			]
 		);
 	}

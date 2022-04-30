@@ -30,11 +30,13 @@ final class MySQLMembership implements MembershipRepository
 		return $membership['isActive'];
 	}
 
-	public function changeCurrentMembership(string $userId, bool $isActive)
+	public function changeCurrentMembership(string $userId, int $isActive)
 	{
 		$sql = 'UPDATE memberships SET isActive = :is_active WHERE userId = :user_id';
 		$stmt = $this->databaseConnection->prepare($sql);
-		$stmt->execute(['user_id' => $userId, 'is_active' => $isActive]);
+		$stmt->bindParam('is_active', $isActive, PDO::PARAM_STR);
+		$stmt->bindParam('user_id', $userId, PDO::PARAM_STR);
+		$stmt->execute();
 	}
 
 	public function insertNewMembership(string $userId)
