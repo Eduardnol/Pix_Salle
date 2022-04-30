@@ -62,7 +62,7 @@ class WalletController
 		$moneyToAdd = $data['amount'];
 		$validator = $this->validator->validateQuantity($moneyToAdd);
 
-		if (isset($validator)) {
+		if ($validator != '') {
 			return $this->twig->render($response, 'wallet.twig', [
 				'wallet' => $this->showActualAmmountOfMoney(),
 				'wallet_add' => $routeParser->urlFor('wallet'),
