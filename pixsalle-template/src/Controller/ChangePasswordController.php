@@ -4,6 +4,7 @@ namespace Salle\PixSalle\Controller;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Salle\PixSalle\Model\User;
 use Salle\PixSalle\Repository\UserRepository;
 use Salle\PixSalle\Service\ValidatorService;
 use Slim\Routing\RouteContext;
@@ -33,7 +34,7 @@ class ChangePasswordController
             $response,
             'changePassword.twig',
             [
-                'formAction' => $routeParser->urlFor('profile/changePassword'),
+                'formAction' => $routeParser->urlFor('changePassword'),
             ]
         );
     }
@@ -44,15 +45,38 @@ class ChangePasswordController
         $routeParser = RouteContext::fromRequest($request)->getRouteParser();
 
         $errors = [];
+        $old_error = false;
+        $match_error = false;
 
         $actualUser = $_SESSION['user_id'];
         $password = $data['oldPassword'];
-        $hash_pass = md5($password);
 
-        if ($this->userRepository->checkOldPassword($actualUser, $hash_pass)) {
+
+        if ($this->userRepository->checkOldPassword($actualUser, $password)) {
             $errors['oldPassword'] = 'This password is incorrect';
+            $old_error = true;
         } else if ($this->validator->matchingPasswords($data['newPassword'], $data['confirmPassword'])) {
             $errors['passDoNotMatch'] = 'This password is incorrect';
+            $match_error = true;
+        }
+
+        if (!$old_error && !$match_error) {
+            return $this->twig->render(
+                $response,
+                'profile.twig',
+                [
+                    'formErrors' => $errors,
+                    'formData' => $data,
+                    'formAction' => $routeParser->urlFor('profile'),
+                    'formMethod' => "POST"
+                ]
+            );
+        } else {
+            $password = md5($data['newPassword']);
+            $date = new \DateTime('2000-12-12');
+            $user = new User("", $password, $date, $date, "", "", "");
+            $this->userRepository->changePassword($user, $actualUser);
+            return $response->withHeader('Location', '/profile')->withStatus(302);
         }
 
         return '';

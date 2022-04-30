@@ -36,6 +36,20 @@ final class MySQLUserRepository implements UserRepository
         $statement->execute();
     }
 
+    public function changePassword(User $user, string $actual): void
+    {
+        $query = 'UPDATE users SET password = :password WHERE id = :actual_id';
+
+        $statement = $this->databaseConnection->prepare($query);
+
+        $newPass = $user->password();
+
+        $statement->bindParam('password', $newPass, PDO::PARAM_STR);
+        $statement->bindParam('actual_id', $actual, PDO::PARAM_STR);
+
+        $statement->execute();
+    }
+
     public function checkOldPassword(string $actual, string $actualPassword): bool
     {
 
@@ -48,7 +62,7 @@ final class MySQLUserRepository implements UserRepository
         $result = $query->fetch();
         $pass = $result['password'];
 
-        if (password_verify($actualPassword, $pass)) {
+        if (md5($actualPassword) == $pass) {
             return true;
         } else {
             return false;
