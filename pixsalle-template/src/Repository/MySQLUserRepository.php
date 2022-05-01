@@ -6,7 +6,6 @@ namespace Salle\PixSalle\Repository;
 
 use PDO;
 use Salle\PixSalle\Model\User;
-use Salle\PixSalle\Repository\UserRepository;
 
 final class MySQLUserRepository implements UserRepository
 {
@@ -17,6 +16,57 @@ final class MySQLUserRepository implements UserRepository
     public function __construct(PDO $database)
     {
         $this->databaseConnection = $database;
+    }
+
+    public function addInfoUser(User $user, string $actual): void
+    {
+        $query = 'UPDATE users SET userName = :userName, phone = :phone, picture = :picture WHERE id = :actual_id';
+
+        $statement = $this->databaseConnection->prepare($query);
+
+        $userName = $user->getUserName();
+        $phone = $user->getPhone();
+        $picture = $user->getPicture();
+
+        $statement->bindParam('userName', $userName, PDO::PARAM_STR);
+        $statement->bindParam('phone', $phone, PDO::PARAM_STR);
+        $statement->bindParam('picture', $picture, PDO::PARAM_STR);
+        $statement->bindParam('actual_id', $actual, PDO::PARAM_STR);
+
+        $statement->execute();
+    }
+
+    public function changePassword(User $user, string $actual): void
+    {
+        $query = 'UPDATE users SET password = :password WHERE id = :actual_id';
+
+        $statement = $this->databaseConnection->prepare($query);
+
+        $newPass = $user->password();
+
+        $statement->bindParam('password', $newPass, PDO::PARAM_STR);
+        $statement->bindParam('actual_id', $actual, PDO::PARAM_STR);
+
+        $statement->execute();
+    }
+
+    public function checkOldPassword(string $actual, string $actualPassword): bool
+    {
+
+        $query = $this->databaseConnection->prepare('SELECT password FROM users WHERE id = :actual_id');
+
+        $query->execute([
+            'actual_id' => $actual
+        ]);
+
+        $result = $query->fetch();
+        $pass = $result['password'];
+
+        if (md5($actualPassword) == $pass) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function createUser(User $user): void
