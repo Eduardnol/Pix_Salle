@@ -45,10 +45,11 @@ class ProfileController
                 $response,
                 'profile.twig',
                 [
-                    'formAction' => $routeParser->urlFor('profile'),
-                    'userId' => $actual_user_id,
-                    'userEmail' => $actual_user_email,
-                    'allUser' => $user
+	                'formAction' => $routeParser->urlFor('profile'),
+	                'userId' => $actual_user_id,
+	                'userEmail' => $actual_user_email,
+	                'allUser' => $user,
+	                'logged' => $_SESSION['logged']
                 ]
 			);
 		} else {
@@ -72,12 +73,14 @@ class ProfileController
 		if ($error) {
 			return $this->twig->render(
 				$response,
-				'sign-in.twig',
+				'profile.twig',
 				[
 					'formErrors' => $errors,
 					'formData' => $data,
 					'formAction' => $routeParser->urlFor('profile'),
-					'formMethod' => "POST"
+					'formMethod' => "POST",
+					'logged' => $_SESSION['logged'],
+
 				]
 			);
 		} else {
