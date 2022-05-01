@@ -53,12 +53,14 @@ class ChangePasswordController
         $errors = [];
         $old_error = false;
         $match_error = false;
+        $match_old_new = false;
 
         $actualUser = $_SESSION['user_id'];
         $password = $data['oldPassword'];
 
         $checkOldPassword = $this->userRepository->checkOldPassword($actualUser, $password);
         $matchingPass = $this->validator->matchingPasswords($data['newPassword'], $data['confirmPassword']);
+        $matchOldAndNew = $this->validator->matchingPasswords($data['newPassword'], $data['oldPassword']);
 
         //$errors['formatOldPassword'] = $this->validator->validatePassword($data['oldPassword']);
         $errors['formatNewPassword'] = $this->validator->validatePassword($data['newPassword']);
@@ -71,9 +73,12 @@ class ChangePasswordController
         } else if (!$matchingPass) {
             $errors['passDoNotMatch'] = 'This password is incorrect new';
             $match_error = true;
+        } else if ($matchOldAndNew) {
+            $errors['newPassMatch'] = 'The new password has to be different from the old one';
+            $match_old_new = true;
         }
 
-        if ($old_error || $match_error) {
+        if ($old_error || $match_error || $match_old_new) {
             return $this->twig->render(
                 $response,
                 'changePassword.twig',
