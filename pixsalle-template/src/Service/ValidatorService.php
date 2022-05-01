@@ -49,15 +49,14 @@ class ValidatorService
 
     public function matchingPasswords($pass1, $pass2)
     {
-        $match = false;
         if (strcmp($pass1, $pass2) == 0) {
-            $match = true;
+            return true;
         } else {
-            $match = false;
+            return false;
         }
-        return $match;
     }
-	public function validateQuantity(string $quantity)
+
+    public function validateQuantity(string $quantity)
 	{
 		if (empty($quantity) || !is_numeric($quantity) || $quantity < 1) {
 			return 'The quantity must be a positive number';

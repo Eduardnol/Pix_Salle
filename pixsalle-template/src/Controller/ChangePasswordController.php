@@ -47,36 +47,43 @@ class ChangePasswordController
 
 	public function changePass(Request $request, Response $response): Response
 	{
-		$data = $request->getParsedBody();
-		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
+        $data = $request->getParsedBody();
+        $routeParser = RouteContext::fromRequest($request)->getRouteParser();
 
-		$errors = [];
-		$old_error = false;
-		$match_error = false;
+        $errors = [];
+        $old_error = false;
+        $match_error = false;
 
-		$actualUser = $_SESSION['user_id'];
-		$password = $data['oldPassword'];
+        $actualUser = $_SESSION['user_id'];
+        $password = $data['oldPassword'];
+
+        $checkOldPassword = $this->userRepository->checkOldPassword($actualUser, $password);
+        $matchingPass = $this->validator->matchingPasswords($data['newPassword'], $data['confirmPassword']);
+
+        //$errors['formatOldPassword'] = $this->validator->validatePassword($data['oldPassword']);
+        $errors['formatNewPassword'] = $this->validator->validatePassword($data['newPassword']);
+        $errors['formatMatchPassword'] = $this->validator->validatePassword($data['confirmPassword']);
 
 
-		if ($this->userRepository->checkOldPassword($actualUser, $password)) {
-			$errors['oldPassword'] = 'This password is incorrect';
-			$old_error = true;
-		} else if ($this->validator->matchingPasswords($data['newPassword'], $data['confirmPassword'])) {
-			$errors['passDoNotMatch'] = 'This password is incorrect';
-			$match_error = true;
-		}
+        if (!$checkOldPassword) {
+            $errors['wrongOldPassword'] = 'This password is incorrect old';
+            $old_error = true;
+        } else if (!$matchingPass) {
+            $errors['passDoNotMatch'] = 'This password is incorrect new';
+            $match_error = true;
+        }
 
-		if (!$old_error && !$match_error) {
-			return $this->twig->render(
-				$response,
-				'profile.twig',
-				[
-					'formErrors' => $errors,
-					'formData' => $data,
-					'formAction' => $routeParser->urlFor('profile'),
-					'formMethod' => "POST"
-				]
-			);
+        if ($old_error || $match_error) {
+            return $this->twig->render(
+                $response,
+                'changePassword.twig',
+                [
+                    'formErrors' => $errors,
+                    'formData' => $data,
+                    'formAction' => $routeParser->urlFor('changePassword'),
+                    'formMethod' => "POST"
+                ]
+            );
 		} else {
 			$password = md5($data['newPassword']);
 			$date = new DateTime('2000-12-12');
