@@ -34,23 +34,25 @@ class ProfileController
 	 */
 	public function showProfileForm(Request $request, Response $response): Response
 	{
-		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
+        $routeParser = RouteContext::fromRequest($request)->getRouteParser();
 
-		$actual_user_id = $_SESSION['user_id'];
-		$actual_user_email = $_SESSION['user_email'];
+        if (isset($_SESSION['user_id'])) {
+            $actual_user_id = $_SESSION['user_id'];
+            $actual_user_email = $_SESSION['user_email'];
+            $user = $this->userRepository->getUserByEmail($actual_user_email);
 
-		if ($actual_user_id) {
-			return $this->twig->render(
-				$response,
-				'profile.twig',
-				[
-					'formAction' => $routeParser->urlFor('profile'),
-					'userId' => $actual_user_id,
-					'userEmail' => $actual_user_email
-				]
+            return $this->twig->render(
+                $response,
+                'profile.twig',
+                [
+                    'formAction' => $routeParser->urlFor('profile'),
+                    'userId' => $actual_user_id,
+                    'userEmail' => $actual_user_email,
+                    'allUser' => $user
+                ]
 			);
 		} else {
-			return $response->withHeader('Location', '/log-in')->withStatus(302);
+            return $response->withHeader('Location', '/sign-in')->withStatus(302);
 		}
 
 

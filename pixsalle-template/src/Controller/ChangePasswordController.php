@@ -29,16 +29,21 @@ class ChangePasswordController
 
 	public function showPasswordForm(Request $request, Response $response): Response
 	{
-		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
+        $routeParser = RouteContext::fromRequest($request)->getRouteParser();
 
-		return $this->twig->render(
-			$response,
-			'changePassword.twig',
-			[
-				'formAction' => $routeParser->urlFor('changePassword'),
-			]
-		);
-	}
+        if (isset($_SESSION['user_id'])) {
+            return $this->twig->render(
+                $response,
+                'changePassword.twig',
+                [
+                    'formAction' => $routeParser->urlFor('changePassword'),
+                ]
+            );
+        } else {
+            return $response->withHeader('Location', '/sign-in')->withStatus(302);
+        }
+
+    }
 
 	public function changePass(Request $request, Response $response): Response
 	{
