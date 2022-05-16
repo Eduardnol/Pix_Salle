@@ -2,6 +2,8 @@
 
 namespace Salle\PixSalle\Repository;
 
+use PDO;
+
 class MySQLPortfolioRepository implements PortfolioRepository
 {
 	private PDO $databaseConnection;
@@ -27,70 +29,140 @@ class MySQLPortfolioRepository implements PortfolioRepository
 	}
 
 
-}
+	/**
+	 * @param $albumId
+	 * @param $userId
+	 * @return mixed
+	 */
+	public
+	function getAlbumPhotosFromUser($albumId, $userId)
+	{
+		$query = "SELECT * FROM album as a, portfolios as pf WHERE a.portfolioId = pf.id AND pf.userId = :userId AND a.portfolioId = pf.id";
+		$statement = $this->databaseConnection->prepare($query);
+		$statement->bindParam(':user_id', $userId);
+		$statement->execute();
 
-/**
- * @param $albumId
- * @param $userId
- * @return mixed
- */
-public
-function getAlbumPhotosFromUser($albumId, $userId)
-{
-	// TODO: Implement getAlbumPhotosFromUser() method.
-}
+		return $statement->fetchAll();
+	}
 
-/**
- * @param $userId
- * @param $albumName
- * @return mixed
- */
-public
-function createAlbum($userId, $albumName)
-{
-	// TODO: Implement createAlbum() method.
-}
+	/**
+	 * @param $userId
+	 * @param $albumName
+	 * @return mixed
+	 */
+	public
+	function createAlbum($userId, $albumName)
+	{
+		//get portfolio id
+		$query = "SELECT id FROM portfolios WHERE userId = :userId";
+		$statement = $this->databaseConnection->prepare($query);
+		$statement->bindParam(':user_id', $userId);
+		$id = $statement->execute()->fetch();
 
-/**
- * @param $albumId
- * @param $userId
- * @return mixed
- */
-public
-function deleteAlbumOrPhoto($albumId, $userId)
-{
-	// TODO: Implement deleteAlbumOrPhoto() method.
-}
+		$query = "INSERT INTO album (title, portfolioId, createdAt, updatedAt) VALUES (:albumName, $id , NOW(), NOW())";
+		$statement = $this->databaseConnection->prepare($query);
+		$statement->bindParam(':albumName', $albumName);
+		$statement->bindParam(':userId', $userId);
+		$statement->execute();
 
-/**
- * @param $albumId
- * @param $userId
- * @param $photoId
- * @return mixed
- */
-public
-function addPhotoToAlbum($albumId, $userId, $photoId)
-{
-	// TODO: Implement addPhotoToAlbum() method.
-}
+		return $this->databaseConnection->lastInsertId();
+	}
 
-/**
- * @param $userId
- * @return mixed
- */
-public
-function checkIfPortfolioExists($userId)
-{
-	// TODO: Implement checkIfPortfolioExists() method.
-}
+	/**
+	 * @param $albumId
+	 * @param $userId
+	 * @return mixed
+	 */
+	public
+	function deleteAlbum($albumId, $userId)
+	{
+		$query = "DELETE FROM album WHERE id = :albumId AND portfolioId = (SELECT id FROM portfolios WHERE userId = :userId)";
+		$statement = $this->databaseConnection->prepare($query);
+		$statement->bindParam(':albumId', $albumId);
+		$statement->bindParam(':userId', $userId);
+		$statement->execute();
 
-/**
- * @param $userId
- * @return mixed
- */
-public
-function createPortfolio($userId)
-{
-	// TODO: Implement createPortfolio() method.
-}
+		//Delete all photos from album
+		$query = "DELETE FROM images WHERE albumId = :albumId";
+		$statement1 = $this->databaseConnection->prepare($query);
+		$statement1->bindParam(':albumId', $albumId);
+		$statement1->execute();
+
+
+		return $statement->fetchAll();
+	}
+
+	/**
+	 * @param $albumId
+	 * @param $userId
+	 * @param $photoId
+	 * @return mixed
+	 */
+	public function deletePhotoFromAlbum($albumId, $userId, $photoId)
+	{
+		$query = "DELETE FROM images WHERE  id = :photoId AND albumId = :albumId";
+		$statement = $this->databaseConnection->prepare($query);
+		$statement->bindParam(':albumId', $albumId);
+		$statement->bindParam(':userId', $userId);
+		$statement->execute();
+
+		return $statement->fetchAll();
+	}
+
+
+	/**
+	 * @param $albumId
+	 * @param $userId
+	 * @param $imageURL
+	 * @return mixed
+	 */
+	public
+	function addPhotoToAlbum($albumId, $userId, $imageURL)
+	{
+		$query = "INSERT INTO images (albumId, imagePath, userId) VALUES (:albumId, :imageUrl, :userId)";
+		$statement = $this->databaseConnection->prepare($query);
+		$statement->bindParam(':albumId', $albumId);
+		$statement->bindParam(':photoId', $imageURL);
+		$statement->bindParam(':userId', $userId);
+		$statement->execute();
+
+		return $statement->fetchAll();
+	}
+
+	/**
+	 * @param $userId
+	 * @return mixed
+	 */
+	public
+	function checkIfPortfolioExists($userId)
+	{
+		$query = "SELECT COUNT (*) FROM portfolios WHERE userId = :userId";
+		$statement = $this->databaseConnection->prepare($query);
+		$statement->bindParam(':user_id', $userId);
+		$statement->execute();
+
+		if ($statement->fetchAll() > 0) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
+	/**
+	 * @param $userId
+	 * @param $title
+	 * @return mixed
+	 */
+	public
+	function createPortfolio($userId, $title)
+	{
+		$query = "INSERT INTO portfolios (title, userId, createdAt, updatedAt) VALUES (:title, :userId, NOW(), NOW())";
+		$statement = $this->databaseConnection->prepare($query);
+		$statement->bindParam(':userId', $userId);
+		$statement->bindParam(':title', $title);
+		$statement->execute();
+
+		return $this->databaseConnection->lastInsertId();
+	}
 }
