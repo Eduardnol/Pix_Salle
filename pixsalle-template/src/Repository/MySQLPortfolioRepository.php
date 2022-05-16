@@ -133,18 +133,17 @@ class MySQLPortfolioRepository implements PortfolioRepository
 	 * @param $userId
 	 * @return mixed
 	 */
-	public
-	function checkIfPortfolioExists($userId)
+	public function checkIfPortfolioExists($userId)
 	{
-		$query = "SELECT COUNT (*) FROM portfolios WHERE userId = :userId";
+		$query = "SELECT COUNT(*) FROM portfolios WHERE userId = :userId";
 		$statement = $this->databaseConnection->prepare($query);
-		$statement->bindParam(':user_id', $userId);
+		$statement->bindParam(':userId', $userId);
 		$statement->execute();
 
-		if ($statement->fetchAll() > 0) {
-			return true;
+		if ($statement->fetchColumn() > 0) {
+			return 1;
 		} else {
-			return false;
+			return 0;
 		}
 
 	}
@@ -164,5 +163,19 @@ class MySQLPortfolioRepository implements PortfolioRepository
 		$statement->execute();
 
 		return $this->databaseConnection->lastInsertId();
+	}
+
+	/**
+	 * @param $userId
+	 * @return mixed
+	 */
+	public function getPortfolioTitle($userId)
+	{
+		$query = "SELECT title FROM portfolios WHERE userId = :userId";
+		$statement = $this->databaseConnection->prepare($query);
+		$statement->bindParam(':userId', $userId);
+		$statement->execute();
+
+		return $statement->fetchColumn();
 	}
 }

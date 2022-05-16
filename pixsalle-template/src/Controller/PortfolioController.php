@@ -2,7 +2,14 @@
 
 namespace Salle\PixSalle\Controller;
 
+use Salle\PixSalle\Repository\PortfolioRepository;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
+use Slim\Routing\RouteContext;
 use Slim\Views\Twig;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class PortfolioController
 {
@@ -19,12 +26,34 @@ class PortfolioController
 		$this->portfolioRepository = $portfolioRepository;
 	}
 
+	/**
+	 * @throws SyntaxError
+	 * @throws RuntimeError
+	 * @throws LoaderError
+	 */
 	public function showPortfolio(Request $request, Response $response)
 	{
-		$portfolio = $this->portfolioRepository->getPortfolio();
+		$userid = $_SESSION['user_id'];
+		$portfolio = $this->portfolioRepository->getPortfolioTitle($userid);
+		$isPortfolio = $this->portfolioRepository->checkIfPortfolioExists($userid);
+		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
 
-		return $this->twig->render($response, 'portfolio.twig');
+		return $this->twig->render($response, 'portfolio.twig', [
+			'thereIsPortfolio' => $isPortfolio,
+			'portfolioTitle' => $portfolio,
+			'formAction' => $routeParser->urlFor('portfolio')
+		]);
 	}
 
+	public function createPortfolio(Request $request, Response $response)
+	{
+		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
+		$userid = $_SESSION['user_id'];
+		$portfolioTitle = $request->getParsedBody()['portfolioTitleValue'];
+		$this->portfolioRepository->createPortfolio($userid, $portfolioTitle);
+
+		return $response->withHeader('Location', $routeParser->urlFor('portfolio'))->withStatus(200);
+
+	}
 
 }

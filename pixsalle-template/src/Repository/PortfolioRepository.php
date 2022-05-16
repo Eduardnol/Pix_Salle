@@ -20,4 +20,6 @@ interface PortfolioRepository
 
 	public function createPortfolio($userId, $title);
 
+	public function getPortfolioTitle($userId);
+
 }

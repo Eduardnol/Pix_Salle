@@ -1,0 +1,17 @@
+{% extends "base.twig" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+
+    {{ thereIsPortfolio }}
+    {% if thereIsPortfolio %}
+        <h1>{{ portfolioTitle }}</h1>
+    {% else %}
+        <form data-cy="user-data" action="{{ formAction }}" id="profile__form" method="POST">
+            <input type="text" name="portfolioTitleValue" placeholder="Title" value="{{ portfolioTitleValue }}">
+            <input type="submit" value="Create a Portfolio">
+        </form>
+    {% endif %}
+
+{% endblock %}

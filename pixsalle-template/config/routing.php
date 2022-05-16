@@ -7,6 +7,7 @@ use Salle\PixSalle\Controller\API\BlogAPIController;
 use Salle\PixSalle\Controller\ChangePasswordController;
 use Salle\PixSalle\Controller\ExploreController;
 use Salle\PixSalle\Controller\MembershipController;
+use Salle\PixSalle\Controller\PortfolioController;
 use Salle\PixSalle\Controller\ProfileController;
 use Salle\PixSalle\Controller\SignUpController;
 use Salle\PixSalle\Controller\UserSessionController;
@@ -30,4 +31,7 @@ function addRoutes(App $app): void
 	$app->post('/profile', ProfileController::class . ':profile');
 	$app->get('/profile/changePassword', ChangePasswordController::class . ':showPasswordForm')->add(CheckSessionStartedMiddleware::class)->setName('changePassword');
 	$app->post('/profile/changePassword', ChangePasswordController::class . ':changePass');
+	$app->get('/portfolio', PortfolioController::class . ':showPortfolio')->add(CheckSessionStartedMiddleware::class)->setName('portfolio');
+	$app->post('/portfolio', PortfolioController::class . ':createPortfolio')->add(CheckSessionStartedMiddleware::class)->setName('portfolio');
+
 }
