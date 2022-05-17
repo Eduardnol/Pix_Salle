@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 use Salle\PixSalle\Controller\API\BlogAPIController;
 use Salle\PixSalle\Controller\ChangePasswordController;
 use Salle\PixSalle\Controller\ExploreController;
@@ -35,4 +34,5 @@ function addRoutes(App $app): void
 	$app->post('/portfolio', PortfolioController::class . ':createPortfolio')->add(CheckSessionStartedMiddleware::class)->setName('portfolio');
 	$app->get('/portfolio/album/{id}', PortfolioController::class . ':showalbum')->add(CheckSessionStartedMiddleware::class)->setName('uploadimage');
 	$app->post('/portfolio/album/{id}', PortfolioController::class . ':uploadImage')->add(CheckSessionStartedMiddleware::class)->setName('uploadimage');
+	$app->delete('/portfolio/album/{id}', PortfolioController::class . ':deleteImage')->add(CheckSessionStartedMiddleware::class)->setName('uploadimage');
 }

@@ -11,10 +11,16 @@
         <input type="submit" value="Upload" class="btn btn-primary">
     </form>
 
-
-    {% for photo in photos %}
-        <img src="{{ photo['imagePath'] }}" alt="Italian Trulli">
-    {% endfor %}
+    <div class="grid">
+        {% for photo in photos %}
+            <div class="card grid_son" style="max-width: 18rem;">
+                <img class="card-img-top" src="{{ photo['imagePath'] }}" alt="Italian Trulli">
+                <div class="card-body">
+                    <h5 class="card-title">Image ID: {{ photo['id'] }}</h5>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 
 
 {% endblock %}

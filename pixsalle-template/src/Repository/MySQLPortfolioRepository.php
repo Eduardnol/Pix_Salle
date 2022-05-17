@@ -37,7 +37,7 @@ class MySQLPortfolioRepository implements PortfolioRepository
 	public
 	function getAlbumPhotosFromUser($albumId, $userId)
 	{
-		$query = "SELECT i.imagePath FROM images as i , album as a, portfolios as pf WHERE a.portfolioId = pf.id 
+		$query = "SELECT i.imagePath, i.id FROM images as i , album as a, portfolios as pf WHERE a.portfolioId = pf.id 
                                                            AND pf.userId = :userId AND a.portfolioId = pf.id AND i.albumId = a.id AND a.id = :albumId";
 		$statement = $this->databaseConnection->prepare($query);
 		$statement->bindParam(':userId', $userId);

@@ -94,4 +94,27 @@ class PortfolioController
 		]);
 	}
 
+	public function deleteImage(Request $request, Response $response)
+	{
+		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
+		$request->getUri()->getPath();
+		$id = $request->getAttribute('id');
+		$data = $request->getParsedBody();
+		$imageURL = $data['imageId'];
+
+		if (isset($imageURL)) {
+			$image = $this->portfolioRepository->deletePhotoFromAlbum($id, $_SESSION['user_id'], $imageURL);
+		} else {
+			$this->portfolioRepository->deleteAlbum($id, $_SESSION['user_id']);
+		}
+		$album = $this->portfolioRepository->getAlbumPhotosFromUser($id, $_SESSION['user_id']);
+
+		return $this->twig->render($response, 'album.twig', [
+			'logged' => $_SESSION['logged'],
+			'formAction' => $routeParser->urlFor('uploadimage', ['id' => $id]),
+			'photos' => $album
+		]);
+
+	}
+
 }
