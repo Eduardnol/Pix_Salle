@@ -38,10 +38,14 @@ class PortfolioController
 		$isPortfolio = $this->portfolioRepository->checkIfPortfolioExists($userid);
 		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
 
+		//Get album names and cover
+		$albums = $this->portfolioRepository->getAllUserAlbums($userid);
+		var_dump($albums);
 		return $this->twig->render($response, 'portfolio.twig', [
 			'thereIsPortfolio' => $isPortfolio,
 			'portfolioTitle' => $portfolio,
-			'formAction' => $routeParser->urlFor('portfolio')
+			'formAction' => $routeParser->urlFor('portfolio'),
+			'albums' => $albums
 		]);
 	}
 
@@ -53,6 +57,15 @@ class PortfolioController
 		$this->portfolioRepository->createPortfolio($userid, $portfolioTitle);
 
 		return $response->withHeader('Location', $routeParser->urlFor('portfolio'))->withStatus(200);
+
+	}
+
+	public function createAlbum(Request $request, Response $response)
+	{
+		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
+		$route = $request->getAttribute('route');
+		$albumId = $route->getArgument('id');
+
 
 	}
 

@@ -33,5 +33,5 @@ function addRoutes(App $app): void
 	$app->post('/profile/changePassword', ChangePasswordController::class . ':changePass');
 	$app->get('/portfolio', PortfolioController::class . ':showPortfolio')->add(CheckSessionStartedMiddleware::class)->setName('portfolio');
 	$app->post('/portfolio', PortfolioController::class . ':createPortfolio')->add(CheckSessionStartedMiddleware::class)->setName('portfolio');
-
+	$app->get('/portfolio/album/{id}', PortfolioController::class.':createAlbum')->add(CheckSessionStartedMiddleware::class);
 }

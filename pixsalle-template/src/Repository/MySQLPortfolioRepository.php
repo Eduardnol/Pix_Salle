@@ -20,9 +20,9 @@ class MySQLPortfolioRepository implements PortfolioRepository
 	 */
 	public function getAllUserAlbums($userId)
 	{
-		$query = "SELECT * FROM album as a, portfolios as p  WHERE a.portfolioId = p.id AND p.userId = :userId";
+		$query = "SELECT a.title FROM album as a, portfolios as p  WHERE a.portfolioId = p.id AND p.userId = :userId";
 		$statement = $this->databaseConnection->prepare($query);
-		$statement->bindParam(':user_id', $userId);
+		$statement->bindParam(':userId', $userId);
 		$statement->execute();
 
 		return $statement->fetchAll();
