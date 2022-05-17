@@ -13,22 +13,42 @@
 <body>
 
 <header>
-    <nav>
-        {% if logged %}
-            <a href="{{ url_for('wallet') }}">Wallet</a>
-            <a href="{{ url_for('profile') }}">Profile</a>
-            <a href="{{ url_for('membership') }}">Membership</a>
-            <a href="{{ url_for('explore') }}">Explore</a>
 
-        {% else %}
-            <a href="sign-in">
+    {% if logged %}
+        <nav>
+            <a href="{{ url_for('wallet') }}">
+                <button>Wallet</button>
+            </a>
+            <a href="{{ url_for('profile') }}">
+                <button>Profile</button>
+            </a>
+            <a href="{{ url_for('membership') }}">
+                <button>Membership</button>
+            </a>
+            <a href="{{ url_for('explore') }}">
+                <button>Explore</button>
+            </a>
+            <a href="{{ url_for('blog-list') }}">
+                <button>Blog</button>
+            </a>
+            <a href="{{ url_for('signIn') }}">
+                <button>Sign-In</button>
+            </a>
+            <a href="{{ url_for('signUp') }}">
+                <button>Sign-Up</button>
+            </a>
+        </nav>
+    {% else %}
+        <nav>
+            <a href="{{ url_for('signIn') }}">
                 <button>Sign-in</button>
             </a>
-            <a href="sign-up">
+            <a href="{{ url_for('signUp') }}">
                 <button>Sign-up</button>
             </a>
-        {% endif %}
-    </nav>
+        </nav>
+    {% endif %}
+
 </header>
 {% block content %}{% endblock %}
 <footer>

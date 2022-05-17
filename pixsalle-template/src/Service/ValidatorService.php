@@ -59,8 +59,10 @@ class ValidatorService
     public function validateQuantity(string $quantity)
 	{
 		if (empty($quantity) || !is_numeric($quantity) || $quantity < 1) {
-			return 'The quantity must be a positive number';
-		}
+            return 'The quantity must be a positive number';
+        } else if ($quantity > 100000) {
+            return "The quantity can't exceed 100000";
+        }
 		return '';
 	}
 }
