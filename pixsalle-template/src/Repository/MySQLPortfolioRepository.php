@@ -59,12 +59,14 @@ class MySQLPortfolioRepository implements PortfolioRepository
 		$query = "SELECT id FROM portfolios WHERE userId = :userId";
 		$statement = $this->databaseConnection->prepare($query);
 		$statement->bindParam(':userId', $userId);
-		$id = $statement->execute()->fetch();
+		$statement->execute();
+		$id = $statement->fetchColumn();
 
-		$query = "INSERT INTO album (title, portfolioId, createdAt, updatedAt) VALUES (:albumName, $id , NOW(), NOW())";
+
+		$query = "INSERT INTO album (title, portfolioId, createdAt, updatedAt) VALUES (:albumName, :portfolioId , NOW(), NOW())";
 		$statement = $this->databaseConnection->prepare($query);
 		$statement->bindParam(':albumName', $albumName);
-		$statement->bindParam(':userId', $userId);
+		$statement->bindParam(':portfolioId', $id);
 		$statement->execute();
 
 		return $this->databaseConnection->lastInsertId();
@@ -78,20 +80,19 @@ class MySQLPortfolioRepository implements PortfolioRepository
 	public
 	function deleteAlbum($albumId, $userId)
 	{
-		$query = "DELETE FROM album WHERE id = :albumId AND portfolioId = (SELECT id FROM portfolios WHERE userId = :userId)";
-		$statement = $this->databaseConnection->prepare($query);
-		$statement->bindParam(':albumId', $albumId);
-		$statement->bindParam(':userId', $userId);
-		$statement->execute();
-
 		//Delete all photos from album
 		$query = "DELETE FROM images WHERE albumId = :albumId";
 		$statement1 = $this->databaseConnection->prepare($query);
 		$statement1->bindParam(':albumId', $albumId);
 		$statement1->execute();
 
+		//Delete album
+		$query = "DELETE FROM album WHERE id = :albumId AND portfolioId = (SELECT id FROM portfolios WHERE userId = :userId)";
+		$statement = $this->databaseConnection->prepare($query);
+		$statement->bindParam(':albumId', $albumId);
+		$statement->bindParam(':userId', $userId);
+		$statement->execute();
 
-		return $statement->fetchAll();
 	}
 
 	/**
@@ -107,6 +108,7 @@ class MySQLPortfolioRepository implements PortfolioRepository
 		$statement->bindParam(':albumId', $albumId);
 		$statement->bindParam(':userId', $userId);
 		$statement->execute();
+
 
 		return $statement->fetchAll();
 	}

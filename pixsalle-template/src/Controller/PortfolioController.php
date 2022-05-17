@@ -53,6 +53,11 @@ class PortfolioController
 	public function createPortfolio(Request $request, Response $response)
 	{
 		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
+		$data = $request->getParsedBody();
+		if (isset($data['addAlbum'])) {
+			$this->portfolioRepository->createAlbum($_SESSION['user_id'], "New Album");
+			return $response->withHeader('Location', $routeParser->urlFor('portfolio'))->withStatus(200);
+		}
 		$userid = $_SESSION['user_id'];
 		$portfolioTitle = $request->getParsedBody()['portfolioTitleValue'];
 		$this->portfolioRepository->createPortfolio($userid, $portfolioTitle);
@@ -72,26 +77,10 @@ class PortfolioController
 		return $this->twig->render($response, 'album.twig', [
 			'formAction' => $routeParser->urlFor('uploadimage', ['id' => $id]),
 			'photos' => $album,
-			'logged' => $_SESSION['logged']
-		]);
-
-	}
-
-	public function uploadImage(Request $request, Response $response)
-	{
-		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
-		$request->getUri()->getPath();
-		$id = $request->getAttribute('id');
-		$data = $request->getParsedBody();
-		$imageURL = $data['url'];
-
-		$image = $this->portfolioRepository->addPhotoToAlbum($id, $_SESSION['user_id'], $imageURL);
-		$album = $this->portfolioRepository->getAlbumPhotosFromUser($id, $_SESSION['user_id']);
-		return $this->twig->render($response, 'album.twig', [
 			'logged' => $_SESSION['logged'],
-			'formAction' => $routeParser->urlFor('uploadimage', ['id' => $id]),
-			'photos' => $album
+			'albumId' => $id
 		]);
+
 	}
 
 	public function deleteImage(Request $request, Response $response)
@@ -112,9 +101,28 @@ class PortfolioController
 		return $this->twig->render($response, 'album.twig', [
 			'logged' => $_SESSION['logged'],
 			'formAction' => $routeParser->urlFor('uploadimage', ['id' => $id]),
-			'photos' => $album
+			'photos' => $album,
+			'albumId' => $id
 		]);
 
+	}
+
+	public function uploadImage(Request $request, Response $response)
+	{
+		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
+		$request->getUri()->getPath();
+		$id = $request->getAttribute('id');
+		$data = $request->getParsedBody();
+		$imageURL = $data['url'];
+
+		$image = $this->portfolioRepository->addPhotoToAlbum($id, $_SESSION['user_id'], $imageURL);
+		$album = $this->portfolioRepository->getAlbumPhotosFromUser($id, $_SESSION['user_id']);
+		return $this->twig->render($response, 'album.twig', [
+			'logged' => $_SESSION['logged'],
+			'formAction' => $routeParser->urlFor('uploadimage', ['id' => $id]),
+			'photos' => $album,
+			'albumId' => $id
+		]);
 	}
 
 }

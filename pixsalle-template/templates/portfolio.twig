@@ -7,6 +7,12 @@
     {{ thereIsPortfolio }}
     {% if thereIsPortfolio %}
         <h1>{{ portfolioTitle }}</h1>
+        <div>
+            <form data-cy="user-data" action="{{ formAction }}" id="profile__form" method="POST">
+                <input type="submit" name="addAlbum" class="btn btn-primary" id="add-portfolio-btn"
+                       value="Add an Album">
+            </form>
+        </div>
         <div class="grid">
             {% for album in albums %}
                 <div class="card" style="max-width: 18rem;">
