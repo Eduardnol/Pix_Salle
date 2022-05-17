@@ -4,6 +4,14 @@
 
 {% block content %}
 
+    <h3>Upload a Photo to this album</h3>
+
+    <form action="{{ formAction }}" method="POST">
+        <input type="text" name="url" placeholder="Enter image URL">
+        <input type="submit" value="Upload" class="btn btn-primary">
+    </form>
+
+
     {% for photo in photos %}
         <img src="{{ photo['imagePath'] }}" alt="Italian Trulli">
     {% endfor %}

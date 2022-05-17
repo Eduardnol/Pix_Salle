@@ -124,7 +124,7 @@ class MySQLPortfolioRepository implements PortfolioRepository
 		$query = "INSERT INTO images (albumId, imagePath, userId) VALUES (:albumId, :imageUrl, :userId)";
 		$statement = $this->databaseConnection->prepare($query);
 		$statement->bindParam(':albumId', $albumId);
-		$statement->bindParam(':photoId', $imageURL);
+		$statement->bindParam(':imageUrl', $imageURL);
 		$statement->bindParam(':userId', $userId);
 		$statement->execute();
 

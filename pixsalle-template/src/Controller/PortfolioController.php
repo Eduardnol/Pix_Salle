@@ -59,7 +59,7 @@ class PortfolioController
 
 	}
 
-	public function createAlbum(Request $request, Response $response)
+	public function showalbum(Request $request, Response $response)
 	{
 		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
 		$request->getUri()->getPath();
@@ -67,12 +67,27 @@ class PortfolioController
 
 
 		$album = $this->portfolioRepository->getAlbumPhotosFromUser($id, $_SESSION['user_id']);
-		var_dump($album);
 		return $this->twig->render($response, 'album.twig', [
-			'formAction' => $routeParser->urlFor('portfolio'),
+			'formAction' => $routeParser->urlFor('uploadimage', ['id' => $id]),
 			'photos' => $album
 		]);
 
+	}
+
+	public function uploadImage(Request $request, Response $response)
+	{
+		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
+		$request->getUri()->getPath();
+		$id = $request->getAttribute('id');
+		$data = $request->getParsedBody();
+		$imageURL = $data['url'];
+
+		$image = $this->portfolioRepository->addPhotoToAlbum($id, $_SESSION['user_id'], $imageURL);
+		$album = $this->portfolioRepository->getAlbumPhotosFromUser($id, $_SESSION['user_id']);
+		return $this->twig->render($response, 'album.twig', [
+			'formAction' => $routeParser->urlFor('uploadimage', ['id' => $id]),
+			'photos' => $album
+		]);
 	}
 
 }
