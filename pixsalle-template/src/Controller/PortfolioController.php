@@ -92,7 +92,7 @@ class PortfolioController
 		$imageURL = $data['imageId'];
 
 		if (isset($imageURL)) {
-			$image = $this->portfolioRepository->deletePhotoFromAlbum($id, $_SESSION['user_id'], $imageURL);
+			$this->portfolioRepository->deletePhotoFromAlbum($id, $_SESSION['user_id'], $imageURL);
 		} else {
 			$this->portfolioRepository->deleteAlbum($id, $_SESSION['user_id']);
 		}

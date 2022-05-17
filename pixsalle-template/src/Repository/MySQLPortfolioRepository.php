@@ -103,10 +103,11 @@ class MySQLPortfolioRepository implements PortfolioRepository
 	 */
 	public function deletePhotoFromAlbum($albumId, $userId, $photoId)
 	{
-		$query = "DELETE FROM images WHERE  id = :photoId AND albumId = :albumId";
+		$query = "DELETE FROM images WHERE  id = :photoId AND albumId = :albumId AND images.userId = :userId";
 		$statement = $this->databaseConnection->prepare($query);
 		$statement->bindParam(':albumId', $albumId);
 		$statement->bindParam(':userId', $userId);
+		$statement->bindParam(':photoId', $photoId);
 		$statement->execute();
 
 

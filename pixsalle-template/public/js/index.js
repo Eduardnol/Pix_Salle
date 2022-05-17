@@ -18,7 +18,7 @@ class Connect {
         const response = await fetch(url, {
             method: "DELETE",
             body: JSON.stringify({
-                id: id
+                imageId: id
             }),
             headers: {'Content-Type': 'application/json'},
         })
