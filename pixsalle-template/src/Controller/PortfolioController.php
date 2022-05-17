@@ -44,7 +44,9 @@ class PortfolioController
 			'thereIsPortfolio' => $isPortfolio,
 			'portfolioTitle' => $portfolio,
 			'formAction' => $routeParser->urlFor('portfolio'),
-			'albums' => $albums
+			'albums' => $albums,
+			'logged' => $_SESSION['logged']
+
 		]);
 	}
 
@@ -69,7 +71,8 @@ class PortfolioController
 		$album = $this->portfolioRepository->getAlbumPhotosFromUser($id, $_SESSION['user_id']);
 		return $this->twig->render($response, 'album.twig', [
 			'formAction' => $routeParser->urlFor('uploadimage', ['id' => $id]),
-			'photos' => $album
+			'photos' => $album,
+			'logged' => $_SESSION['logged']
 		]);
 
 	}
@@ -85,6 +88,7 @@ class PortfolioController
 		$image = $this->portfolioRepository->addPhotoToAlbum($id, $_SESSION['user_id'], $imageURL);
 		$album = $this->portfolioRepository->getAlbumPhotosFromUser($id, $_SESSION['user_id']);
 		return $this->twig->render($response, 'album.twig', [
+			'logged' => $_SESSION['logged'],
 			'formAction' => $routeParser->urlFor('uploadimage', ['id' => $id]),
 			'photos' => $album
 		]);
