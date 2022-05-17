@@ -40,7 +40,6 @@ class PortfolioController
 
 		//Get album names and cover
 		$albums = $this->portfolioRepository->getAllUserAlbums($userid);
-		var_dump($albums);
 		return $this->twig->render($response, 'portfolio.twig', [
 			'thereIsPortfolio' => $isPortfolio,
 			'portfolioTitle' => $portfolio,
@@ -63,9 +62,16 @@ class PortfolioController
 	public function createAlbum(Request $request, Response $response)
 	{
 		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
-		$route = $request->getAttribute('route');
-		$albumId = $route->getArgument('id');
+		$request->getUri()->getPath();
+		$id = $request->getAttribute('id');
 
+
+		$album = $this->portfolioRepository->getAlbumPhotosFromUser($id, $_SESSION['user_id']);
+		var_dump($album);
+		return $this->twig->render($response, 'album.twig', [
+			'formAction' => $routeParser->urlFor('portfolio'),
+			'photos' => $album
+		]);
 
 	}
 

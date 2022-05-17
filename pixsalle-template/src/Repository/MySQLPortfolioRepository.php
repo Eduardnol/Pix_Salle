@@ -20,7 +20,7 @@ class MySQLPortfolioRepository implements PortfolioRepository
 	 */
 	public function getAllUserAlbums($userId)
 	{
-		$query = "SELECT a.title FROM album as a, portfolios as p  WHERE a.portfolioId = p.id AND p.userId = :userId";
+		$query = "SELECT a.title, a.id FROM album as a, portfolios as p  WHERE a.portfolioId = p.id AND p.userId = :userId";
 		$statement = $this->databaseConnection->prepare($query);
 		$statement->bindParam(':userId', $userId);
 		$statement->execute();
@@ -37,9 +37,10 @@ class MySQLPortfolioRepository implements PortfolioRepository
 	public
 	function getAlbumPhotosFromUser($albumId, $userId)
 	{
-		$query = "SELECT * FROM album as a, portfolios as pf WHERE a.portfolioId = pf.id AND pf.userId = :userId AND a.portfolioId = pf.id";
+		$query = "SELECT i.imagePath FROM images as i , album as a, portfolios as pf WHERE a.portfolioId = pf.id 
+                                                           AND pf.userId = :userId AND a.portfolioId = pf.id AND i.albumId = a.id";
 		$statement = $this->databaseConnection->prepare($query);
-		$statement->bindParam(':user_id', $userId);
+		$statement->bindParam(':userId', $userId);
 		$statement->execute();
 
 		return $statement->fetchAll();
@@ -56,7 +57,7 @@ class MySQLPortfolioRepository implements PortfolioRepository
 		//get portfolio id
 		$query = "SELECT id FROM portfolios WHERE userId = :userId";
 		$statement = $this->databaseConnection->prepare($query);
-		$statement->bindParam(':user_id', $userId);
+		$statement->bindParam(':userId', $userId);
 		$id = $statement->execute()->fetch();
 
 		$query = "INSERT INTO album (title, portfolioId, createdAt, updatedAt) VALUES (:albumName, $id , NOW(), NOW())";

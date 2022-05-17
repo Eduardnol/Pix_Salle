@@ -10,7 +10,7 @@
 
         {% for album in albums %}
             Album:
-            <h6>{{ album['title'] }}</h6>
+            <a href="/portfolio/album/{{ album['id'] }}"><h6>{{ album['title'] }}</h6></a>
 
         {% endfor %}
     {% else %}

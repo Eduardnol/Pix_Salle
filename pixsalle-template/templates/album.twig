@@ -1,0 +1,12 @@
+{% extends "base.twig" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+
+    {% for photo in photos %}
+        <img src="{{ photo['imagePath'] }}" alt="Italian Trulli">
+    {% endfor %}
+
+
+{% endblock %}
