@@ -15,16 +15,16 @@
 <header>
     <nav>
         {% if logged %}
-            <a href="/user/wallet">Wallet</a>
-            <a href="/profile">Profile</a>
-            <a href="/user/membership">Memberships</a>
-            <a href="/explore">Explore</a>
+            <a href="{{ url_for('wallet') }}">Wallet</a>
+            <a href="{{ url_for('profile') }}">Profile</a>
+            <a href="{{ url_for('membership') }}">Membership</a>
+            <a href="{{ url_for('explore') }}">Explore</a>
 
         {% else %}
-            <a href="/sign-in">
+            <a href="sign-in">
                 <button>Sign-in</button>
             </a>
-            <a href="/sign-up">
+            <a href="sign-up">
                 <button>Sign-up</button>
             </a>
         {% endif %}

@@ -16,13 +16,13 @@ use Slim\App;
 
 function addRoutes(App $app): void
 {
-	$app->get('/', UserSessionController::class . ':showSignInForm')->add(CheckSessionStartedMiddleware::class);;
-	$app->get('/sign-in', UserSessionController::class . ':showSignInForm')->setName('signIn');
+	$app->get('/', UserSessionController::class . ':showSignInForm')->add(CheckSessionStartedMiddleware::class);
+    $app->get('/sign-in', UserSessionController::class . ':showSignInForm')->setName('signIn');
 	$app->post('/sign-in', UserSessionController::class . ':signIn');
 	$app->get('/sign-up', SignUpController::class . ':showSignUpForm')->setName('signUp');
-	$app->post('/sign-up', SignUpController::class . ':signUp');
-	$app->get('/explore', ExploreController::class . ':showImages')->add(CheckSessionStartedMiddleware::class);
-	$app->get('/user/wallet', WalletController::class . ':showWallet')->add(CheckSessionStartedMiddleware::class)->setName('wallet');
+    $app->post('/sign-up', SignUpController::class . ':signUp');
+    $app->get('/explore', ExploreController::class . ':showImages')->add(CheckSessionStartedMiddleware::class)->setName('explore');
+    $app->get('/user/wallet', WalletController::class . ':showWallet')->add(CheckSessionStartedMiddleware::class)->setName('wallet');
 	$app->post('/user/wallet', WalletController::class . ':addMoney');
 	$app->get('/user/membership', MembershipController::class . ':showMembership')->add(CheckSessionStartedMiddleware::class)->setName('membership');
 	$app->post('/user/membership', MembershipController::class . ':changeCurrentMembership');

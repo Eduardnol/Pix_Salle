@@ -3,13 +3,11 @@
 {% block title %}Explore{% endblock %}
 
 {% block content %}
-
-    {% if 'error' %}
-        <p>{{ error }}</p>
+    {% for image in images %}
+        <img src="{{ image[1][0] }}">
+        <p>{{ image[2][0] }}</p>
     {% else %}
-
-
-
-    {% endif %}
+        <p>Upload some images!</p>
+    {% endfor %}
 
 {% endblock %}

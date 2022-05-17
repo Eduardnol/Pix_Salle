@@ -15,22 +15,31 @@ final class MySQLImageRepository implements ImageRepository
     }
 
 
-    public function getImages()
+    public function getImages(): array
     {
+        $aux = 1;
+        $images = [];
         $query = <<<'QUERY'
-        
-        SELECT imagePath FROM images;   
+        SELECT i.imagePath,u.userName FROM images as i, users as u where i.userId = u.id;   
         QUERY;
 
         $statement = $this->databaseConnection->prepare($query);
 
         $statement->execute();
 
-        $count = $statement->rowCount();
+        while ($row = $statement->fetch()) {
+            $aux2 = 1;
+            $images[$aux][$aux2] = array($row['imagePath']);
+            $aux2 = 2;
 
-        if ($count > 0) {
-            return $statement->fetch(PDO::FETCH_OBJ);
+            if (array($row['userName']) == NULL) {
+                $images[$aux][$aux2] = 'user' . $_SESSION['user_id'];
+            } else {
+                $images[$aux][$aux2] = array($row['userName']);
+            }
+            $aux = $aux + 1;
         }
-        return null;
+
+        return $images;
     }
 }
