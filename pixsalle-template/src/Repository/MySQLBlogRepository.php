@@ -7,49 +7,50 @@ use PDO;
 final class MySQLBlogRepository implements BlogRepository
 {
 
-    private PDO $databaseConnection;
+	private PDO $databaseConnection;
 
-    public function __construct(PDO $database)
-    {
-        $this->databaseConnection = $database;
-    }
+	public function __construct(PDO $database)
+	{
+		$this->databaseConnection = $database;
+	}
 
 
-    public function createBlog(string $title, string $comment): void
-    {
-        $query = <<<'QUERY'
-        INSERT INTO blogs(title, comment, userId)
-        VALUES(:title, :comment, :userId)
+	public function createBlog(string $title, string $comment, string $userid): void
+	{
+		$query = <<<'QUERY'
+        INSERT INTO blogs(title, comment, userId, createdAt, updatedAt)
+        VALUES(:title, :comment, :userId, NOW(), NOW())
         QUERY;
-        $statement = $this->databaseConnection->prepare($query);
+		$statement = $this->databaseConnection->prepare($query);
 
-        $statement->bindParam('title', $title, PDO::PARAM_STR);
-        $statement->bindParam('comment', $comment, PDO::PARAM_STR);
-        $statement->bindParam('userId', $_SESSION['user_id'], PDO::PARAM_STR);
+		$statement->bindParam('title', $title, PDO::PARAM_STR);
+		$statement->bindParam('comment', $comment, PDO::PARAM_STR);
+		$statement->bindParam('userId', $_SESSION['user_id'], PDO::PARAM_STR);
 
-        $statement->execute();
-    }
+		$statement->execute();
+	}
 
-    public function showBlogs()
-    {
-        $aux = 1;
-        $blogs = [];
-        $query = <<<'QUERY'
+	public function showBlogs()
+	{
+		$aux = 1;
+		$blogs = [];
+		$query = <<<'QUERY'
         SELECT b.title,u.userName FROM blogs as b, users as u where b.userId = u.id;   
         QUERY;
 
-        $statement = $this->databaseConnection->prepare($query);
+		$statement = $this->databaseConnection->prepare($query);
 
-        $statement->execute();
+		$statement->execute();
 
-        while ($row = $statement->fetch()) {
-            $aux2 = 1;
-            $blogs[$aux][$aux2] = array($row['title']);
-            $aux2 = 2;
-            $blogs[$aux][$aux2] = array($row['userName']);
-            $aux = $aux + 1;
-        }
+		while ($row = $statement->fetch()) {
+			$aux2 = 1;
+			$blogs[$aux][$aux2] = array($row['title']);
+			$aux2 = 2;
+			$blogs[$aux][$aux2] = array($row['userName']);
+			$aux = $aux + 1;
+		}
 
-        return $blogs;
-    }
+		return $blogs;
+	}
+
 }

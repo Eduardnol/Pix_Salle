@@ -11,62 +11,65 @@ use Slim\Views\Twig;
 
 class BlogController
 {
-    private Twig $twig;
-    private BlogRepository $blogRepository;
+	private Twig $twig;
+	private BlogRepository $blogRepository;
 
-    /**
-     * @param Twig $twig
-     * @param BlogRepository $blogRepository
-     */
-    public function __construct(
-        Twig           $twig,
-        BlogRepository $blogRepository
-    )
-    {
-        $this->twig = $twig;
-        $this->blogRepository = $blogRepository;
-    }
+	/**
+	 * @param Twig $twig
+	 * @param BlogRepository $blogRepository
+	 */
+	public function __construct(
+		Twig           $twig,
+		BlogRepository $blogRepository
+	)
+	{
+		$this->twig = $twig;
+		$this->blogRepository = $blogRepository;
+	}
 
-    public function showBlogForm(Request $request, Response $response): Response
-    {
+	public function showBlogForm(Request $request, Response $response): Response
+	{
 
-        return $this->twig->render(
-            $response,
-            'blog.twig',
-            [
-                'logged' => $_SESSION['logged']
-            ]
-        );
-    }
+		return $this->twig->render(
+			$response,
+			'blog.twig',
+			[
+				'userId' => $request->getAttribute('userId'),
+				'logged' => $_SESSION['logged']
+			]
+		);
+	}
 
-    public function showBlogList(Request $request, Response $response): Response
-    {
+	public function showBlogList(Request $request, Response $response): Response
+	{
 
-        $blogs = $this->blogRepository->showBlogs();
+		$blogs = $this->blogRepository->showBlogs();
 
-        return $this->twig->render(
-            $response,
-            'blog-list.twig',
-            [
-                'logged' => $_SESSION['logged'],
-                'blogs' => $blogs
-            ]
-        );
-    }
+		return $this->twig->render(
+			$response,
+			'blog-list.twig',
+			[
+				'userId' => $_SESSION['userId'],
+				'logged' => $_SESSION['logged'],
+				'blogs' => $blogs
+			]
+		);
+	}
 
-    public function postBlogForm(Request $request, Response $response): Response
-    {
-        $data = $request->getParsedBody();
-        $this->blogRepository->createBlog($data['title'], $data['comment']);
-        $blogs = $this->blogRepository->showBlogs();
-        return $this->twig->render(
-            $response->withHeader('Location', '/blog')->withStatus(302),
-            'blog-list.twig',
-            [
-                'logged' => $_SESSION['logged'],
-                'blogs' => $blogs
-            ]
-        );
-    }
+	public function postBlogForm(Request $request, Response $response): Response
+	{
+		$data = $request->getParsedBody();
+		$this->blogRepository->createBlog($data['title'], $data['content'], $data['userId']);
+		$blogs = $this->blogRepository->showBlogs();
+		return $this->twig->render(
+			$response->withHeader('Location', '/blog')->withStatus(302),
+			'blog-list.twig',
+			[
+				'userId' => $_SESSION['userId'],
+				'logged' => $_SESSION['logged'],
+				'blogs' => $blogs
+			]
+		);
+	}
 
 }

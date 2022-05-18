@@ -6,7 +6,7 @@ namespace Salle\PixSalle\Repository;
 
 interface BlogRepository
 {
-	public function createBlog(string $title, string $comment);
+	public function createBlog(string $title, string $comment, string $userid);
 
 	public function showBlogs();
 }
