@@ -90,7 +90,7 @@ class ProfileController
 		} else {
 			$actualUser = $_SESSION['user_id'];
             $date = new DateTime('2000-12-12');
-            $user = new User("", "", $date, $date, $data['userName'], $data['phoneNumber'], "null");
+            $user = new User("", "", $date, $date, $data['userName'], $data['phoneNumber'], "NULL");
             $this->userRepository->addInfoUser($user, $actualUser);
 			return $response->withHeader('Location', '/profile')->withStatus(302);
 		}
