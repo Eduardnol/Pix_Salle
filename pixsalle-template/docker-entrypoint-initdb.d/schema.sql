@@ -27,6 +27,7 @@ CREATE TABLE `images`
     `id`        INT                                                     NOT NULL AUTO_INCREMENT,
     `userId`    INT                                                     NOT NULL,
     `imagePath` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+    `albumId`   INT                                                     NOT NULL,
 
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
@@ -58,5 +59,33 @@ CREATE TABLE `memberships`
     PRIMARY KEY (`id`, `userId`),
     FOREIGN KEY (`userId`)
         REFERENCES `users` (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+DROP TABLE IF EXISTS `portfolios`;
+CREATE TABLE `portfolios`
+(
+    `id`        INT                                                     NOT NULL AUTO_INCREMENT,
+    `userId`    INT                                                     NOT NULL,
+    `title`     VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+    `createdAt` DATETIME                                                NOT NULL,
+    `updatedAt` DATETIME                                                NOT NULL,
+    PRIMARY KEY (`id`, `userId`),
+    FOREIGN KEY (`userId`)
+        REFERENCES `users` (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+DROP TABLE IF EXISTS `album`;
+CREATE TABLE `album`
+(
+    `id`          INT                                                     NOT NULL AUTO_INCREMENT,
+    `portfolioId` INT                                                     NOT NULL,
+    `title`       VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+    `createdAt`   DATETIME                                                NOT NULL,
+    `updatedAt`   DATETIME                                                NOT NULL,
+    PRIMARY KEY (`id`, `portfolioId`),
+    FOREIGN KEY (`portfolioId`)
+        REFERENCES `portfolios` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;

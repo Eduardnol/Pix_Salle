@@ -1,0 +1,36 @@
+{% extends "base.twig" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+
+    {{ thereIsPortfolio }}
+    {% if thereIsPortfolio %}
+        <h1>{{ portfolioTitle }}</h1>
+        <div>
+            <form data-cy="user-data" action="{{ formAction }}" id="profile__form" method="POST">
+                <input type="submit" name="addAlbum" class="btn btn-primary" id="add-portfolio-btn"
+                       value="Add an Album">
+            </form>
+        </div>
+        <div class="grid">
+            {% for album in albums %}
+                <div class="card" style="max-width: 18rem;">
+                    <img class="card-img-top grid_son"
+                         src="https://images.unsplash.com/photo-1506536329413-d2f0d31ceb9f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                         alt="Italian Trulli">
+                    Album:
+                    <a href="/portfolio/album/{{ album['id'] }}"><h6>{{ album['title'] }}</h6></a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <form data-cy="user-data" action="{{ formAction }}" id="profile__form" method="POST">
+            <input type="text" name="portfolioTitleValue" placeholder="Title" value="{{ portfolioTitleValue }}">
+            <input type="submit" value="Create a Portfolio">
+        </form>
+
+
+    {% endif %}
+
+{% endblock %}
