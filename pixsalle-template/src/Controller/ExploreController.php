@@ -44,7 +44,7 @@ class ExploreController
             );
         } else {
 
-            $images = $this->imageRepository->getImages();
+            $images = $this->imageRepository->getAllImages();
 
             return $this->twig->render(
                 $response,

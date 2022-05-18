@@ -3,8 +3,6 @@
 declare(strict_types=1);
 
 use Salle\PixSalle\Controller\API\BlogAPIController;
-
-//use Salle\PixSalle\Controller\API\BlogAPIController;
 use Salle\PixSalle\Controller\BlogController;
 use Salle\PixSalle\Controller\ChangePasswordController;
 use Salle\PixSalle\Controller\ExploreController;
@@ -18,14 +16,16 @@ use Salle\PixSalle\Controller\WalletController;
 use Salle\PixSalle\Middleware\CheckSessionStartedMiddleware;
 use Slim\App;
 
+//use Salle\PixSalle\Controller\API\BlogAPIController;
+
 function addRoutes(App $app): void
 {
-    $app->get('/', HomeController::class . ':showHome')->add(CheckSessionStartedMiddleware::class)->setName('home');
-    $app->get('/sign-in', UserSessionController::class . ':showSignInForm')->setName('signIn');
+	$app->get('/', HomeController::class . ':showHome')->add(CheckSessionStartedMiddleware::class)->setName('home');
+	$app->get('/sign-in', UserSessionController::class . ':showSignInForm')->setName('signIn');
 	$app->post('/sign-in', UserSessionController::class . ':signIn');
 	$app->get('/sign-up', SignUpController::class . ':showSignUpForm')->setName('signUp');
 	$app->post('/sign-up', SignUpController::class . ':signUp');
-	$app->get('/explore', ExploreController::class . ':showImages')->add(CheckSessionStartedMiddleware::class);
+	$app->get('/explore', ExploreController::class . ':showImages')->add(CheckSessionStartedMiddleware::class)->setName('explore');
 	$app->get('/user/wallet', WalletController::class . ':showWallet')->add(CheckSessionStartedMiddleware::class)->setName('wallet');
 	$app->post('/user/wallet', WalletController::class . ':addMoney');
 	$app->get('/user/membership', MembershipController::class . ':showMembership')->add(CheckSessionStartedMiddleware::class)->setName('membership');

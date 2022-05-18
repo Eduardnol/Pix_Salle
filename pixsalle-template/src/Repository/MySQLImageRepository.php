@@ -34,7 +34,7 @@ final class MySQLImageRepository implements ImageRepository
 		return null;
 	}
 
-	public function getImages(): array
+	public function getAllImages(): array
 	{
 		$aux = 1;
 		$images = [];
