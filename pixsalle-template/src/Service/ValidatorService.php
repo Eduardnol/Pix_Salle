@@ -32,18 +32,21 @@ class ValidatorService
 
 	public function validatePhoneNumber(string $phoneNumber, bool &$edu)
 	{
-		$phone_format = "/(6)*([0-9])$/";
+		$phone_format = "/(6)([0-9]){8}/";
 
 
-		if (!empty($phoneNumber)) {
-			if (strlen($phoneNumber) != 9) {
-				$edu = true;
-				return 'The phone number must contain 9 numbers.';
-			} elseif (!preg_match($phone_format, $phoneNumber)) {
-				$edu = true;
-				return 'The phone number must start by 6.';
-			}
-		}
+        if (!empty($phoneNumber)) {
+            if (strlen($phoneNumber) != 9) {
+                $edu = true;
+                return 'The phone number must contain 9 numbers.';
+            } elseif (!preg_match($phone_format, $phoneNumber)) {
+                $edu = true;
+                return 'The phone number must start by 6.';
+            }
+        } else {
+            $edu = true;
+            return 'The phone number must contain 9 numbers.';
+        }
 		return '';
 	}
 
