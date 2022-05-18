@@ -29,7 +29,6 @@ class UserSessionController
 	public function showSignInForm(Request $request, Response $response): Response
 	{
 		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
-		$_SESSION['logged'] = 0;
 		return $this->twig->render(
 			$response, 'sign-in.twig',
 			[
@@ -66,7 +65,7 @@ class UserSessionController
                 $_SESSION['user_id'] = $user->id;
 	            $_SESSION['user_email'] = $user->email;
 	            $_SESSION['logged'] = 1;
-                return $response->withHeader('Location','/explore')->withStatus(302);
+                return $response->withHeader('Location', '/')->withStatus(302);
             }
         }
         return $this->twig->render(

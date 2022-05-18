@@ -35,7 +35,6 @@ final class SignUpController
 	public function showSignUpForm(Request $request, Response $response): Response
 	{
 		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
-		$_SESSION['logged'] = 0;
 
 		return $this->twig->render(
 			$response,

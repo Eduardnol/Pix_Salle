@@ -1,0 +1,15 @@
+{% extends "base.twig" %}
+
+{% block title %}Blogs | PixSalle{% endblock %}
+
+{% block content %}
+
+    {% for blog in blogs %}
+        <p>{{ blog[1][0] }} uploaded by <b>{{ blog[2][0] }}</b></p>
+    {% else %}
+        <p>Upload some blogs!</p>
+    {% endfor %}
+    <a href="{{ url_for('blog') }}">
+        <button>Create a new blog!</button>
+    </a>
+{% endblock %}

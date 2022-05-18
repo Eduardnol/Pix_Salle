@@ -30,14 +30,13 @@ class ExploreController
 
         $routeParser = RouteContext::fromRequest($request)->getRouteParser();
 
-        $error = null;
-        $images = $this->imageRepository->getImages();
+        $error = NULL;
 
-        if ($images == null) {
-            $error = "Image database empty!";
+
+        if ($_SESSION['logged'] == NULL) {
             return $this->twig->render(
-                $response,
-                'explore.twig',
+                $response->withHeader('Location', '/sign-in')->withStatus(302),
+                'sign-in.twig',
                 [
                     'logged' => $_SESSION['logged'],
                     'error' => $error
@@ -45,12 +44,15 @@ class ExploreController
             );
         } else {
 
+            $images = $this->imageRepository->getImages();
+
             return $this->twig->render(
                 $response,
                 'explore.twig',
                 [
                     'logged' => $_SESSION['logged'],
-                    'images' => $images
+                    'images' => $images,
+                    'error' => $error
                 ]
             );
         }

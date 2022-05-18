@@ -3,8 +3,12 @@
 declare(strict_types=1);
 
 use Salle\PixSalle\Controller\API\BlogAPIController;
+
+//use Salle\PixSalle\Controller\API\BlogAPIController;
+use Salle\PixSalle\Controller\BlogController;
 use Salle\PixSalle\Controller\ChangePasswordController;
 use Salle\PixSalle\Controller\ExploreController;
+use Salle\PixSalle\Controller\HomeController;
 use Salle\PixSalle\Controller\MembershipController;
 use Salle\PixSalle\Controller\PortfolioController;
 use Salle\PixSalle\Controller\ProfileController;
@@ -16,8 +20,8 @@ use Slim\App;
 
 function addRoutes(App $app): void
 {
-	$app->get('/', UserSessionController::class . ':showSignInForm')->add(CheckSessionStartedMiddleware::class);;
-	$app->get('/sign-in', UserSessionController::class . ':showSignInForm')->setName('signIn');
+    $app->get('/', HomeController::class . ':showHome')->add(CheckSessionStartedMiddleware::class)->setName('home');
+    $app->get('/sign-in', UserSessionController::class . ':showSignInForm')->setName('signIn');
 	$app->post('/sign-in', UserSessionController::class . ':signIn');
 	$app->get('/sign-up', SignUpController::class . ':showSignUpForm')->setName('signUp');
 	$app->post('/sign-up', SignUpController::class . ':signUp');
@@ -35,4 +39,8 @@ function addRoutes(App $app): void
 	$app->get('/portfolio/album/{id}', PortfolioController::class . ':showalbum')->add(CheckSessionStartedMiddleware::class)->setName('uploadimage');
 	$app->post('/portfolio/album/{id}', PortfolioController::class . ':uploadImage')->add(CheckSessionStartedMiddleware::class)->setName('uploadimage');
 	$app->delete('/portfolio/album/{id}', PortfolioController::class . ':deleteImage')->add(CheckSessionStartedMiddleware::class)->setName('uploadimage');
+	$app->get('/api/blog', BlogController::class . ':showBlogForm')->add(CheckSessionStartedMiddleware::class)->setName('blog');
+	$app->post('/api/blog', BlogController::class . ':postBlogForm');
+	$app->get('/blog', BlogController::class . ':showBlogList')->add(CheckSessionStartedMiddleware::class)->setName('blog-list');
+
 }

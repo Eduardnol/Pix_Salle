@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 use Psr\Container\ContainerInterface;
 use Salle\PixSalle\Controller\ChangePasswordController;
+use Salle\PixSalle\Controller\BlogController;
+use Salle\PixSalle\Controller\ChangePasswordController;
 use Salle\PixSalle\Controller\ExploreController;
+use Salle\PixSalle\Controller\HomeController;
 use Salle\PixSalle\Controller\MembershipController;
 use Salle\PixSalle\Controller\PortfolioController;
 use Salle\PixSalle\Controller\ProfileController;
 use Salle\PixSalle\Controller\SignUpController;
 use Salle\PixSalle\Controller\UserSessionController;
 use Salle\PixSalle\Controller\WalletController;
+use Salle\PixSalle\Repository\MySQLImageRepository;
+use Salle\PixSalle\Repository\MySQLBlogRepository;
 use Salle\PixSalle\Repository\MySQLImageRepository;
 use Salle\PixSalle\Repository\MySQLMembership;
 use Salle\PixSalle\Repository\MySQLPortfolioRepository;
@@ -21,8 +26,8 @@ use Slim\Views\Twig;
 
 function addDependencies(ContainerInterface $container): void
 {
-	$container->set(
-		'view',
+    $container->set(
+        'view',
 		function () {
 			return Twig::create(__DIR__ . '/../templates', ['cache' => false]);
 		}
@@ -37,11 +42,11 @@ function addDependencies(ContainerInterface $container): void
 			$_ENV['MYSQL_PORT'],
 			$_ENV['MYSQL_DATABASE']
 		);
-	});
+    });
 
-	$container->set('user_repository', function (ContainerInterface $container) {
-		return new MySQLUserRepository($container->get('db'));
-	});
+    $container->set('user_repository', function (ContainerInterface $container) {
+        return new MySQLUserRepository($container->get('db'));
+    });
 
 	$container->set('image_repository', function (ContainerInterface $container) {
 		return new MySQLImageRepository($container->get('db'));
@@ -50,19 +55,34 @@ function addDependencies(ContainerInterface $container): void
 		return new MySQLPortfolioRepository($container->get('db'));
 	});
 
+    $container->set('blog_repository', function (ContainerInterface $container) {
+        return new MySQLBlogRepository($container->get('db'));
+    });
+
+    $container->set(
+        UserSessionController::class,
+        function (ContainerInterface $c) {
+            return new UserSessionController($c->get('view'), $c->get('user_repository'));
+        }
+    );
+    $container->set('wallet_repository', function (ContainerInterface $container) {
+        return new MySQLWalletRepository($container->get('db'));
+    });
+    $container->set('membership_repository', function (ContainerInterface $container) {
+        return new MySQLMembership($container->get('db'));
+    });
 	$container->set(
-		UserSessionController::class,
+		BlogController::class,
 		function (ContainerInterface $c) {
-			return new UserSessionController($c->get('view'), $c->get('user_repository'));
+			return new BlogController($c->get('view'), $c->get('blog_repository'));
 		}
 	);
-	$container->set('wallet_repository', function (ContainerInterface $container) {
-		return new MySQLWalletRepository($container->get('db'));
-	});
-	$container->set('membership_repository', function (ContainerInterface $container) {
-		return new MySQLMembership($container->get('db'));
-	});
-
+	$container->set(
+		HomeController::class,
+		function (ContainerInterface $c) {
+			return new HomeController($c->get('view'));
+		}
+	);
 	$container->set(
 		SignUpController::class,
 		function (ContainerInterface $c) {
