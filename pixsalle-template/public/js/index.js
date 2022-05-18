@@ -16,10 +16,10 @@ function submitFormEntry(e) {
     console.log("Exito");
 
     let json = $('#formSubmitBlogEntry').serializeArray();
-    console.log(json);
-    // json = JSON.parse(json);
+    event.preventDefault();
+    //json = JSON.parse(json);
     json.push({userId: $('#userId').text()});
-
+    console.log(json);
     let connect = new Connect();
     connect.submitFormEntry(json);
 
@@ -52,12 +52,10 @@ class Connect {
         let url = baseUrl + `/api/blog`
         const response = await fetch(url, {
             method: "POST",
-            body: JSON.stringify({
-                json
-            }),
+            body: JSON.stringify(json),
             headers: {'Content-Type': 'application/json'},
         })
-        const data = response.json();
+        // const data = response.json();
         //Now its time to check the error codes
         if (response.status == 500) {
             return "Bad Parameters";
