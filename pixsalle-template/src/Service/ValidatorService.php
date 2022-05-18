@@ -20,31 +20,47 @@ class ValidatorService
 		return '';
 	}
 
-	public function validatePassword(string $password)
-	{
-		if (empty($password) || strlen($password) < 6) {
-			return 'The password must contain at least 6 characters.';
-		} else if (!preg_match("~[0-9]+~", $password) || !preg_match("/[a-z]/", $password) || !preg_match("/[A-Z]/", $password)) {
-			return 'The password must contain both upper and lower case letters and numbers';
-		}
-		return '';
-	}
+    public function validatePassword(string $password)
+    {
+        if (empty($password) || strlen($password) < 6) {
+            return 'The password must contain at least 6 characters.';
+        } else if (!preg_match("~[0-9]+~", $password) || !preg_match("/[a-z]/", $password) || !preg_match("/[A-Z]/", $password)) {
+            return 'The password must contain both upper and lower case letters and numbers';
+        }
+        return '';
+    }
 
-	public function validatePhoneNumber(string $phoneNumber, bool &$edu)
-	{
-		$phone_format = "/(6)([0-9]){8}/";
+    public function validateUserName(string $userName, bool &$error)
+    {
+        $userName_format = "/[A-Za-z][0-9]|[0-9][A-Za-z]/";
+
+        if (!empty($userName)) {
+            if (!preg_match($userName_format, $userName)) {
+                $error = true;
+                return 'The user name must be alphanumeric!';
+            }
+        } else {
+            $error = true;
+            return 'The user name must be alphanumeric!';
+        }
+        return '';
+    }
+
+    public function validatePhoneNumber(string $phoneNumber, bool &$error)
+    {
+        $phone_format = "/(6)([0-9]){8}/";
 
 
         if (!empty($phoneNumber)) {
             if (strlen($phoneNumber) != 9) {
-                $edu = true;
+                $error = true;
                 return 'The phone number must contain 9 numbers.';
             } elseif (!preg_match($phone_format, $phoneNumber)) {
-                $edu = true;
+                $error = true;
                 return 'The phone number must start by 6.';
             }
         } else {
-            $edu = true;
+            $error = true;
             return 'The phone number must contain 9 numbers.';
         }
 		return '';

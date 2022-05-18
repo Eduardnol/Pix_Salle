@@ -12,6 +12,9 @@
             {% if allUser.userName %}
                 <input data-cy="profile__userName" type="text" name="userName" value="{{ allUser.userName }}">
             {% endif %}
+            {% if formErrors['userName'] %}
+                <p data-cy="sign-up__wrongUserName">{{ formErrors['userName'] }}</p>
+            {% endif %}
 
         </label><br>
         <label for="email">Email:

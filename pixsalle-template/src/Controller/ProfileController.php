@@ -69,10 +69,12 @@ class ProfileController
 		$errors = [];
 
 		$errors['phoneNumber'] = $this->validator->validatePhoneNumber($data['phoneNumber'], $error);
+        $errors['userName'] = $this->validator->validateUserName($data['userName'], $error);
 
 		if ($error) {
             $actual_user_id = $_SESSION['user_id'];
             $actual_user_email = $_SESSION['user_email'];
+            $user = $this->userRepository->getUserByEmail($actual_user_email);
             return $this->twig->render(
                 $response,
                 'profile.twig',
@@ -84,6 +86,7 @@ class ProfileController
                     'logged' => $_SESSION['logged'],
                     'userId' => $actual_user_id,
                     'userEmail' => $actual_user_email,
+                    'allUser' => $user,
 
                 ]
 			);
