@@ -89,3 +89,18 @@ CREATE TABLE `album`
         REFERENCES `portfolios` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
+
+DROP TABLE IF EXISTS `blogs`;
+CREATE TABLE `blogs`
+(
+    `id`        INT                                                     NOT NULL AUTO_INCREMENT,
+    `title`     INT                                                     NOT NULL,
+    `userId`    INT                                                     NOT NULL,
+    `comment`   VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+    `createdAt` DATETIME                                                NOT NULL,
+    `updatedAt` DATETIME                                                NOT NULL,
+    PRIMARY KEY (`id`, `userId`),
+    FOREIGN KEY (`userId`)
+        REFERENCES `users` (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
