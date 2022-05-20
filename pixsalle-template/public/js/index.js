@@ -1,7 +1,35 @@
 $(document).ready(function () {
     $('.deletePhotoById').on('click', clickFunction);
     $('.buttonSubmitBlogEntry').on('click', submitFormEntry);
+    $('#createQrCode').on('click', createQrCode);
 });
+
+
+function createQrCode() {
+
+    let url = window.location.href;
+    let data = JSON.stringify({
+        "symbology": "QRCode",
+        "code": url
+    });
+
+    let xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+
+    xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === 4) {
+            console.log(this.responseText);
+        }
+    });
+
+    xhr.open("POST", "http://localhost:8020/BarcodeGenerator");
+    xhr.setRequestHeader("content-type", "application/json");
+    xhr.setRequestHeader("accept", "image/png");
+
+    xhr.send(data);
+
+
+}
 
 function clickFunction(e) {
 
