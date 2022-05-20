@@ -4,6 +4,7 @@ namespace Salle\PixSalle\Repository;
 
 use PDO;
 
+
 final class MySQLBlogRepository implements BlogRepository
 {
 
@@ -18,7 +19,7 @@ final class MySQLBlogRepository implements BlogRepository
 	public function createBlog(string $title, string $comment, string $userid): void
 	{
 		$query = <<<'QUERY'
-        INSERT INTO blogs(title, comment, userId, createdAt, updatedAt)
+        INSERT INTO blogs(title, content, userId, createdAt, updatedAt)
         VALUES(:title, :comment, :userId, NOW(), NOW())
         QUERY;
 		$statement = $this->databaseConnection->prepare($query);
@@ -32,25 +33,14 @@ final class MySQLBlogRepository implements BlogRepository
 
 	public function showBlogs()
 	{
-		$aux = 1;
-		$blogs = [];
 		$query = <<<'QUERY'
-        SELECT b.title,u.userName FROM blogs as b, users as u where b.userId = u.id;   
+        SELECT b.title,b.content, b.userId FROM blogs as b;   
         QUERY;
-
 		$statement = $this->databaseConnection->prepare($query);
 
 		$statement->execute();
-
-		while ($row = $statement->fetch()) {
-			$aux2 = 1;
-			$blogs[$aux][$aux2] = array($row['title']);
-			$aux2 = 2;
-			$blogs[$aux][$aux2] = array($row['userName']);
-			$aux = $aux + 1;
-		}
-
-		return $blogs;
+		$statement->setFetchMode(PDO::FETCH_CLASS, 'Salle\PixSalle\Model\Blog');
+		return $statement->fetch();
 	}
 
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Salle\PixSalle\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Salle\PixSalle\Repository\BlogRepository;
@@ -27,17 +28,16 @@ class BlogController
 		$this->blogRepository = $blogRepository;
 	}
 
-	public function showBlogForm(Request $request, Response $response): Response
+	public function showBlogForm(Request $request, ResponseInterface $response): Response
 	{
 
-		return $this->twig->render(
-			$response,
-			'blog.twig',
-			[
-				'userId' => $_SESSION['user_id'],
-				'logged' => $_SESSION['logged']
-			]
-		);
+		$blogs = $this->blogRepository->showBlogs();
+		$response->withHeader('Content-type', 'application/json');
+
+		$response->getBody()->write(json_encode($blogs, JSON_THROW_ON_ERROR));
+		return $response;
+
+
 	}
 
 	public function showBlogList(Request $request, Response $response): Response
