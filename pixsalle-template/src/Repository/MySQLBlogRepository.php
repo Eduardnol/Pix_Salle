@@ -55,4 +55,55 @@ final class MySQLBlogRepository implements BlogRepository
 		return $statement->fetchAll();
 	}
 
+	public function showSpecificBlog(int $blogId): bool|array
+	{
+		$query = <<<'QUERY'
+        SELECT b.id,b.title,b.content, b.userId FROM blogs as b WHERE b.id = :blogId;   
+        QUERY;
+		$statement = $this->databaseConnection->prepare($query);
+		$statement->bindParam('blogId', $blogId);
+
+		$statement->execute();
+		$statement->setFetchMode(PDO::FETCH_CLASS, 'Salle\PixSalle\Model\Blog');
+		return $statement->fetchAll();
+	}
+
+	public function deleteSpecificBlog(int $blogId, int $userId): bool
+	{
+		$query = <<<'QUERY'
+		DELETE FROM blogs WHERE id = :blogId AND userId = :userId;   
+		QUERY;
+		$statement = $this->databaseConnection->prepare($query);
+		$statement->bindParam('blogId', $blogId);
+		$statement->bindParam('userId', $userId);
+
+		$statement->execute();
+
+
+		return true;
+	}
+
+	public function updateSpecificBlog(int $blogId, string $title, string $content, int $userId): Blog
+	{
+		$query = <<<'QUERY'
+		UPDATE blogs SET title = :title, content = :content WHERE id = :blogId AND userId = :userId;;   
+		QUERY;
+		$statement = $this->databaseConnection->prepare($query);
+		$statement->bindParam('blogId', $blogId);
+		$statement->bindParam('title', $title);
+		$statement->bindParam('content', $content);
+		$statement->bindParam('userId', $userId);
+
+		$statement->execute();
+
+
+		$blog = new Blog();
+		$blog->setUserId($userId);
+		$blog->setTitle($title);
+		$blog->setContent($content);
+		$blog->setId($blogId);
+
+		return $blog;
+	}
+
 }
