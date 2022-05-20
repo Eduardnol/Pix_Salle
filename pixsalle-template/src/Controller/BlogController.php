@@ -59,17 +59,21 @@ class BlogController
 	public function postBlogForm(Request $request, Response $response): Response
 	{
 		$data = $request->getParsedBody();
-		$this->blogRepository->createBlog($data['title'], $data['content'], $data['userId']);
-		$blogs = $this->blogRepository->showBlogs();
-		return $this->twig->render(
-			$response->withHeader('Location', '/blog')->withStatus(302),
-			'blog-list.twig',
-			[
-				'userId' => $_SESSION['user_id'],
-				'logged' => $_SESSION['logged'],
-				'blogs' => $blogs
-			]
-		);
+		$blogs = $this->blogRepository->createBlog($data['title'], $data['content'], $data['userId']);
+		//$blogs = $this->blogRepository->showBlogs();
+		$response->withHeader('Content-type', 'application/json');
+
+		$response->getBody()->write(json_encode($blogs));
+		return $response;
+//		return $this->twig->render(
+//			$response->withHeader('Location', '/blog')->withStatus(302),
+//			'blog-list.twig',
+//			[
+//				'userId' => $_SESSION['user_id'],
+//				'logged' => $_SESSION['logged'],
+//				'blogs' => $blogs
+//			]
+//		);
 	}
 
 }

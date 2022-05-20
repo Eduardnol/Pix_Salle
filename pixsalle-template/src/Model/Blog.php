@@ -8,6 +8,7 @@ use JsonSerializable;
 
 class Blog implements JsonSerializable
 {
+	private int $id;
 	private string $title;
 	private string $content;
 	private int $userId;
@@ -22,6 +23,7 @@ class Blog implements JsonSerializable
 	{
 		return
 			[
+				'id' => $this->getId(),
 				'title' => $this->getTitle(),
 				'content' => $this->getContent(),
 				'userId' => $this->getUserId()
@@ -75,4 +77,21 @@ class Blog implements JsonSerializable
 	{
 		$this->userId = $userId;
 	}
+
+	/**
+	 * @return int
+	 */
+	public function getId(): int
+	{
+		return $this->id;
+	}
+
+	/**
+	 * @param int $id
+	 */
+	public function setId(int $id): void
+	{
+		$this->id = $id;
+	}
+
 }
