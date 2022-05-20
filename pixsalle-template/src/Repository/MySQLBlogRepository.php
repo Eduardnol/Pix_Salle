@@ -25,7 +25,7 @@ final class MySQLBlogRepository implements BlogRepository
 
 		$statement->bindParam('title', $title, PDO::PARAM_STR);
 		$statement->bindParam('comment', $comment, PDO::PARAM_STR);
-		$statement->bindParam('userId', $_SESSION['user_id'], PDO::PARAM_STR);
+		$statement->bindParam('userId', $userid, PDO::PARAM_STR);
 
 		$statement->execute();
 	}

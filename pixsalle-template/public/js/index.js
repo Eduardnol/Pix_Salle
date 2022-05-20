@@ -15,10 +15,13 @@ function clickFunction(e) {
 function submitFormEntry(e) {
     console.log("Exito");
 
-    let json = $('#formSubmitBlogEntry').serializeArray();
-    event.preventDefault();
-    //json = JSON.parse(json);
-    json.push({userId: $('#userId').text()});
+    const array = $('#formSubmitBlogEntry').serializeArray();
+    array.push({name: "userId", value: $('#userId').text()});
+    console.log(array)
+    let json = {};
+    $.each(array, function () {
+        json[this.name] = this.value || "";
+    });
     console.log(json);
     let connect = new Connect();
     connect.submitFormEntry(json);

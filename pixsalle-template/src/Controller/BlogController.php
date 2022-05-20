@@ -34,7 +34,7 @@ class BlogController
 			$response,
 			'blog.twig',
 			[
-				'userId' => $request->getAttribute('userId'),
+				'userId' => $_SESSION['user_id'],
 				'logged' => $_SESSION['logged']
 			]
 		);
@@ -49,7 +49,7 @@ class BlogController
 			$response,
 			'blog-list.twig',
 			[
-				'userId' => $_SESSION['userId'],
+				'userId' => $_SESSION['user_id'],
 				'logged' => $_SESSION['logged'],
 				'blogs' => $blogs
 			]
@@ -65,7 +65,7 @@ class BlogController
 			$response->withHeader('Location', '/blog')->withStatus(302),
 			'blog-list.twig',
 			[
-				'userId' => $_SESSION['userId'],
+				'userId' => $_SESSION['user_id'],
 				'logged' => $_SESSION['logged'],
 				'blogs' => $blogs
 			]

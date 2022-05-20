@@ -40,7 +40,7 @@ function addRoutes(App $app): void
 	$app->post('/portfolio/album/{id}', PortfolioController::class . ':uploadImage')->add(CheckSessionStartedMiddleware::class)->setName('uploadimage');
 	$app->delete('/portfolio/album/{id}', PortfolioController::class . ':deleteImage')->add(CheckSessionStartedMiddleware::class)->setName('uploadimage');
 	$app->get('/api/blog', BlogController::class . ':showBlogForm')->add(CheckSessionStartedMiddleware::class)->setName('blog');
-	$app->post('/api/blog', BlogController::class . ':postBlogForm');
+	$app->post('/api/blog', BlogController::class . ':postBlogForm')->add(CheckSessionStartedMiddleware::class);
 	$app->get('/blog', BlogController::class . ':showBlogList')->add(CheckSessionStartedMiddleware::class)->setName('blog-list');
 
 }
