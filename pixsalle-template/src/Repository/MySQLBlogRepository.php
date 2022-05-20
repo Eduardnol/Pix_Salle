@@ -40,7 +40,7 @@ final class MySQLBlogRepository implements BlogRepository
 
 		$statement->execute();
 		$statement->setFetchMode(PDO::FETCH_CLASS, 'Salle\PixSalle\Model\Blog');
-		return $statement->fetch();
+		return $statement->fetchAll();
 	}
 
 }

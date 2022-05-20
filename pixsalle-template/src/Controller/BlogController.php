@@ -34,7 +34,7 @@ class BlogController
 		$blogs = $this->blogRepository->showBlogs();
 		$response->withHeader('Content-type', 'application/json');
 
-		$response->getBody()->write(json_encode($blogs, JSON_THROW_ON_ERROR));
+		$response->getBody()->write(json_encode($blogs));
 		return $response;
 
 

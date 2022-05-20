@@ -23,7 +23,7 @@ class Blog implements JsonSerializable
 		return
 			[
 				'title' => $this->getTitle(),
-				'name' => $this->getContent(),
+				'content' => $this->getContent(),
 				'userId' => $this->getUserId()
 			];
 	}
