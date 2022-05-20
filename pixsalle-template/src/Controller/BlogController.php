@@ -115,7 +115,7 @@ class BlogController
 
 		$response->withHeader('Content-type', 'application/json');
 		if ($blogs) {
-			$responseMessage = array("message" => "Blog deleted");
+			$responseMessage = array("message" => "Blog entry with id ${$id} was successfully deleted");
 			$response->getBody()->write(json_encode($responseMessage));
 		}
 		return $response;
