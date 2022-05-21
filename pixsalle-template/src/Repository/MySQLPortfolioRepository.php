@@ -60,7 +60,7 @@ class MySQLPortfolioRepository implements PortfolioRepository
 		$statement = $this->databaseConnection->prepare($query);
 		$statement->bindParam(':userId', $userId);
 		$statement->execute();
-		$id = $statement->fetchColumn();
+		$id = (int)$statement->fetchColumn();
 
 
 		$query = "INSERT INTO album (title, portfolioId, createdAt, updatedAt) VALUES (:albumName, :portfolioId , NOW(), NOW())";
