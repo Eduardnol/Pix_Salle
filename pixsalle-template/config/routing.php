@@ -41,7 +41,7 @@ function addRoutes(App $app): void
 	$app->delete('/portfolio/album/{id}', PortfolioController::class . ':deleteImage')->add(CheckSessionStartedMiddleware::class)->setName('uploadimage');
 	$app->get('/api/blog', BlogController::class . ':showBlogForm')->setName('blog');
 	$app->post('/api/blog', BlogController::class . ':postBlogForm');
-	$app->get('/blog', BlogController::class . ':showBlogList')->add(CheckSessionStartedMiddleware::class)->setName('blog-list');
+	$app->get('/blog', BlogController::class . ':showBlogList')->setName('blog-list');
 	$app->get('/api/blog/{id}', BlogController::class . ':showSpecificBlog')->setName('blogSpecific');
 	$app->put('/api/blog/{id}', BlogController::class . ':updateSpecificBlog')->setName('blogSpecific');
 	$app->delete('/api/blog/{id}', BlogController::class . ':deleteSpecificBlog')->setName('blogSpecific');
