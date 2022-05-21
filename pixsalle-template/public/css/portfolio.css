@@ -7,3 +7,7 @@ h1 {
     width: 28rem;
     margin: auto;
 }
+
+.card {
+    max-width: 18rem;
+}
