@@ -3,6 +3,8 @@
 {% block title %}Profile | PixSalle{% endblock %}
 
 {% block content %}
+    <link href="/css/profile.css" rel="stylesheet">
+
     {% if allUser.userName == NULL %}
         <h1>Welcome back user{{ userId }}!</h1>
     {% endif %}
@@ -10,7 +12,7 @@
         <h1>Welcome back {{ allUser.userName }}!</h1>
     {% endif %}
 
-    <div class="card" style="width: 26rem;">
+    <div id="main-card" class="card" style="width: 26rem;">
         <img src="/assets/img/profile_default.png" class="card-img-top" alt="Profile image">
 
         <div class="card-body">
@@ -26,7 +28,7 @@
                                class="form-control">
                     {% endif %}
                     {% if formErrors['userName'] %}
-                        <p style="color: red;" data-cy="sign-up__wrongUserName">{{ formErrors['userName'] }}</p>
+                        <p class="showErrorMsg" data-cy="sign-up__wrongUserName">{{ formErrors['userName'] }}</p>
                     {% endif %}
                 </div>
 
@@ -45,12 +47,14 @@
                            name="phoneNumber" value="{{ allUser.phone }}" class="form-control">
                 </div>
                 {% if formErrors['phoneNumber'] %}
-                    <p style="color: red;" data-cy="sign-up__wrongPhoneNumber">{{ formErrors['phoneNumber'] }}</p>
+                    <p class="showErrorMsg" data-cy="sign-up__wrongPhoneNumber">{{ formErrors['phoneNumber'] }}</p>
                 {% endif %}
-                <input data-cy="profile__btn" type="submit" value="Save Changes" class="btn btn-primary">
-                <a href="profile/changePassword" class="btn btn-primary">
-                    Change your password
-                </a>
+                <div id="inputs-card">
+                    <input data-cy="profile__btn" type="submit" value="Save Changes" class="btn btn-primary">
+                    <a href="profile/changePassword" class="btn btn-primary">
+                        Change your password
+                    </a>
+                </div>
             </form>
         </div>
 
