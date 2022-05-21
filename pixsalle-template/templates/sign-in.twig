@@ -5,10 +5,18 @@
 {% block content %}
   <h1>Welcome to PixSalle Sign-in</h1>
   <form data-cy="sign-in" action="{{ formAction }}" method="POST">
-  <input data-cy="sign-in__email" type="text" name="email" placeholder="Enter your email">
-  <input data-cy="sign-in__password" type="password" name="password" placeholder="Enter your password">
-  <input data-cy="sign-in__btn" type="submit" value="Sign-in" class="btn btn-primary">
-</form>
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="inputGroup-sizing-default">Enter your email</span>
+      <input data-cy="sign-in__email" type="text" name="email" placeholder="example@salle.url.edu" class="form-control">
+    </div>
+
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="inputGroup-sizing-default">Enter your password</span>
+      <input data-cy="sign-in__password" type="password" name="password" placeholder="Password" class="form-control">
+    </div>
+
+    <input data-cy="sign-in__btn" type="submit" value="Sign-in" class="btn btn-primary">
+  </form>
 {% if formErrors['email'] %}
 <p data-cy="sign-in__wrongEmail">{{ formErrors['email'] }}</p>
 {% endif %}
