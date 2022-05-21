@@ -14,8 +14,8 @@ interface BlogRepository
 
 	public function showSpecificBlog(int $blogId): bool|array;
 
-	public function updateSpecificBlog(int $blogId, string $title, string $content, int $userId): Blog;
+	public function updateSpecificBlog(int $blogId, string $title, string $content, int $userId): Blog|array;
 
-	public function deleteSpecificBlog(int $blogId, int $userId): bool;
+	public function deleteSpecificBlog(int $blogId, int $userId): bool|array;
 
 }

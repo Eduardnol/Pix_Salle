@@ -65,10 +65,14 @@ final class MySQLBlogRepository implements BlogRepository
 
 		$statement->execute();
 		$statement->setFetchMode(PDO::FETCH_CLASS, 'Salle\PixSalle\Model\Blog');
-		return $statement->fetchAll();
+		$value = $statement->fetchAll();
+		if ($statement->rowCount() <= 0) {
+			return array("message" => "Blog entry with id {$blogId} does not exist");
+		}
+		return $value;
 	}
 
-	public function deleteSpecificBlog(int $blogId, int $userId): bool
+	public function deleteSpecificBlog(int $blogId, int $userId): bool|array
 	{
 		$query = <<<'QUERY'
 		DELETE FROM blogs WHERE id = :blogId AND userId = :userId;   
@@ -79,11 +83,15 @@ final class MySQLBlogRepository implements BlogRepository
 
 		$statement->execute();
 
+		if ($statement->rowCount() <= 0) {
+			return false;
+		}
+
 
 		return true;
 	}
 
-	public function updateSpecificBlog(int $blogId, string $title, string $content, int $userId): Blog
+	public function updateSpecificBlog(int $blogId, string $title, string $content, int $userId): Blog|array
 	{
 		$query = <<<'QUERY'
 		UPDATE blogs SET title = :title, content = :content WHERE id = :blogId AND userId = :userId;;   
@@ -95,6 +103,9 @@ final class MySQLBlogRepository implements BlogRepository
 		$statement->bindParam('userId', $userId);
 
 		$statement->execute();
+		if ($statement->rowCount() == 0) {
+			return array("message" => "Blog entry with id {$blogId} does not exist");
+		}
 
 
 		$blog = new Blog();

@@ -60,6 +60,14 @@ class BlogController
 	public function postBlogForm(Request $request, Response $response): Response
 	{
 		$data = $request->getParsedBody();
+
+		if ($data['title'] == '' || $data['content'] == '' || $data['userId'] == '') {
+			$response = $response->withStatus(400);
+			$responseMessage = array("message" => "'title' and/or 'content' and/or 'userId' key missing");
+			$response->getBody()->write(json_encode($responseMessage));
+			return $response;
+		}
+
 		$blogs = $this->blogRepository->createBlog($data['title'], $data['content'], $data['userId']);
 		//$blogs = $this->blogRepository->showBlogs();
 		$response->withHeader('Content-type', 'application/json');
@@ -86,6 +94,11 @@ class BlogController
 		$blogs = $this->blogRepository->showSpecificBlog((int)$id);
 
 		$response->withHeader('Content-type', 'application/json');
+		if (!isset($blogs[0]['message'])) {
+			$response = $response->withStatus(404);
+			$response->getBody()->write(json_encode($blogs));
+			return $response;
+		}
 
 		$response->getBody()->write(json_encode($blogs));
 		return $response;
@@ -97,8 +110,18 @@ class BlogController
 		$request->getUri()->getPath();
 		$id = $request->getAttribute('id');
 		$data = $request->getParsedBody();
+		if ($data['title'] == '' || $data['content'] == '') {
+			$response = $response->withStatus(400);
+			$responseMessage = array("message" => "The title and/or content cannot be empty");
+			$response->getBody()->write(json_encode($responseMessage));
+			return $response;
+		}
 		$blogs = $this->blogRepository->updateSpecificBlog((int)$id, $data['title'], $data['content'], (int)1);
-
+		if (is_array($blogs)) {
+			$response = $response->withStatus(404);
+			$response->getBody()->write(json_encode($blogs));
+			return $response;
+		}
 		$response->withHeader('Content-type', 'application/json');
 		$response->getBody()->write(json_encode($blogs));
 		return $response;
@@ -115,7 +138,11 @@ class BlogController
 
 		$response->withHeader('Content-type', 'application/json');
 		if ($blogs) {
-			$responseMessage = array("message" => "Blog entry with id ${$id} was successfully deleted");
+			$responseMessage = array("message" => "Blog entry with id {$id} was successfully deleted");
+			$response->getBody()->write(json_encode($responseMessage));
+		} else {
+			$response = $response->withStatus(404);
+			$responseMessage = array("message" => "Blog entry with id {$id} was not found");
 			$response->getBody()->write(json_encode($responseMessage));
 		}
 		return $response;
