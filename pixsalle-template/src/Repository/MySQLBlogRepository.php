@@ -3,53 +3,107 @@
 namespace Salle\PixSalle\Repository;
 
 use PDO;
+use Salle\PixSalle\Model\Blog;
+
 
 final class MySQLBlogRepository implements BlogRepository
 {
 
-    private PDO $databaseConnection;
+	private PDO $databaseConnection;
 
-    public function __construct(PDO $database)
-    {
-        $this->databaseConnection = $database;
-    }
+	public function __construct(PDO $database)
+	{
+		$this->databaseConnection = $database;
+	}
 
 
-    public function createBlog(string $title, string $comment): void
-    {
-        $query = <<<'QUERY'
-        INSERT INTO blogs(title, comment, userId)
-        VALUES(:title, :comment, :userId)
+	public function createBlog(string $title, string $comment, int $userid): Blog
+	{
+		$query = <<<'QUERY'
+        INSERT INTO blogs(title, content, userId, createdAt, updatedAt)
+        VALUES(:title, :comment, :userId, NOW(), NOW())
         QUERY;
-        $statement = $this->databaseConnection->prepare($query);
+		$statement = $this->databaseConnection->prepare($query);
 
-        $statement->bindParam('title', $title, PDO::PARAM_STR);
-        $statement->bindParam('comment', $comment, PDO::PARAM_STR);
-        $statement->bindParam('userId', $_SESSION['user_id'], PDO::PARAM_STR);
+		$statement->bindParam('title', $title, PDO::PARAM_STR);
+		$statement->bindParam('comment', $comment, PDO::PARAM_STR);
+		$statement->bindParam('userId', $userid, PDO::PARAM_STR);
 
-        $statement->execute();
-    }
+		$statement->execute();
+		$id = $this->databaseConnection->lastInsertId();
 
-    public function showBlogs()
-    {
-        $aux = 1;
-        $blogs = [];
-        $query = <<<'QUERY'
-        SELECT b.title,u.userName FROM blogs as b, users as u where b.userId = u.id;   
+		$blog = new Blog();
+		$blog->setUserId($userid);
+		$blog->setTitle($title);
+		$blog->setContent($comment);
+		$blog->setId($id);
+
+		return $blog;
+
+
+	}
+
+	public function showBlogs(): bool|array
+	{
+		$query = <<<'QUERY'
+        SELECT b.id,b.title,b.content, b.userId FROM blogs as b;   
         QUERY;
+		$statement = $this->databaseConnection->prepare($query);
 
-        $statement = $this->databaseConnection->prepare($query);
+		$statement->execute();
+		$statement->setFetchMode(PDO::FETCH_CLASS, 'Salle\PixSalle\Model\Blog');
+		return $statement->fetchAll();
+	}
 
-        $statement->execute();
+	public function showSpecificBlog(int $blogId): bool|array
+	{
+		$query = <<<'QUERY'
+        SELECT b.id,b.title,b.content, b.userId FROM blogs as b WHERE b.id = :blogId;   
+        QUERY;
+		$statement = $this->databaseConnection->prepare($query);
+		$statement->bindParam('blogId', $blogId);
 
-        while ($row = $statement->fetch()) {
-            $aux2 = 1;
-            $blogs[$aux][$aux2] = array($row['title']);
-            $aux2 = 2;
-            $blogs[$aux][$aux2] = array($row['userName']);
-            $aux = $aux + 1;
-        }
+		$statement->execute();
+		$statement->setFetchMode(PDO::FETCH_CLASS, 'Salle\PixSalle\Model\Blog');
+		return $statement->fetchAll();
+	}
 
-        return $blogs;
-    }
+	public function deleteSpecificBlog(int $blogId, int $userId): bool
+	{
+		$query = <<<'QUERY'
+		DELETE FROM blogs WHERE id = :blogId AND userId = :userId;   
+		QUERY;
+		$statement = $this->databaseConnection->prepare($query);
+		$statement->bindParam('blogId', $blogId);
+		$statement->bindParam('userId', $userId);
+
+		$statement->execute();
+
+
+		return true;
+	}
+
+	public function updateSpecificBlog(int $blogId, string $title, string $content, int $userId): Blog
+	{
+		$query = <<<'QUERY'
+		UPDATE blogs SET title = :title, content = :content WHERE id = :blogId AND userId = :userId;;   
+		QUERY;
+		$statement = $this->databaseConnection->prepare($query);
+		$statement->bindParam('blogId', $blogId);
+		$statement->bindParam('title', $title);
+		$statement->bindParam('content', $content);
+		$statement->bindParam('userId', $userId);
+
+		$statement->execute();
+
+
+		$blog = new Blog();
+		$blog->setUserId($userId);
+		$blog->setTitle($title);
+		$blog->setContent($content);
+		$blog->setId($blogId);
+
+		return $blog;
+	}
+
 }

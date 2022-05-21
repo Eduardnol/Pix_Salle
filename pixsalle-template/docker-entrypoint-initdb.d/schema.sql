@@ -94,9 +94,9 @@ DROP TABLE IF EXISTS `blogs`;
 CREATE TABLE `blogs`
 (
     `id`        INT                                                     NOT NULL AUTO_INCREMENT,
-    `title`     INT                                                     NOT NULL,
+    `title`     VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
     `userId`    INT                                                     NOT NULL,
-    `comment`   VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+    `content`   VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
     `createdAt` DATETIME                                                NOT NULL,
     `updatedAt` DATETIME                                                NOT NULL,
     PRIMARY KEY (`id`, `userId`),
