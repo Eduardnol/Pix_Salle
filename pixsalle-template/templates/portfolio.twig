@@ -3,6 +3,7 @@
 {% block title %}Portfolio | PixSalle{% endblock %}
 
 {% block content %}
+    <link href="/css/portfolio.css" rel="stylesheet">
 
     {{ thereIsPortfolio }}
     {% if thereIsPortfolio %}
@@ -25,6 +26,7 @@
             {% endfor %}
         </div>
     {% else %}
+        <h1>Create a portfolio</h1>
         <form data-cy="user-data" action="{{ formAction }}" id="profile__form" method="POST">
             <div class="input-group mb-3">
                 <input type="text" name="portfolioTitleValue" placeholder="Title" value="{{ portfolioTitleValue }}"

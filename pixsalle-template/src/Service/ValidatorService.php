@@ -6,15 +6,20 @@ namespace Salle\PixSalle\Service;
 
 class ValidatorService
 {
-	public function __construct()
-	{
-	}
 
-	public function validateEmail(string $email)
-	{
-		if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			return 'The email address is not valid';
-		} else if (!strpos($email, "@salle.url.edu")) {
+    // We use this const to define the extensions that we are going to allow
+    private const ALLOWED_EXTENSIONS = ['png', 'jpg'];
+
+
+    public function __construct()
+    {
+    }
+
+    public function validateEmail(string $email)
+    {
+        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return 'The email address is not valid';
+        } else if (!strpos($email, "@salle.url.edu")) {
 			return 'Only emails from the domain @salle.url.edu are accepted.';
 		}
 		return '';
@@ -60,17 +65,22 @@ class ValidatorService
                 return 'The phone number must start by 6.';
             }
         }
-		return '';
-	}
+        return '';
+    }
 
-	public function matchingPasswords($pass1, $pass2)
-	{
-		if (strcmp($pass1, $pass2) == 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+    public function isValidFormat(string $extension): bool
+    {
+        return in_array($extension, self::ALLOWED_EXTENSIONS, true);
+    }
+
+    public function matchingPasswords($pass1, $pass2)
+    {
+        if (strcmp($pass1, $pass2) == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 	public function validateQuantity(string $quantity)
 	{

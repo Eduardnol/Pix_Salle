@@ -32,6 +32,11 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
+                            <a href="{{ url_for('home') }}" class="nav-link active" style="color: white;">
+                                Landing
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ url_for('wallet') }}" class="nav-link active" style="color: white;">
                                 Wallet
                             </a>
@@ -87,6 +92,11 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
+                            <a href="{{ url_for('home') }}" class="nav-link active" style="color: white;">
+                                Landing
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ url_for('signIn') }}" class="nav-link active" style="color: white;">
                                 Sign-in
                             </a>
@@ -105,7 +115,9 @@
 </header>
 {% block content %}{% endblock %}
 <footer>
-    <h3>Copyright Team 11 2022</h3>
+    <h3>Copyright Team 11 2022<span class="material-symbols-outlined">
+copyright
+</span></h3>
 </footer>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
