@@ -69,25 +69,32 @@ class ProfileController
 		$errors = [];
 
 		$errors['phoneNumber'] = $this->validator->validatePhoneNumber($data['phoneNumber'], $error);
+        $errors['userName'] = $this->validator->validateUserName($data['userName'], $error);
 
 		if ($error) {
-			return $this->twig->render(
-				$response,
-				'profile.twig',
-				[
-					'formErrors' => $errors,
-					'formData' => $data,
-					'formAction' => $routeParser->urlFor('profile'),
-					'formMethod' => "POST",
-					'logged' => $_SESSION['logged'],
+            $actual_user_id = $_SESSION['user_id'];
+            $actual_user_email = $_SESSION['user_email'];
+            $user = $this->userRepository->getUserByEmail($actual_user_email);
+            return $this->twig->render(
+                $response,
+                'profile.twig',
+                [
+                    'formErrors' => $errors,
+                    'formData' => $data,
+                    'formAction' => $routeParser->urlFor('profile'),
+                    'formMethod' => "POST",
+                    'logged' => $_SESSION['logged'],
+                    'userId' => $actual_user_id,
+                    'userEmail' => $actual_user_email,
+                    'allUser' => $user,
 
-				]
+                ]
 			);
 		} else {
 			$actualUser = $_SESSION['user_id'];
-			$date = new DateTime('2000-12-12');
-			$user = new User("", "", $date, $date, $data['userName'], $data['phoneNumber'], "hola");
-			$this->userRepository->addInfoUser($user, $actualUser);
+            $date = new DateTime('2000-12-12');
+            $user = new User("", "", $date, $date, $data['userName'], $data['phoneNumber'], "NULL");
+            $this->userRepository->addInfoUser($user, $actualUser);
 			return $response->withHeader('Location', '/profile')->withStatus(302);
 		}
 
