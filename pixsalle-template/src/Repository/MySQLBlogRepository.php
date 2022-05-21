@@ -55,7 +55,7 @@ final class MySQLBlogRepository implements BlogRepository
 		return $statement->fetchAll();
 	}
 
-	public function showSpecificBlog(int $blogId): bool|array
+	public function showSpecificBlog(int $blogId): bool|Blog
 	{
 		$query = <<<'QUERY'
         SELECT b.id,b.title,b.content, b.userId FROM blogs as b WHERE b.id = :blogId;   
@@ -65,9 +65,9 @@ final class MySQLBlogRepository implements BlogRepository
 
 		$statement->execute();
 		$statement->setFetchMode(PDO::FETCH_CLASS, 'Salle\PixSalle\Model\Blog');
-		$value = $statement->fetchAll();
+		$value = $statement->fetch();
 		if ($statement->rowCount() <= 0) {
-			return array("message" => "Blog entry with id {$blogId} does not exist");
+			return false;
 		}
 		return $value;
 	}

@@ -12,7 +12,7 @@ interface BlogRepository
 
 	public function showBlogs();
 
-	public function showSpecificBlog(int $blogId): bool|array;
+	public function showSpecificBlog(int $blogId): bool|Blog;
 
 	public function updateSpecificBlog(int $blogId, string $title, string $content, int $userId): Blog|array;
 
