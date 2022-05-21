@@ -10,43 +10,50 @@
         <h1>Welcome back {{ allUser.userName }}!</h1>
     {% endif %}
 
+    <div class="card" style="width: 26rem;">
+        <img src="/pixsalle-template/public/assets/img/profile_default.png" class="card-img-top" alt="Profile image">
 
-    <form data-cy="user-data" action="{{ formAction }}" id="profile__form" method="POST">
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1">@</span>
-            {% if allUser.userName == NULL %}
-                <input data-cy="profile__userName" type="text" name="userName" value="user{{ userId }}"
-                       class="form-control">
-            {% endif %}
-            {% if allUser.userName %}
-                <input data-cy="profile__userName" type="text" name="userName" value="{{ allUser.userName }}"
-                       class="form-control">
-            {% endif %}
-            {% if formErrors['userName'] %}
-                <p style="color: red;" data-cy="sign-up__wrongUserName">{{ formErrors['userName'] }}</p>
-            {% endif %}
-        </div>
+        <div class="card-body">
+            <form data-cy="user-data" action="{{ formAction }}" id="profile__form" method="POST">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">@</span>
+                    {% if allUser.userName == NULL %}
+                        <input data-cy="profile__userName" type="text" name="userName" value="user{{ userId }}"
+                               class="form-control">
+                    {% endif %}
+                    {% if allUser.userName %}
+                        <input data-cy="profile__userName" type="text" name="userName" value="{{ allUser.userName }}"
+                               class="form-control">
+                    {% endif %}
+                    {% if formErrors['userName'] %}
+                        <p style="color: red;" data-cy="sign-up__wrongUserName">{{ formErrors['userName'] }}</p>
+                    {% endif %}
+                </div>
 
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1">@Email</span>
-            <input data-cy="profile__email" type="text" name="email" class="form-control" value="{{ userEmail }}"
-                   disabled>
-        </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">@Email</span>
+                    <input data-cy="profile__email" type="text" name="email" class="form-control"
+                           value="{{ userEmail }}"
+                           disabled>
+                </div>
 
-        <div class="input-group mb-3">
+                <div class="input-group mb-3">
             <span class="input-group-text material-symbols-outlined" id="basic-addon1">
                 phone_iphone
             </span>
-            <input data-cy="profile__telefonNumber" type="text" placeholder="Enter your phone number"
-                   name="phoneNumber" value="{{ allUser.phone }}" class="form-control">
+                    <input data-cy="profile__telefonNumber" type="text" placeholder="Enter your phone number"
+                           name="phoneNumber" value="{{ allUser.phone }}" class="form-control">
+                </div>
+                {% if formErrors['phoneNumber'] %}
+                    <p style="color: red;" data-cy="sign-up__wrongPhoneNumber">{{ formErrors['phoneNumber'] }}</p>
+                {% endif %}
+                <input data-cy="profile__btn" type="submit" value="Save Changes" class="btn btn-primary">
+                <a href="profile/changePassword" class="btn btn-primary">
+                    Change your password
+                </a>
+            </form>
         </div>
-        {% if formErrors['phoneNumber'] %}
-            <p style="color: red;" data-cy="sign-up__wrongPhoneNumber">{{ formErrors['phoneNumber'] }}</p>
-        {% endif %}
-        <img src="" alt="Profile image"><br>
-        <input data-cy="profile__btn" type="submit" value="Save Changes" class="btn btn-primary">
-        <a href="profile/changePassword" class="btn btn-primary">
-            Change your password
-        </a>
-    </form>
+
+    </div>
+
 {% endblock %}
