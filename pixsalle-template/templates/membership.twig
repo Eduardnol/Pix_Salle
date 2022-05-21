@@ -13,8 +13,8 @@
     {{ error }}
 
     <form data-cy="sign-in" action="{{ formAction }}" method="POST">
-        <input name="activate" type="submit" value="Activate">
-        <input name="deactivate" type="submit" value="Deactivate">
+        <input name="activate" type="submit" value="Activate" class="btn btn-primary">
+        <input name="deactivate" type="submit" value="Deactivate" class="btn btn-primary">
     </form>
     {% if formErrors['email'] %}
         <p data-cy="sign-in__wrongEmail">{{ formErrors['email'] }}</p>

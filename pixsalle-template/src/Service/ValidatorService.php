@@ -59,9 +59,6 @@ class ValidatorService
                 $error = true;
                 return 'The phone number must start by 6.';
             }
-        } else {
-            $error = true;
-            return 'The phone number must contain 9 numbers.';
         }
 		return '';
 	}
