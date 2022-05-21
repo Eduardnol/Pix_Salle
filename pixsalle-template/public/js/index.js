@@ -31,12 +31,15 @@ function createQrCode() {
 
 }
 
-function clickFunction(e) {
+async function clickFunction(e) {
 
     let connect = new Connect();
     let albumId = $('#albumId').text();
 
-    connect.deleteImageById($(e.target).attr('id'), albumId);
+    let variable = await connect.deleteImageById($(e.target).attr('id'), albumId);
+
+    console.log(variable);
+    location.reload();
 
 }
 
@@ -59,24 +62,15 @@ function submitFormEntry(e) {
 const baseUrl = "http://localhost:8030"
 
 class Connect {
-    async deleteImageById(id, albumId) {
+    deleteImageById(id, albumId) {
         let url = baseUrl + `/portfolio/album/${albumId}`
-        const response = await fetch(url, {
+        const response = fetch(url, {
             method: "DELETE",
             body: JSON.stringify({
                 imageId: id
             }),
             headers: {'Content-Type': 'application/json'},
         })
-        const data = response.json();
-        //Now its time to check the error codes
-        if (response.status == 500) {
-            return "Bad Parameters";
-        }
-        if (response.status == 200) {
-            //Process response
-            return "";
-        }
     }
 
     async submitFormEntry(json) {
