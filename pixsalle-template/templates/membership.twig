@@ -17,9 +17,9 @@
         <input name="deactivate" type="submit" value="Deactivate" class="btn btn-primary">
     </form>
     {% if formErrors['email'] %}
-        <p data-cy="sign-in__wrongEmail">{{ formErrors['email'] }}</p>
+        <p style="color: red;" data-cy="sign-in__wrongEmail">{{ formErrors['email'] }}</p>
     {% endif %}
     {% if formErrors['password'] %}
-        <p data-cy="sign-in__wrongPassword">{{ formErrors['password'] }}</p>
+        <p style="color: red;" data-cy="sign-in__wrongPassword">{{ formErrors['password'] }}</p>
     {% endif %}
 {% endblock %}

@@ -13,8 +13,8 @@
         </div>
 
         {% if formErrors['email'] %}
-        <p data-cy="sign-up__wrongEmail">{{ formErrors['email'] }}</p>
-      {% endif %}
+            <p style="color: red" data-cy="sign-up__wrongEmail">{{ formErrors['email'] }}</p>
+        {% endif %}
 
         <div class="input-group mb-3">
             <span class="input-group-text" id="inputGroup-sizing-default">Enter your password</span>
@@ -23,8 +23,8 @@
         </div>
 
         {% if formErrors['password'] %}
-        <p data-cy="sign-up__wrongPassword">{{ formErrors['password'] }}</p>
-      {% endif %}
+            <p style="color: red" data-cy="sign-up__wrongPassword">{{ formErrors['password'] }}</p>
+        {% endif %}
         <input data-cy="sign-up__btn" type="submit" value="Sign-up" class="btn btn-primary">
     </form>
 {% endblock %}
