@@ -68,20 +68,44 @@ class PortfolioController
 
 	public function showalbum(Request $request, Response $response)
 	{
-		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
-		$request->getUri()->getPath();
-		$id = $request->getAttribute('id');
+
+        $routeParser = RouteContext::fromRequest($request)->getRouteParser();
+        $request->getUri()->getPath();
+        $id = $request->getAttribute('id');
+
+        $albumExist = $this->portfolioRepository->checkIfAlbumExists((int)$id);
+
+        if ($albumExist) {
+            $album = $this->portfolioRepository->getAlbumPhotosFromUser($id, $_SESSION['user_id']);
+            return $this->twig->render($response, 'album.twig', [
+                'formAction' => $routeParser->urlFor('uploadimage', ['id' => $id]),
+                'photos' => $album,
+                'logged' => $_SESSION['logged'],
+                'albumId' => $id
+            ]);
+        } else {
+            $errors = [];
+
+            $errors['albumDoNotExist'] = 'The album you are trying to access, do not exist!';
+
+            $userid = $_SESSION['user_id'];
+            $portfolio = $this->portfolioRepository->getPortfolioTitle($userid);
+            $isPortfolio = $this->portfolioRepository->checkIfPortfolioExists($userid);
+            $routeParser = RouteContext::fromRequest($request)->getRouteParser();
+            $albums = $this->portfolioRepository->getAllUserAlbums($userid);
+
+            return $this->twig->render($response, 'portfolio.twig', [
+                'thereIsPortfolio' => $isPortfolio,
+                'portfolioTitle' => $portfolio,
+                'formAction' => $routeParser->urlFor('portfolio'),
+                'albums' => $albums,
+                'logged' => $_SESSION['logged'],
+                'formErrors' => $errors
+            ]);
+        }
 
 
-		$album = $this->portfolioRepository->getAlbumPhotosFromUser($id, $_SESSION['user_id']);
-		return $this->twig->render($response, 'album.twig', [
-			'formAction' => $routeParser->urlFor('uploadimage', ['id' => $id]),
-			'photos' => $album,
-			'logged' => $_SESSION['logged'],
-			'albumId' => $id
-		]);
-
-	}
+    }
 
 	public function deleteImage(Request $request, Response $response)
 	{

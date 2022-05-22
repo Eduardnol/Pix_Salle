@@ -141,26 +141,40 @@ class MySQLPortfolioRepository implements PortfolioRepository
 	{
 		$query = "SELECT COUNT(*) FROM portfolios WHERE userId = :userId";
 		$statement = $this->databaseConnection->prepare($query);
-		$statement->bindParam(':userId', $userId);
-		$statement->execute();
+        $statement->bindParam(':userId', $userId);
+        $statement->execute();
 
-		if ($statement->fetchColumn() > 0) {
-			return 1;
-		} else {
-			return 0;
-		}
+        if ($statement->fetchColumn() > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
 
-	}
+    }
 
-	/**
-	 * @param $userId
-	 * @param $title
-	 * @return mixed
-	 */
-	public
-	function createPortfolio($userId, $title)
-	{
-		$query = "INSERT INTO portfolios (title, userId, createdAt, updatedAt) VALUES (:title, :userId, NOW(), NOW())";
+    public function checkIfAlbumExists(int $albumId)
+    {
+        $query = "SELECT COUNT(*) FROM album WHERE id = :id";
+        $statement = $this->databaseConnection->prepare($query);
+        $statement->bindParam(':id', $albumId);
+        $statement->execute();
+
+        if ($statement->fetchColumn() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @param $userId
+     * @param $title
+     * @return mixed
+     */
+    public
+    function createPortfolio($userId, $title)
+    {
+        $query = "INSERT INTO portfolios (title, userId, createdAt, updatedAt) VALUES (:title, :userId, NOW(), NOW())";
 		$statement = $this->databaseConnection->prepare($query);
 		$statement->bindParam(':userId', $userId);
 		$statement->bindParam(':title', $title);

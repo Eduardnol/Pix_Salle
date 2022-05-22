@@ -12,6 +12,7 @@
             <form data-cy="user-data" action="{{ formAction }}" id="profile__form" method="POST">
                 <input type="submit" name="addAlbum" class="btn btn-primary" id="add-portfolio-btn"
                        value="Add an Album">
+                <br>
             </form>
         </div>
         <div class="grid">
@@ -24,6 +25,9 @@
                     <a href="/portfolio/album/{{ album['id'] }}"><h6>{{ album['title'] }}</h6></a>
                 </div>
             {% endfor %}
+            {% if formErrors['albumDoNotExist'] %}
+                <p class="showErrorMsg" data-cy="portfolio__albumDoNotExis">{{ formErrors['albumDoNotExist'] }}</p>
+            {% endif %}
         </div>
     {% else %}
         <h1>Create a portfolio</h1>
