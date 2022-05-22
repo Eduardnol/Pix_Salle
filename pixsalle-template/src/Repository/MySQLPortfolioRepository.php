@@ -54,6 +54,20 @@ class MySQLPortfolioRepository implements PortfolioRepository
 	public
 	function createAlbum($userId, $albumName)
 	{
+
+		$sql = 'SELECT * FROM memberships WHERE userId = :user_id';
+		$stmt = $this->databaseConnection->prepare($sql);
+		$stmt->execute(['user_id' => $userId]);
+		$membership = $stmt->fetch(PDO::FETCH_ASSOC);
+
+		if ($membership === false) {
+			return false;
+		}
+		if ($membership['isActive'] == 0) {
+			return false;
+		}
+
+
 		//get portfolio id
 		$query = "SELECT id FROM portfolios WHERE userId = :userId";
 		$statement = $this->databaseConnection->prepare($query);
