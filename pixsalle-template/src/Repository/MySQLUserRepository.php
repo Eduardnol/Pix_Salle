@@ -94,8 +94,8 @@ final class MySQLUserRepository implements UserRepository
 
 		$query = 'UPDATE users SET userName = :usernameId WHERE id = :lastid';
 		$statement = $this->databaseConnection->prepare($query);
-		$str = "username" . $lastId;
-		$statement->bindParam('usernameId', $str, PDO::PARAM_STR);
+        $str = "user" . $lastId;
+        $statement->bindParam('usernameId', $str, PDO::PARAM_STR);
 		$statement->bindParam('lastid', $lastId, PDO::PARAM_STR);
 		$statement->execute();
 
