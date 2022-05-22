@@ -1,0 +1,12 @@
+{% extends "base.twig" %}
+
+{% block title %}Sign-up | PixSalle{% endblock %}
+{% block content %}
+    <p id="userId" hidden>{{ userId }}</p>
+    <h1>Create a blog</h1>
+    <form data-cy="blog" id="formSubmitBlogEntry">
+        <input type="text" name="title" placeholder="Enter your title">
+        <input type="text" name="content" placeholder="Enter your comment">
+    </form>
+    <button value="Create" class="buttonSubmitBlogEntry" id="buttonSubmitBlogEntry">Create</button>
+{% endblock %}

@@ -58,19 +58,25 @@ class WalletController
 
 	public function addMoney(Request $request, Response $response): Response
 	{
-		$data = $request->getParsedBody();
-		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
-		$moneyToAdd = $data['amount'];
-		$validator = $this->validator->validateQuantity($moneyToAdd);
+        $data = $request->getParsedBody();
+        $routeParser = RouteContext::fromRequest($request)->getRouteParser();
+        $actualUser = $_SESSION['user_id'];
+        $moneyToAdd = $data['amount'];
+        $validator = $this->validator->validateQuantity($moneyToAdd);
+        $result = $this->walletRepository->getBalance($actualUser);
 
-		if ($validator != '') {
-			return $this->twig->render($response, 'wallet.twig', [
+        if ($result > 1000000) {
+            $validator = "You have achieved the limit of your wallet quantity!";
+        }
+
+        if ($validator != '') {
+            return $this->twig->render($response, 'wallet.twig', [
                 'logged' => $_SESSION['logged'],
                 'wallet' => $this->showActualAmmountOfMoney(),
                 'wallet_add' => $routeParser->urlFor('wallet'),
                 'errorAmmount' => $validator,
             ]);
-		}
+        }
 
 
 		$actualUser = $_SESSION['user_id'];

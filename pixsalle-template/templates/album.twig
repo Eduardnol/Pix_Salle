@@ -1,0 +1,34 @@
+{% extends "base.twig" %}
+
+{% block title %}Album | PixSalle{% endblock %}
+
+{% block content %}
+
+    <h3>Upload a Photo to this album</h3>
+    <p id="albumId" hidden>{{ albumId }}</p>
+
+    <form action="{{ formAction }}" method="POST">
+        <input type="text" name="url" placeholder="Enter image URL">
+        <input type="submit" value="Upload" class="btn btn-primary">
+    </form>
+
+    <button class="btn btn-danger deletePhotoById" id="">Delete Album</button>
+
+    <button class="btn btn-info" id="createQrCode">Create QR</button>
+
+
+
+    <div class="grid">
+        {% for photo in photos %}
+            <div class="card" style="max-width: 18rem;">
+                <img class="card-img-top" src="{{ photo['imagePath'] }}" alt="Italian Trulli">
+                <div class="card-body">
+                    <h5 class="card-title">Image ID: {{ photo['id'] }}</h5>
+                    <button class="btn btn-danger deletePhotoById" id="{{ photo['id'] }}">Delete</button>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,24 @@
+h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+#add-portfolio-btn, .input-group {
+    width: 28rem;
+    margin: auto;
+}
+
+.card {
+    max-width: 18rem;
+    margin-top: 1rem;
+}
+
+#add-portfolio-btn {
+    margin: auto;
+    display: block;
+    width: 50%;
+}
+
+.showErrorMsg {
+    color: red;
+}

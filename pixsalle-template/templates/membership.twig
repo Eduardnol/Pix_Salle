@@ -3,6 +3,8 @@
 {% block title %}Membership | PixSalle{% endblock %}
 
 {% block content %}
+    <link href="/css/membership.css" rel="stylesheet">
+
     <h1>Membership</h1>
 
     {% if actualMembership %}
@@ -12,14 +14,19 @@
     {% endif %}
     {{ error }}
 
+
     <form data-cy="sign-in" action="{{ formAction }}" method="POST">
-        <input name="activate" type="submit" value="Activate">
-        <input name="deactivate" type="submit" value="Deactivate">
+        <div id="btn_containers">
+            <input name="activate" type="submit" value="Activate" class="btn btn-primary">
+            <input name="deactivate" type="submit" value="Deactivate" class="btn btn-primary">
+        </div>
     </form>
+
+
     {% if formErrors['email'] %}
-        <p data-cy="sign-in__wrongEmail">{{ formErrors['email'] }}</p>
+        <p style="color: red;" data-cy="sign-in__wrongEmail">{{ formErrors['email'] }}</p>
     {% endif %}
     {% if formErrors['password'] %}
-        <p data-cy="sign-in__wrongPassword">{{ formErrors['password'] }}</p>
+        <p style="color: red;" data-cy="sign-in__wrongPassword">{{ formErrors['password'] }}</p>
     {% endif %}
 {% endblock %}

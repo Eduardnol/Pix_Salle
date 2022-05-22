@@ -1,0 +1,17 @@
+h1, h4 {
+    text-align: center;
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+}
+
+#landingImg {
+    display: block;
+    margin: auto;
+    width: 50%;
+    margin-bottom: 1rem;
+}
+
+#landingText {
+    width: 35rem;
+    margin: auto;
+}

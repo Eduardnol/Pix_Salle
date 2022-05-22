@@ -1,0 +1,45 @@
+{% extends "base.twig" %}
+
+{% block title %}Portfolio | PixSalle{% endblock %}
+
+{% block content %}
+    <link href="/css/portfolio.css" rel="stylesheet">
+
+    {% if thereIsPortfolio %}
+        <h1>{{ portfolioTitle }}</h1>
+        <div>
+            <form data-cy="user-data" action="{{ formAction }}" id="profile__form" method="POST">
+                <input type="submit" name="addAlbum" class="btn btn-primary" id="add-portfolio-btn"
+                       value="Add an Album">
+                <br>
+            </form>
+        </div>
+        <div class="grid">
+            {{ errorAlbums }}
+            {% for album in albums %}
+                <div class="card">
+                    <img class="card-img-top grid_son"
+                         src="https://images.unsplash.com/photo-1506536329413-d2f0d31ceb9f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                         alt="Italian Trulli">
+                    Album:
+                    <a href="/portfolio/album/{{ album['id'] }}"><h6>{{ album['title'] }}</h6></a>
+                </div>
+            {% endfor %}
+            {% if formErrors['albumDoNotExist'] %}
+                <p class="showErrorMsg" data-cy="portfolio__albumDoNotExis">{{ formErrors['albumDoNotExist'] }}</p>
+            {% endif %}
+        </div>
+    {% else %}
+        <h1>Create a portfolio</h1>
+        <form data-cy="user-data" action="{{ formAction }}" id="profile__form" method="POST">
+            <div class="input-group mb-3">
+                <input type="text" name="portfolioTitleValue" placeholder="Title" value="{{ portfolioTitleValue }}"
+                       class="form-control">
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon1">Create a Portfolio</button>
+            </div>
+        </form>
+
+
+    {% endif %}
+
+{% endblock %}

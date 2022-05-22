@@ -21,9 +21,9 @@ class MySQLWalletRepository implements WalletRepository
 			'user_id' => $user_id
 		]);
 
-		$result = $query->fetch();
+		$result = $query->fetchColumn();
 
-		return $result['quantity'];
+		return $result;
 	}
 
 	public function addMoney(string $user_id, int $amount)

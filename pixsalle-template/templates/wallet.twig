@@ -3,16 +3,22 @@
 {% block title %}Wallet | PixSalle{% endblock %}
 
 {% block content %}
-    <h1>This is your current ammount</h1>
-    <p>{{ wallet }}</p>
+    <link href="/css/wallet.css" rel="stylesheet">
+
+    <h1>This is your current ammount: {{ wallet }}</h1>
 
 
 
-<form action="{{ wallet_add }}" method="post">
-    <label for="amount">Add money</label>
-    <input type="number" name="amount" id="amount"/>
-    <input type="submit" value="Add"/>
+<form id="main-form" action="{{ wallet_add }}" method="post">
+    <div id="wallet-container" class="input-group mb-3">
+        <span class="input-group-text" id="inputGroup-sizing-default">Amount</span>
+        <input type="number" placeholder="Enter amount of money you want to add" name="amount" id="amount"
+               class="form-control"/>
 
-    <p>{{ errorAmmount }}</p>
+        <input type="submit" value="Add" class="btn btn-primary"/>
+    </div>
+
+
+    <p style="color: red;">{{ errorAmmount }}</p>
 
 {% endblock %}

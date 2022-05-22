@@ -1,0 +1,14 @@
+h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+#sign-in_mainContainer {
+    margin: auto;
+    width: 28rem;
+}
+
+#sign-in_mainContainer .btn {
+    margin-left: 11rem;
+    margin-top: 1rem;
+}

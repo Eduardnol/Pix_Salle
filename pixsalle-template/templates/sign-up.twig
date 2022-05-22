@@ -4,16 +4,32 @@
 {% block title %}Sign-up | PixSalle{% endblock %}
 
 {% block content %}
+    <link href="/css/sign-up.css" rel="stylesheet">
+
     <h1>Sign up here!</h1>
-    <form data-cy="sign-up" action="{{ formAction }}" method="POST">
-      <input data-cy="sign-up__email" type="text" name="email" placeholder="Enter your email">
-      {% if formErrors['email'] %}
-        <p data-cy="sign-up__wrongEmail">{{ formErrors['email'] }}</p>
-      {% endif %}
-      <input data-cy="sign-up__password" type="password" name="password" placeholder="Enter your password">
-      {% if formErrors['password'] %}
-        <p data-cy="sign-up__wrongPassword">{{ formErrors['password'] }}</p>
-      {% endif %}
-      <input data-cy="sign-up__btn" type="submit" value="Sign-up">
-    </form>
+
+    <div id="sign-up_mainContainer">
+        <form data-cy="sign-up" action="{{ formAction }}" method="POST">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">Enter your email</span>
+                <input data-cy="sign-up__email" type="text" name="email" placeholder="example@salle.url.edu"
+                       class="form-control">
+            </div>
+
+            {% if formErrors['email'] %}
+                <p style="color: red" data-cy="sign-up__wrongEmail">{{ formErrors['email'] }}</p>
+            {% endif %}
+
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">Enter your password</span>
+                <input data-cy="sign-up__password" type="password" name="password" placeholder="Password"
+                       class="form-control">
+            </div>
+
+            {% if formErrors['password'] %}
+                <p style="color: red" data-cy="sign-up__wrongPassword">{{ formErrors['password'] }}</p>
+            {% endif %}
+            <input data-cy="sign-up__btn" type="submit" value="Sign-up" class="btn btn-primary">
+        </form>
+    </div>
 {% endblock %}

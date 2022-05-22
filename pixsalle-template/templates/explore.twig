@@ -3,13 +3,17 @@
 {% block title %}Explore{% endblock %}
 
 {% block content %}
-
-    {% if 'error' %}
-        <p>{{ error }}</p>
-    {% else %}
-
-
-
-    {% endif %}
+    <div class="grid">
+        {% for image in images %}
+            <div class="card" style="max-width: 18rem;">
+                <img class="card-img-top" src="{{ image['imagePath'] }}" alt="user image uploaded">
+                <div class="card-body">
+                    <p class="card-title">{{ image['userName'] }}</p>
+                </div>
+            </div>
+        {% else %}
+            <p>Upload some images!</p>
+        {% endfor %}
+    </div>
 
 {% endblock %}

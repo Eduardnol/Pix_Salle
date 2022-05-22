@@ -6,19 +6,24 @@ namespace Salle\PixSalle\Service;
 
 class ValidatorService
 {
-	public function __construct()
-	{
-	}
+
+    // We use this const to define the extensions that we are going to allow
+    private const ALLOWED_EXTENSIONS = ['png', 'jpg'];
+
+
+    public function __construct()
+    {
+    }
 
     public function validateEmail(string $email)
     {
         if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return 'The email address is not valid';
         } else if (!strpos($email, "@salle.url.edu")) {
-            return 'Only emails from the domain @salle.url.edu are accepted.';
-        }
-        return '';
-    }
+			return 'Only emails from the domain @salle.url.edu are accepted.';
+		}
+		return '';
+	}
 
     public function validatePassword(string $password)
     {
@@ -30,21 +35,42 @@ class ValidatorService
         return '';
     }
 
-    public function validatePhoneNumber(string $phoneNumber, bool &$edu)
+    public function validateUserName(string $userName, bool &$error)
     {
-        $phone_format = "/(6)*([0-9])$/";
+        $userName_format = "/[A-Za-z][0-9]|[0-9][A-Za-z]/";
+
+        if (!empty($userName)) {
+            if (!preg_match($userName_format, $userName)) {
+                $error = true;
+                return 'The user name must be alphanumeric!';
+            }
+        } else {
+            $error = true;
+            return 'The user name must be alphanumeric!';
+        }
+        return '';
+    }
+
+    public function validatePhoneNumber(string $phoneNumber, bool &$error)
+    {
+        $phone_format = "/(6)([0-9]){8}/";
 
 
         if (!empty($phoneNumber)) {
             if (strlen($phoneNumber) != 9) {
-                $edu = true;
+                $error = true;
                 return 'The phone number must contain 9 numbers.';
             } elseif (!preg_match($phone_format, $phoneNumber)) {
-                $edu = true;
+                $error = true;
                 return 'The phone number must start by 6.';
             }
         }
         return '';
+    }
+
+    public function isValidFormat(string $extension): bool
+    {
+        return in_array($extension, self::ALLOWED_EXTENSIONS, true);
     }
 
     public function matchingPasswords($pass1, $pass2)
@@ -56,11 +82,13 @@ class ValidatorService
         }
     }
 
-    public function validateQuantity(string $quantity)
+	public function validateQuantity(string $quantity)
 	{
 		if (empty($quantity) || !is_numeric($quantity) || $quantity < 1) {
-			return 'The quantity must be a positive number';
-		}
+            return 'The quantity must be a positive number';
+        } else if ($quantity > 100000) {
+            return "The quantity can't exceed 100000";
+        }
 		return '';
 	}
 }
