@@ -20,8 +20,8 @@ use Slim\App;
 
 function addRoutes(App $app): void
 {
-	$app->get('/', HomeController::class . ':showHome')->add(CheckSessionStartedMiddleware::class)->setName('home');
-	$app->get('/sign-in', UserSessionController::class . ':showSignInForm')->setName('signIn');
+	$app->get('/', HomeController::class . ':showHome')->setName('home');
+    $app->get('/sign-in', UserSessionController::class . ':showSignInForm')->setName('signIn');
 	$app->post('/sign-in', UserSessionController::class . ':signIn');
 	$app->get('/sign-up', SignUpController::class . ':showSignUpForm')->setName('signUp');
 	$app->post('/sign-up', SignUpController::class . ':signUp');

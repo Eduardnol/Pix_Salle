@@ -28,7 +28,6 @@ class MySQLPortfolioRepository implements PortfolioRepository
 		return $statement->fetchAll();
 	}
 
-
 	/**
 	 * @param $albumId
 	 * @param $userId
