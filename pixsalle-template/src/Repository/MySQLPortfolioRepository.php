@@ -136,7 +136,7 @@ class MySQLPortfolioRepository implements PortfolioRepository
 		$statement->execute();
 
 
-		return $statement->fetchAll();
+		return true;
 	}
 
 

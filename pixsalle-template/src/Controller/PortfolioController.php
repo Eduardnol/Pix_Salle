@@ -125,7 +125,6 @@ class PortfolioController
 			$isPortfolio = $this->portfolioRepository->checkIfPortfolioExists($userid);
 			$routeParser = RouteContext::fromRequest($request)->getRouteParser();
 			$albums = $this->portfolioRepository->getAllUserAlbums($userid);
-			return $response = $response->withHeader('Location', $routeParser->urlFor('portfolio'))->withStatus(404);
 			return $this->twig->render($response, 'portfolio.twig', [
 				'thereIsPortfolio' => $isPortfolio,
 				'portfolioTitle' => $portfolio,
@@ -147,21 +146,17 @@ class PortfolioController
 		$data = $request->getParsedBody();
 		$imageURL = $data['imageId'];
 
-		$album = $this->portfolioRepository->getAlbumPhotosFromUser($id, $_SESSION['user_id']);
 
 		if (isset($imageURL) && $imageURL != "") {
 			$this->portfolioRepository->deletePhotoFromAlbum($id, $_SESSION['user_id'], $imageURL);
 		} else {
 			$this->portfolioRepository->deleteAlbum($id, $_SESSION['user_id']);
-			return $response->withHeader('Location', $routeParser->urlFor('portfolio'))->withStatus(404);
+			return $response->withHeader('Location', $routeParser->urlFor('portfolio'))->withStatus(200);
 		}
 
-		return $this->twig->render($response, 'album.twig', [
-			'logged' => $_SESSION['logged'],
-			'formAction' => $routeParser->urlFor('uploadimage', ['id' => $id]),
-			'photos' => $album,
-			'albumId' => $id
-		]);
+		//$album = $this->portfolioRepository->getAlbumPhotosFromUser($id, $_SESSION['user_id']);
+
+		return $response;
 
 	}
 

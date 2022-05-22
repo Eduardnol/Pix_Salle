@@ -31,15 +31,23 @@ function createQrCode() {
 
 }
 
-async function clickFunction(e) {
+function clickFunction(e) {
 
     let connect = new Connect();
     let albumId = $('#albumId').text();
+    let imageId = $(e.target).attr('id');
 
-    let variable = await connect.deleteImageById($(e.target).attr('id'), albumId);
 
-    console.log(variable);
-    location.reload();
+    connect.deleteImageById(imageId, albumId).then(r => {
+
+        if (imageId == "" || imageId == null) {
+            location.replace(`http://localhost:8030/portfolio`);
+
+        } else {
+            location.replace(`http://localhost:8030/portfolio/album/${albumId}`);
+        }
+    });
+
 
 }
 
@@ -62,9 +70,9 @@ function submitFormEntry(e) {
 const baseUrl = "http://localhost:8030"
 
 class Connect {
-    deleteImageById(id, albumId) {
+    async deleteImageById(id, albumId) {
         let url = baseUrl + `/portfolio/album/${albumId}`
-        const response = fetch(url, {
+        const response = await fetch(url, {
             method: "DELETE",
             body: JSON.stringify({
                 imageId: id
