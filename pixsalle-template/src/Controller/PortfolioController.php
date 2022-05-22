@@ -56,7 +56,7 @@ class PortfolioController
 		$data = $request->getParsedBody();
 		if (isset($data['addAlbum'])) {
 			$album_creat = $this->portfolioRepository->createAlbum($_SESSION['user_id'], "New Album");
-			if (!$album_creat) {
+			if ($album_creat == "member") {
 				$portfolio = $this->portfolioRepository->getPortfolioTitle($_SESSION['user_id']);
 				$isPortfolio = $this->portfolioRepository->checkIfPortfolioExists($_SESSION['user_id']);
 				return $this->twig->render($response, 'portfolio.twig', [
@@ -68,7 +68,20 @@ class PortfolioController
 
 				]);
 			}
+			if ($album_creat == "money") {
+				$portfolio = $this->portfolioRepository->getPortfolioTitle($_SESSION['user_id']);
+				$isPortfolio = $this->portfolioRepository->checkIfPortfolioExists($_SESSION['user_id']);
+				return $this->twig->render($response, 'portfolio.twig', [
+					'thereIsPortfolio' => $isPortfolio,
+					'portfolioTitle' => $portfolio,
+					'formAction' => $routeParser->urlFor('portfolio'),
+					'errorAlbums' => "You don't have enough money to create an album",
+					'logged' => $_SESSION['logged']
+
+				]);
+			}
 			return $response->withHeader('Location', $routeParser->urlFor('portfolio'))->withStatus(200);
+
 		}
 		$userid = $_SESSION['user_id'];
 		$portfolioTitle = $request->getParsedBody()['portfolioTitleValue'];

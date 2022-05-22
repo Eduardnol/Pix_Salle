@@ -55,16 +55,28 @@ class MySQLPortfolioRepository implements PortfolioRepository
 	function createAlbum($userId, $albumName)
 	{
 
-		$sql = 'SELECT * FROM memberships WHERE userId = :user_id';
+		$sql = 'SELECT isActive FROM memberships WHERE userId = :user_id';
 		$stmt = $this->databaseConnection->prepare($sql);
 		$stmt->execute(['user_id' => $userId]);
-		$membership = $stmt->fetch(PDO::FETCH_ASSOC);
-
-		if ($membership === false) {
-			return false;
+		$membership = $stmt->fetchColumn();
+		if ($membership == 0 || $membership == "0") {
+			return "member";
 		}
-		if ($membership['isActive'] == 0) {
-			return false;
+
+		//substract money from user
+		$money = 'SELECT quantity FROM money WHERE userId = :user_id';
+		$stmt0 = $this->databaseConnection->prepare($money);
+		$stmt0->execute(['user_id' => $userId]);
+		$result = $stmt0->fetchColumn();
+
+		if ((int)$result - 2 < 0) {
+			return "money";
+		} else {
+			$query = $this->databaseConnection->prepare('UPDATE money SET quantity = quantity - :amount, updatedAt = NOW() WHERE userId = :user_id');
+			$query->execute([
+				'amount' => 2,
+				'user_id' => $userId
+			]);
 		}
 
 
@@ -155,40 +167,40 @@ class MySQLPortfolioRepository implements PortfolioRepository
 	{
 		$query = "SELECT COUNT(*) FROM portfolios WHERE userId = :userId";
 		$statement = $this->databaseConnection->prepare($query);
-        $statement->bindParam(':userId', $userId);
-        $statement->execute();
+		$statement->bindParam(':userId', $userId);
+		$statement->execute();
 
-        if ($statement->fetchColumn() > 0) {
-            return 1;
-        } else {
-            return 0;
-        }
+		if ($statement->fetchColumn() > 0) {
+			return 1;
+		} else {
+			return 0;
+		}
 
-    }
+	}
 
-    public function checkIfAlbumExists(int $albumId)
-    {
-        $query = "SELECT COUNT(*) FROM album WHERE id = :id";
-        $statement = $this->databaseConnection->prepare($query);
-        $statement->bindParam(':id', $albumId);
-        $statement->execute();
+	public function checkIfAlbumExists(int $albumId)
+	{
+		$query = "SELECT COUNT(*) FROM album WHERE id = :id";
+		$statement = $this->databaseConnection->prepare($query);
+		$statement->bindParam(':id', $albumId);
+		$statement->execute();
 
-        if ($statement->fetchColumn() > 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+		if ($statement->fetchColumn() > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
-    /**
-     * @param $userId
-     * @param $title
-     * @return mixed
-     */
-    public
-    function createPortfolio($userId, $title)
-    {
-        $query = "INSERT INTO portfolios (title, userId, createdAt, updatedAt) VALUES (:title, :userId, NOW(), NOW())";
+	/**
+	 * @param $userId
+	 * @param $title
+	 * @return mixed
+	 */
+	public
+	function createPortfolio($userId, $title)
+	{
+		$query = "INSERT INTO portfolios (title, userId, createdAt, updatedAt) VALUES (:title, :userId, NOW(), NOW())";
 		$statement = $this->databaseConnection->prepare($query);
 		$statement->bindParam(':userId', $userId);
 		$statement->bindParam(':title', $title);
